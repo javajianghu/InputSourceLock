@@ -6,7 +6,7 @@ class InputSourceMonitor {
     private var timer: Timer?
     private var lastInputSourceID: String?
     private var targetInputSourceID: String
-    private let checkInterval: TimeInterval = 0.5
+    private let checkInterval: TimeInterval = 0.1
     
     init(targetInputSourceID: String) {
         self.targetInputSourceID = targetInputSourceID
@@ -115,9 +115,10 @@ class InputSourceMonitor {
         if currentID != lastInputSourceID {
             print("📍 检测到输入法变化：\(lastInputSourceID ?? "未知") → \(currentID)")
             
-            if isABCInputSource(currentID) {
-                print("⚠️  检测到 ABC 输入法，正在切换回目标输入法...")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            // 只要不是目标输入法，就立即切换回去（不限于 ABC）
+            if currentID != targetInputSourceID {
+                print("⚠️  检测到非目标输入法，正在切换回目标输入法...")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
                     _ = self?.selectInputSource(withID: self!.targetInputSourceID)
                 }
             }
@@ -126,11 +127,9 @@ class InputSourceMonitor {
         }
     }
     
-    /// 判断是否为 ABC 输入法
-    private func isABCInputSource(_ inputSourceID: String) -> Bool {
-        return inputSourceID.contains("ABC") || 
-               inputSourceID.contains("com.apple.keylayout.US") ||
-               inputSourceID == "com.apple.keylayout.ABC"
+    /// 判断是否为目标输入法
+    private func isTargetInputSource(_ inputSourceID: String) -> Bool {
+        return inputSourceID == targetInputSourceID
     }
     
     /// 停止监控
