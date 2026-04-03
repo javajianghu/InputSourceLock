@@ -1,0 +1,42 @@
+# Swift / Xcode
+.build/
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# 编译产物
+*.app/
+build/
+*.o
+*.a
+*.dylib
+*.so
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Python 虚拟环境（如果使用）
+.venv/
+__pycache__/
+*.pyc
+
+# 其他
+*.orig
+*.bak
