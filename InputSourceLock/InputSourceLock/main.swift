@@ -7,11 +7,14 @@ class InputSourceMonitor {
     private var lastInputSourceID: String?
     private var targetInputSourceID: String
     private let checkInterval: TimeInterval = 0.1
+    private let maxRetryCount: Int = 3
+    private let retryDelay: TimeInterval = 0.02
     
     init(targetInputSourceID: String) {
         self.targetInputSourceID = targetInputSourceID
         print("🎯 目标输入法 ID: \(targetInputSourceID)")
         print("⏱️  检测间隔：\(checkInterval)秒")
+        print("🔄 最大重试次数：\(maxRetryCount)")
     }
     
     /// 获取所有可用的输入法列表
@@ -55,35 +58,51 @@ class InputSourceMonitor {
         return id
     }
     
-    /// 切换到指定的输入法
+    /// 切换到指定的输入法（带重试机制）
     func selectInputSource(withID inputSourceID: String) -> Bool {
-        guard let inputSourceArrayRef = TISCreateInputSourceList(nil, false) else {
-            print("❌ 无法获取输入法列表")
+        var retryCount = 0
+        
+        while retryCount < maxRetryCount {
+            guard let inputSourceArrayRef = TISCreateInputSourceList(nil, false) else {
+                print("❌ 无法获取输入法列表")
+                return false
+            }
+            
+            let inputSourceArray = inputSourceArrayRef.takeRetainedValue()
+            let count = CFArrayGetCount(inputSourceArray)
+            
+            for i in 0..<count {
+                let source = unsafeBitCast(CFArrayGetValueAtIndex(inputSourceArray, i), to: TISInputSource.self)
+                
+                if let idPointer = TISGetInputSourceProperty(source, kTISPropertyInputSourceID),
+                   let id = Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue() as String?,
+                   id == inputSourceID {
+                    
+                    let result = TISSelectInputSource(source)
+                    if result == noErr {
+                        if retryCount > 0 {
+                            print("✅ 已切换到输入法：\(id)（第\(retryCount + 1)次尝试成功）")
+                        } else {
+                            print("✅ 已切换到输入法：\(id)")
+                        }
+                        return true
+                    } else {
+                        retryCount += 1
+                        if retryCount < maxRetryCount {
+                            print("⚠️  切换失败（错误码：\(result)），第\(retryCount)次重试...")
+                            Thread.sleep(forTimeInterval: retryDelay)
+                        } else {
+                            print("❌ 切换失败，已达到最大重试次数（错误码：\(result)）")
+                            return false
+                        }
+                    }
+                }
+            }
+            
+            print("❌ 未找到输入法：\(inputSourceID)")
             return false
         }
         
-        let inputSourceArray = inputSourceArrayRef.takeRetainedValue()
-        let count = CFArrayGetCount(inputSourceArray)
-        
-        for i in 0..<count {
-            let source = unsafeBitCast(CFArrayGetValueAtIndex(inputSourceArray, i), to: TISInputSource.self)
-            
-            if let idPointer = TISGetInputSourceProperty(source, kTISPropertyInputSourceID),
-               let id = Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue() as String?,
-               id == inputSourceID {
-                
-                let result = TISSelectInputSource(source)
-                if result == noErr {
-                    print("✅ 已切换到输入法：\(id)")
-                    return true
-                } else {
-                    print("❌ 切换失败，错误码：\(result)")
-                    return false
-                }
-            }
-        }
-        
-        print("❌ 未找到输入法：\(inputSourceID)")
         return false
     }
     
@@ -112,18 +131,32 @@ class InputSourceMonitor {
             return
         }
         
+        // 如果当前已经是目标输入法，更新状态并返回
+        if currentID == targetInputSourceID {
+            if lastInputSourceID != targetInputSourceID {
+                print("✅ 已锁定到目标输入法：\(currentID)")
+                lastInputSourceID = currentID
+            }
+            return
+        }
+        
+        // 检测到非目标输入法，立即切换
         if currentID != lastInputSourceID {
             print("📍 检测到输入法变化：\(lastInputSourceID ?? "未知") → \(currentID)")
-            
-            // 只要不是目标输入法，就立即切换回去（不限于 ABC）
-            if currentID != targetInputSourceID {
-                print("⚠️  检测到非目标输入法，正在切换回目标输入法...")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
-                    _ = self?.selectInputSource(withID: self!.targetInputSourceID)
-                }
-            }
-            
-            lastInputSourceID = currentID
+        }
+        
+        print("⚠️  检测到非目标输入法（当前：\(currentID)），正在切换回目标输入法...")
+        
+        // 同步执行切换，不使用异步延迟
+        let success = selectInputSource(withID: targetInputSourceID)
+        
+        if success {
+            // 切换成功后再更新状态
+            lastInputSourceID = targetInputSourceID
+            print("✅ 已成功切换回目标输入法")
+        } else {
+            print("❌ 切换失败，将在下次检测时重试")
+            // 不更新 lastInputSourceID，保持原状态以便下次继续尝试
         }
     }
     
@@ -180,7 +213,22 @@ func main() {
     print("\n🔒 输入法锁定工具启动中...")
     print("🎯 目标输入法：\(targetInputSourceID)\n")
     
+    // 验证目标输入法是否存在
     let monitor = InputSourceMonitor(targetInputSourceID: targetInputSourceID)
+    let availableSources = monitor.getAvailableInputSources()
+    
+    if !availableSources.contains(where: { $0.id == targetInputSourceID }) {
+        print("❌ 错误：未找到指定的输入法 ID: \(targetInputSourceID)")
+        print("\n可用的输入法列表：")
+        for source in availableSources {
+            print("  - \(source.name)")
+            print("    ID: \(source.id)")
+        }
+        print("\n💡 提示：请检查输入法 ID 是否正确，或使用 ./list_input_sources.swift 查看可用输入法")
+        exit(1)
+    }
+    
+    print("✅ 目标输入法已验证存在")
     
     signal(SIGINT) { _ in
         print("\n\n👋 收到退出信号，正在退出...")
