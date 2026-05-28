@@ -17,7 +17,7 @@ private let asciiOnlyInputSourceIDs: Set<String> = [
     "com.apple.keylayout.Colemak",
 ]
 
-private let windowSize = NSSize(width: 44, height: 30)
+private let windowSize = NSSize(width: 22, height: 22)
 private let pollingInterval: TimeInterval = 0.15
 private let cursorTrackInterval: TimeInterval = 0.08
 private let maxLockRetry: Int = 3
@@ -79,16 +79,16 @@ final class StatusOverlayWindow: NSPanel {
     init(initialCursor: NSPoint) {
         bgView = NSView(frame: NSRect(origin: .zero, size: windowSize))
         bgView.wantsLayer = true
-        bgView.layer?.cornerRadius = 8
+        bgView.layer?.cornerRadius = 5
         bgView.layer?.masksToBounds = true
 
-        label = NSTextField(frame: NSRect(origin: .zero, size: windowSize))
+        label = NSTextField(frame: NSRect(x: 0, y: 0, width: windowSize.width, height: windowSize.height))
         label.isEditable = false
         label.isBordered = false
         label.isSelectable = false
         label.alignment = .center
         label.backgroundColor = .clear
-        label.font = NSFont.monospacedDigitSystemFont(ofSize: 16, weight: .bold)
+        label.font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .bold)
         bgView.addSubview(label)
 
         let frame = NSRect(
