@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "InputSourceLock",
-            dependencies: [],
-            sources: ["InputSourceLock/main.swift"]
+            path: "InputSourceLock",
+            sources: ["main.swift"]
         )
     ]
 )

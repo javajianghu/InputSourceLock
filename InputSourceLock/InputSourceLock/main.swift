@@ -71,6 +71,7 @@ class InputSourceMonitor {
             let inputSourceArray = inputSourceArrayRef.takeRetainedValue()
             let count = CFArrayGetCount(inputSourceArray)
             
+            var found = false
             for i in 0..<count {
                 let source = unsafeBitCast(CFArrayGetValueAtIndex(inputSourceArray, i), to: TISInputSource.self)
                 
@@ -78,6 +79,7 @@ class InputSourceMonitor {
                    let id = Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue() as String?,
                    id == inputSourceID {
                     
+                    found = true
                     let result = TISSelectInputSource(source)
                     if result == noErr {
                         if retryCount > 0 {
@@ -87,20 +89,25 @@ class InputSourceMonitor {
                         }
                         return true
                     } else {
-                        retryCount += 1
-                        if retryCount < maxRetryCount {
-                            print("⚠️  切换失败（错误码：\(result)），第\(retryCount)次重试...")
-                            Thread.sleep(forTimeInterval: retryDelay)
-                        } else {
-                            print("❌ 切换失败，已达到最大重试次数（错误码：\(result)）")
-                            return false
-                        }
+                        // 切换失败，跳出内层循环让外层 while 处理重试
+                        break
                     }
                 }
             }
             
-            print("❌ 未找到输入法：\(inputSourceID)")
-            return false
+            if !found {
+                print("❌ 未找到输入法：\(inputSourceID)")
+                return false
+            }
+            
+            retryCount += 1
+            if retryCount < maxRetryCount {
+                print("⚠️  切换失败，第\(retryCount)次重试...")
+                Thread.sleep(forTimeInterval: retryDelay)
+            } else {
+                print("❌ 切换失败，已达到最大重试次数")
+                return false
+            }
         }
         
         return false
@@ -158,11 +165,6 @@ class InputSourceMonitor {
             print("❌ 切换失败，将在下次检测时重试")
             // 不更新 lastInputSourceID，保持原状态以便下次继续尝试
         }
-    }
-    
-    /// 判断是否为目标输入法
-    private func isTargetInputSource(_ inputSourceID: String) -> Bool {
-        return inputSourceID == targetInputSourceID
     }
     
     /// 停止监控
