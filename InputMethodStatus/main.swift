@@ -187,8 +187,8 @@ final class InputMethodManager: NSObject {
         // 初始显示
         if let id = getCurrentInputSourceID() {
             currentInputSourceID = id
-            // 中文输入法切入时默认英文模式（按 Shift 才切到中文）
-            isChineseMode = false
+            // 切到目标（锁定）输入法 → 中文模式；切到其他 → 英文模式
+            isChineseMode = (targetInputSourceID != nil && id == targetInputSourceID)
         }
         updateDisplay()
 
@@ -233,8 +233,8 @@ final class InputMethodManager: NSObject {
         if currentID != currentInputSourceID {
             // 输入源发生变化（用户可能手动切换了）
             currentInputSourceID = currentID
-            // 任何输入源切入时默认英文模式（按 Shift 切到中文）
-            isChineseMode = false
+            // 切到目标（锁定）输入法 → 中文模式；切到其他 → 英文模式
+            isChineseMode = (targetInputSourceID != nil && currentID == targetInputSourceID)
             updateDisplay()
         }
         // 如果输入源没变，isChineseMode 由 Shift 事件驱动，这里不覆盖
@@ -262,8 +262,8 @@ final class InputMethodManager: NSObject {
                     found = true
                     if TISSelectInputSource(src) == noErr {
                         currentInputSourceID = targetID
-                        // 切回中文输入法时默认英文模式
-                        isChineseMode = false
+                        // 切回目标输入法 → 中文模式（Shift 仍可切到英文）
+                        isChineseMode = true
                         updateDisplay()
                         return
                     }
