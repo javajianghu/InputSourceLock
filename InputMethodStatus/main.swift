@@ -368,9 +368,12 @@ final class InputMethodManager: NSObject {
 
     /// 普通按键按下（用于排除 Shift+key 组合）
     private func handleKeyDown(_ event: CGEvent) {
-        guard shiftHeld else { return }
-        let code = event.getIntegerValueField(.keyboardEventKeycode)
-        if !shiftKeyCodes.contains(code) {
+        let flags = event.flags
+        let isShiftPressed = flags.contains(.maskShift)
+        let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
+
+        // 如果 Shift 按住，且当前按键不是 Shift 本身 → 组合键，不切换
+        if isShiftPressed && !shiftKeyCodes.contains(keyCode) {
             otherKeyUsedWhileShift = true
         }
     }
