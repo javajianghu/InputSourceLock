@@ -22,7 +22,7 @@ Produces both binaries into `InputSourceLock/build/`:
 - `InputSourceLock/build/InputMethodStatus`
 - `InputSourceLock/build/InputSourceLock`
 
-The script is a thin wrapper around two `swiftc` invocations (Cocoa + Carbon frameworks). There is no SPM-based build; the `Package.swift` exists but is **not** wired into `build.sh` and has a known source-path issue (see "Gotchas" below).
+The script is a thin wrapper around two `swiftc` invocations (Cocoa + Carbon frameworks). There is no SPM-based build — `build.sh` invokes `swiftc` directly.
 
 ## Run
 
@@ -34,7 +34,7 @@ The script is a thin wrapper around two `swiftc` invocations (Cocoa + Carbon fra
 ./InputSourceLock/build/InputMethodStatus com.tencent.inputmethod.wetype.pinyin
 ```
 
-Exit with `Ctrl+C` or `Cmd+Q`. The `--list` flag shown in `build.sh` output is **not** actually implemented in code — the no-arg invocation just prints the list as part of its startup banner.
+Exit with `Ctrl+C` or `Cmd+Q`. The no-arg invocation opens a dialog to pick the target IME; the dialog's popup lists every enabled input source.
 
 A standalone helper for listing input sources also exists:
 
@@ -55,7 +55,6 @@ InputMethodStatus/main.swift                       # combined lock + overlay (cu
 InputSourceLock/InputSourceLock/main.swift         # legacy terminal-only lock
 InputSourceLock/list_input_sources.swift           # one-shot TIS lister
 InputSourceLock/build.sh                           # compiles both
-InputSourceLock/Package.swift                      # SPM (currently unused by build.sh)
 ```
 
 ### `InputMethodStatus/main.swift` — the main program
@@ -70,7 +69,7 @@ Single-file Swift program organized top-to-bottom as four sections:
 ### Lock + state machine
 
 - **Locking**: `onTick` reads `TISCopyCurrentKeyboardInputSource()` every 0.15 s. If `targetInputSourceID` is set and current ≠ target, calls `selectAndLockSource`, which iterates `TISCreateInputSourceList` and calls `TISSelectInputSource` with up to `maxLockRetry = 3` attempts spaced `lockRetryDelay = 0.02 s` apart.
-- **Chinese/English mode** is a boolean `isChineseMode` that is **not** derived from the input source alone — it's toggled by a bare Shift press/release observed via CGEventTap. Default is `false` (English) on startup, on any input source change, and after a successful lock, because Chinese IMEs (WeChat, etc.) boot into English mode until the user presses Shift.
+- **Chinese/English mode** is a boolean `isChineseMode` that is **not** derived from the input source alone — it's toggled by a bare Shift press/release observed via CGEventTap. The state is reassigned on every transition by `start()` / `onTick()` / `selectAndLockSource()` (see Gotchas below). Chinese IMEs (WeChat, etc.) boot into English mode until the user presses Shift, which is why a bare Shift press is the toggle trigger.
 - **Shift detection** uses `CGEvent.tapCreate` with `flagsChanged` + `keyDown` masks. The tap tracks `shiftHeld` and `otherKeyUsedWhileShift`; only a Shift press+release with no intervening non-Shift keyDown counts as a mode toggle. Shift keyCodes are 56 (left) and 60 (right).
 - **Without Accessibility permission** the CGEvent tap fails to install — the program prints a warning and degrades to "input source change ⇒ reset to English mode" behavior. Shift toggles inside an IME are then invisible.
 
@@ -81,10 +80,9 @@ Same TIS primitives as the main program but: no overlay, no CGEventTap, `Timer.s
 ## Gotchas (read before changing anything)
 
 - **CGEventTap requires Accessibility permission** for the parent process (Terminal / iTerm). The program does not request it programmatically; the user must enable it in System Settings → Privacy & Security → Accessibility. Without it, the program still runs but Shift detection is silently disabled.
-- **`Package.swift` is currently broken** with respect to its own source path (`path: "InputSourceLock"` is set but `build.sh` does not invoke `swift build`). The build script is the source of truth. Don't try to `swift build` from the repo root.
-- **`build.sh` does not respect the `Package.swift` `macOS(.v12)` platform floor.** The script invokes `swiftc` directly; minimum OS is whatever the user's `swiftc` supports (in practice, anything with the TIS + CGEventTap APIs — effectively 10.6+).
+- **`build.sh` invokes `swiftc` directly** with no SPM involvement. The minimum supported macOS is whatever the user's `swiftc` accepts (in practice, anything with the TIS + CGEventTap APIs — effectively 10.6+).
 - **Status-detection heuristic is input-source-id based, not character based.** A non-ASCII-capable layout ID is treated as English; anything else is treated as Chinese-capable. Adding a new pure-English layout requires adding its ID to `asciiOnlyInputSourceIDs`. The historical reason for this design is documented in `memory/2026-04-09.md` — earlier character-based and character-classifier approaches were tried and rejected.
-- **Initial `isChineseMode = false` is load-bearing.** Setting it to `true` causes the overlay to display backwards for Chinese IMEs that boot into English mode. Three places enforce this default: `start()`, `onTick()`, and `selectAndLockSource()`. Keep them in sync.
+- **`isChineseMode` is overwritten on every state transition.** The field declaration default value is unused at runtime — `start()`, `onTick()`, and `selectAndLockSource()` each assign it from scratch based on the current input source. Keep the three override sites consistent: when on the target input source, treat as Chinese; otherwise, treat as English. (The historical "default false" guidance predates the dialog-based initial-state selection — the current declaration defaults to `true`, but `start()` still picks correctly because it reads the actual input source on launch and applies the user-configured initial state.)
 - **Overlay tracks the mouse cursor, not the text caret.** macOS does not expose a public API for text-caret position; `NSEvent.mouseLocation` is used as a proxy at 0.08 s intervals. There will be lag when the caret and cursor diverge (e.g. arrow-key navigation).
 - **No code signing / notarization.** The binary is unsigned; first launch will require right-click → Open or removal of the quarantine attribute. This is intentional for a personal-utility project.
 - **`pyproject.toml` is a stub** (workspace marker, no dependencies) — there is no Python in this project. Don't add Python tooling.

@@ -283,10 +283,15 @@ final class InputMethodManager: NSObject {
     private var currentInputSourceID: String?
     private var isChineseMode: Bool = true
 
+    /// 当前是否停留在目标输入法上。锁定模式下用于推导中/英默认状态。
+    private var isOnTargetInputSource: Bool {
+        guard let target = targetInputSourceID else { return false }
+        return currentInputSourceID == target
+    }
+
     // MARK: Shift tracking (CGEventTap)
 
     private var eventTap: CFMachPort?
-    private var hasEventTap = false
 
     /// Shift 当前是否按住
     private var shiftHeld = false
@@ -326,7 +331,7 @@ final class InputMethodManager: NSObject {
         if let id = getCurrentInputSourceID() {
             currentInputSourceID = id
             // 默认推导：当前就是目标输入法 → 中文；否则 → 英文
-            var initial = (targetInputSourceID != nil && id == targetInputSourceID)
+            var initial = isOnTargetInputSource
             // 用户在启动对话框中明确指定了初始状态时，用用户配置覆盖默认推导
             if let configured = initialIsChinese {
                 initial = configured
@@ -351,7 +356,7 @@ final class InputMethodManager: NSObject {
             self?.onTick()
         }
 
-        // Shift / CapsLock 全局监听
+        // Shift 全局监听（flagsChanged + keyDown 区分单独 Shift 与 Shift+组合键）
         setupEventTap()
 
         // 光标位置跟踪 — 让悬浮窗始终跟随输入光标
@@ -377,7 +382,7 @@ final class InputMethodManager: NSObject {
             // 输入源发生变化（用户可能手动切换了）
             currentInputSourceID = currentID
             // 切到目标（锁定）输入法 → 中文模式；切到其他 → 英文模式
-            isChineseMode = (targetInputSourceID != nil && currentID == targetInputSourceID)
+            isChineseMode = isOnTargetInputSource
             updateDisplay()
         }
         // 如果输入源没变，isChineseMode 由 Shift 事件驱动，这里不覆盖
@@ -393,10 +398,12 @@ final class InputMethodManager: NSObject {
     // MARK: Locking
 
     private func selectAndLockSource(_ targetID: String) {
+        // 列表在重试间隔内不会变化，只取一次
+        guard let arr = TISCreateInputSourceList(nil, false)?.takeRetainedValue() else { return }
+        let count = CFArrayGetCount(arr)
+
         var retry = 0
         while retry < maxLockRetry {
-            guard let arr = TISCreateInputSourceList(nil, false)?.takeRetainedValue() else { return }
-            let count = CFArrayGetCount(arr)
             var found = false
 
             for i in 0..<count {
@@ -425,13 +432,12 @@ final class InputMethodManager: NSObject {
     // MARK: Display
 
     private func updateDisplay() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            if self.isChineseMode {
-                self.window.showChinese()
-            } else {
-                self.window.showEnglish()
-            }
+        // 所有调用点（start / onTick / handleFlagsChanged）都在主线程，
+        // 无需再 dispatch 到主队列。
+        if isChineseMode {
+            window.showChinese()
+        } else {
+            window.showEnglish()
         }
     }
 
@@ -465,12 +471,11 @@ final class InputMethodManager: NSObject {
             return
         }
 
-        hasEventTap = true
         eventTap = tap
         let src = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0)
         CFRunLoopAddSource(CFRunLoopGetCurrent(), src, .commonModes)
         CGEvent.tapEnable(tap: tap, enable: true)
-        print("✅ 键盘监听已启动（Shift / CapsLock 切换可感知）")
+        print("✅ 键盘监听已启动（单独 Shift 切换可感知）")
     }
 
     private func handleEvent(type: CGEventType, event: CGEvent) {
