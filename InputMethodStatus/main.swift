@@ -125,6 +125,7 @@ final class StatusOverlayWindow: NSPanel {
         ), display: true, animate: false)
     }
 
+    /// 显示中文状态（红底「中」）。
     func showChinese() {
         label.stringValue = "中"
         label.textColor = .white
@@ -138,13 +139,140 @@ final class StatusOverlayWindow: NSPanel {
     }
 }
 
+// MARK: - Init Dialog
+
+/// 启动时对话框的配置结果
+struct InitConfig {
+    /// 用户选择的要锁定的输入法 ID；nil = 不锁定，仅显示状态悬浮窗
+    let targetInputSourceID: String?
+    /// 初始的中英文模式：true = 中文；false = 英文
+    let initialIsChinese: Bool
+}
+
+/// 弹出启动初始化对话框，让用户选择要锁定的输入法 + 设置初始中英文状态。
+/// - Returns: 用户配置；若用户取消则返回 `nil`（调用方应退出程序）。
+private func showInitDialog() -> InitConfig? {
+    let sources = getAvailableInputSources()
+
+    let alert = NSAlert()
+    alert.messageText = "初始化输入法锁定"
+    alert.informativeText = "选择要锁定的输入法，并设置初始输入法状态"
+    alert.alertStyle = .informational
+
+    // accessory view：上 = 输入法下拉；下 = 中英文状态单选
+    let container = NSView(frame: NSRect(x: 0, y: 0, width: 380, height: 110))
+
+    // —— 输入法下拉 ——
+    let sourceLabel = NSTextField(labelWithString: "锁定输入法：")
+    sourceLabel.frame = NSRect(x: 20, y: 75, width: 90, height: 24)
+    sourceLabel.font = NSFont.systemFont(ofSize: 13)
+    container.addSubview(sourceLabel)
+
+    let popup = NSPopUpButton(frame: NSRect(x: 115, y: 73, width: 245, height: 26))
+    popup.font = NSFont.systemFont(ofSize: 12)
+
+    // 第一项：不锁定（仅显示状态悬浮窗）
+    popup.addItem(withTitle: "（不锁定，仅显示状态）")
+
+    for source in sources {
+        // 同名输入法可能存在多条（如微信输入法的 wetype / wetype.pinyin），拼上 ID 便于区分
+        popup.addItem(withTitle: "\(source.name)（\(source.id)）")
+    }
+
+    // 启发式默认选中第一个中文输入法；都没有则保持「不锁定」
+    if let defaultIndex = sources.firstIndex(where: { isChineseCapableInputSource($0.id) }) {
+        popup.selectItem(at: defaultIndex + 1) // +1 因为第一项是「不锁定」
+    }
+
+    if sources.isEmpty {
+        popup.isEnabled = false
+    }
+
+    container.addSubview(popup)
+
+    // —— 单选：当前输入法状态 ——
+    let stateLabel = NSTextField(labelWithString: "初始输入法状态：")
+    stateLabel.frame = NSRect(x: 20, y: 38, width: 90, height: 24)
+    stateLabel.font = NSFont.systemFont(ofSize: 13)
+    container.addSubview(stateLabel)
+
+    let chineseRadio = NSButton()
+    chineseRadio.title = "中文"
+    chineseRadio.setButtonType(.radio)
+    chineseRadio.frame = NSRect(x: 200, y: 40, width: 60, height: 20)
+    chineseRadio.state = .on
+    container.addSubview(chineseRadio)
+
+    let englishRadio = NSButton()
+    englishRadio.title = "英文"
+    englishRadio.setButtonType(.radio)
+    englishRadio.frame = NSRect(x: 265, y: 40, width: 60, height: 20)
+    englishRadio.state = .off
+    container.addSubview(englishRadio)
+
+    // 手动联动：点击任一 radio 时把另一个置为 off，实现单选效果
+    // （避免依赖 macOS 11+ 的 NSButtonGroup，兼容 build.sh 默认部署目标）
+    _ = RadioSyncCoordinator(chinese: chineseRadio, english: englishRadio)
+
+    alert.accessoryView = container
+    alert.addButton(withTitle: "开始")
+    alert.addButton(withTitle: "取消")
+
+    let response = alert.runModal()
+    guard response == .alertFirstButtonReturn else { return nil }
+
+    // index 0 = 不锁定；index >= 1 对应 sources[index - 1]
+    let selectedIndex = popup.indexOfSelectedItem
+    let targetID: String?
+    if selectedIndex <= 0 {
+        targetID = nil
+    } else {
+        let realIndex = selectedIndex - 1
+        targetID = (realIndex < sources.count) ? sources[realIndex].id : nil
+    }
+
+    return InitConfig(
+        targetInputSourceID: targetID,
+        initialIsChinese: chineseRadio.state == .on
+    )
+}
+
+/// 把一组 radio button 绑定为单选：点击任一按钮时把其他按钮置为 off。
+/// 替代 macOS 11+ 的 NSButtonGroup，兼容项目默认 deployment target。
+private final class RadioSyncCoordinator: NSObject {
+    private let buttons: [NSButton]
+
+    init(buttons: NSButton...) {
+        self.buttons = buttons
+        super.init()
+        for button in buttons {
+            button.target = self
+            button.action = #selector(radioClicked(_:))
+        }
+    }
+
+    convenience init(chinese: NSButton, english: NSButton) {
+        self.init(buttons: chinese, english)
+    }
+
+    @objc private func radioClicked(_ sender: NSButton) {
+        for button in buttons where button !== sender {
+            button.state = .off
+        }
+    }
+}
+
 // MARK: - InputMethodManager (合并锁定 + 状态显示)
 
 final class InputMethodManager: NSObject {
 
     // MARK: Config
 
-    let targetInputSourceID: String?   // nil = 仅显示状态，不锁定（public for AppDelegate）
+    /// nil = 仅显示状态，不锁定
+    private(set) var targetInputSourceID: String?
+
+    /// 由用户在启动对话框中选择的初始中英文模式；nil 表示沿用默认推导（currentID==target → 中文）
+    private var initialIsChinese: Bool? = nil
 
     // MARK: UI
 
@@ -181,14 +309,29 @@ final class InputMethodManager: NSObject {
         super.init()
     }
 
+    /// 由 AppDelegate 在启动对话框结束后调用，把用户配置写入管理器。
+    func configure(initialIsChinese: Bool) {
+        self.initialIsChinese = initialIsChinese
+    }
+
+    /// 由 AppDelegate 在启动对话框结束后调用，覆盖要锁定的输入法 ID。
+    func setTargetInputSourceID(_ id: String?) {
+        self.targetInputSourceID = id
+    }
+
     // MARK: Start
 
     func start() {
         // 初始显示
         if let id = getCurrentInputSourceID() {
             currentInputSourceID = id
-            // 切到目标（锁定）输入法 → 中文模式；切到其他 → 英文模式
-            isChineseMode = (targetInputSourceID != nil && id == targetInputSourceID)
+            // 默认推导：当前就是目标输入法 → 中文；否则 → 英文
+            var initial = (targetInputSourceID != nil && id == targetInputSourceID)
+            // 用户在启动对话框中明确指定了初始状态时，用用户配置覆盖默认推导
+            if let configured = initialIsChinese {
+                initial = configured
+            }
+            isChineseMode = initial
         }
         updateDisplay()
 
@@ -410,13 +553,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         window.orderFront(nil)
+
+        // 命令行未提供目标输入法时弹初始化对话框；
+        // 提供了则跳过弹框，直接进入锁定模式（快速通道）。
+        if manager.targetInputSourceID == nil {
+            guard let config = showInitDialog() else {
+                // 用户取消：没有目标输入法也没法跑，直接退出
+                print("👋 已取消，退出")
+                NSApp.terminate(nil)
+                return
+            }
+            manager.setTargetInputSourceID(config.targetInputSourceID)
+            manager.configure(initialIsChinese: config.initialIsChinese)
+        }
+
         manager.start()
 
         if let target = manager.targetInputSourceID {
             print("🔒 输入法锁定 + 状态显示")
             print("   目标: \(target)")
         } else {
-            print("📊 输入法状态显示")
+            print("📊 仅输入法状态显示")
         }
         print("   悬浮窗 → 跟随光标右上角，Cmd+Q / Ctrl+C 退出")
     }
@@ -432,27 +589,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 autoreleasepool {
     let args = CommandLine.arguments
 
-    // 可选参数：输入法 ID（提供 → 锁定；不提供 → 仅状态显示）
+    // 可选参数：输入法 ID（提供 → 跳过弹框，直接锁定；不提供 → 弹框让用户选）
     let targetID: String? = args.count >= 2 ? args[1] : nil
-
-    // 无参数时列出可用输入法后退出（方便用户查看可用 ID）
-    if targetID == nil {
-        let sources = getAvailableInputSources()
-        if !sources.isEmpty {
-            print("📋 可用输入法:\n")
-            for (i, s) in sources.enumerated() {
-                print("  \(i + 1). \(s.name)")
-                print("     ID: \(s.id)\n")
-            }
-        }
-        print("用法: \(args[0]) [输入法ID]")
-        print("  不带参数 → 仅显示状态悬浮窗")
-        print("  带输入法ID → 锁定到该输入法 + 显示状态")
-        print("\n示例:")
-        print("  \(args[0])")
-        print("  \(args[0]) com.tencent.inputmethod.wetype.pinyin")
-        print("  \(args[0]) com.apple.keylayout.ABC")
-    }
 
     let app = NSApplication.shared
     let delegate = AppDelegate(targetInputSourceID: targetID)
