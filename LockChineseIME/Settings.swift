@@ -287,9 +287,8 @@ final class SettingsWindowController: NSWindowController {
 
     private func buildAboutSection() -> NSView {
         let about = NSTextField(wrappingLabelWithString:
-            "锁定中文输入法 v1.0\nBundle ID: com.tang.LockChineseIME\n" +
-            "GitHub: github.com/tang/input-dont-change\n" +
-            "MIT 许可证"
+            "锁定中文输入法 v1.0\n" +
+            "GitHub: https://github.com/javajianghu/InputSourceLock\n"
         )
         about.font = NSFont.systemFont(ofSize: 11)
         about.textColor = .secondaryLabelColor
