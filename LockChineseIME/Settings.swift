@@ -1,7 +1,7 @@
 import Cocoa
 import ApplicationServices
 
-/// 设置窗口：单页垂直滚动布局
+/// 设置窗口：单页垂直布局（内容用 NSScrollView 包裹，超出窗口时可滚动）
 ///   ┌──────────────────────────────┐
 ///   │ 当前状态                      │
 ///   │ 输入法 / 中英文 / 锁定         │
@@ -48,7 +48,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         self.statusBarRef = statusBar
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 460, height: 560),
+            contentRect: NSRect(x: 0, y: 0, width: 480, height: 560),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -56,6 +56,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         window.title = "锁定中文输入法"
         window.isReleasedWhenClosed = false
         window.center()
+        window.minSize = NSSize(width: 480, height: 480)
 
         super.init(window: window)
         window.delegate = self
@@ -74,120 +75,230 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     // MARK: - Layout
 
     private func buildContentView() -> NSView {
-        let container = NSView(frame: NSRect(x: 0, y: 0, width: 460, height: 560))
+        // 外层滚动视图
+        let scrollView = NSScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = false
+        scrollView.borderType = .noBorder
+        scrollView.drawsBackground = false
 
-        var y: CGFloat = 20
-        let leftPadding: CGFloat = 20
-        let labelWidth: CGFloat = 100
-        let fieldWidth: CGFloat = 280
+        // 内层 stack view
+        let stack = NSStackView()
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 18
+        stack.edgeInsets = NSEdgeInsets(top: 20, left: 24, bottom: 24, right: 24)
+        stack.translatesAutoresizingMaskIntoConstraints = false
 
-        // —— 当前状态 ——
-        y = addSectionHeader("当前状态", into: container, atY: y)
-        y = addKeyValue("输入法：", valueLabel: currentIMELabel, into: container, atY: y,
-                        leftPadding: leftPadding, labelWidth: labelWidth)
-        y = addKeyValue("中英文：", valueLabel: currentModeLabel, into: container, atY: y,
-                        leftPadding: leftPadding, labelWidth: labelWidth)
-        y = addKeyValue("锁定：", valueLabel: lockStatusLabel, into: container, atY: y,
-                        leftPadding: leftPadding, labelWidth: labelWidth)
-        y -= 10
+        // 添加各 section
+        stack.addArrangedSubview(buildCurrentStatusSection())
+        stack.addArrangedSubview(buildLockSection())
+        stack.addArrangedSubview(buildOverlaySection())
+        stack.addArrangedSubview(buildPermissionsSection())
+        stack.addArrangedSubview(buildLaunchAtLoginSection())
+        stack.addArrangedSubview(buildAboutSection())
 
-        // —— 锁定设置 ——
-        y = addSectionHeader("锁定设置", into: container, atY: y)
+        // 让 stack 撑满 scrollView 的宽度
+        scrollView.documentView = stack
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: scrollView.contentView.leadingAnchor),
+            stack.trailingAnchor.constraint(equalTo: scrollView.contentView.trailingAnchor),
+            stack.topAnchor.constraint(equalTo: scrollView.contentView.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: scrollView.contentView.bottomAnchor),
+            stack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
 
-        let targetLabel = NSTextField(labelWithString: "目标输入法：")
-        targetLabel.frame = NSRect(x: leftPadding, y: y - 4, width: labelWidth, height: 20)
-        container.addSubview(targetLabel)
+        // 包装 scrollView
+        let container = NSView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(scrollView)
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: container.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor)
+        ])
+        return container
+    }
 
-        targetPopup.frame = NSRect(x: leftPadding + labelWidth, y: y - 4, width: fieldWidth, height: 26)
+    // MARK: - Sections
+
+    private func buildCurrentStatusSection() -> NSView {
+        let box = makeSectionBox(title: "当前状态")
+        let grid = NSGridView(views: [
+            [makeFieldLabel("输入法："), currentIMELabel],
+            [makeFieldLabel("中英文："), currentModeLabel],
+            [makeFieldLabel("锁定："), lockStatusLabel]
+        ])
+        grid.columnSpacing = 12
+        grid.rowSpacing = 8
+        grid.translatesAutoresizingMaskIntoConstraints = false
+        currentIMELabel.textColor = .secondaryLabelColor
+        currentModeLabel.textColor = .secondaryLabelColor
+        lockStatusLabel.textColor = .secondaryLabelColor
+        box.addSubview(grid)
+        NSLayoutConstraint.activate([
+            grid.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            grid.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            grid.topAnchor.constraint(equalTo: box.topAnchor),
+            grid.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        return box
+    }
+
+    private func buildLockSection() -> NSView {
+        let box = makeSectionBox(title: "锁定设置")
+
         targetPopup.target = self
         targetPopup.action = #selector(handleTargetChanged)
         rebuildTargetPopup()
-        container.addSubview(targetPopup)
-        y -= 32
 
-        let initialLabel = NSTextField(labelWithString: "初始状态：")
-        initialLabel.frame = NSRect(x: leftPadding, y: y - 4, width: labelWidth, height: 20)
-        container.addSubview(initialLabel)
-
-        initialStatePopup.frame = NSRect(x: leftPadding + labelWidth, y: y - 4, width: fieldWidth, height: 26)
         initialStatePopup.addItems(withTitles: ["跟随当前输入法", "中文", "英文"])
         initialStatePopup.target = self
         initialStatePopup.action = #selector(handleInitialStateChanged)
-        container.addSubview(initialStatePopup)
-        y -= 40
 
-        // —— 悬浮窗 ——
-        y = addSectionHeader("悬浮窗", into: container, atY: y)
-        overlayEnabledCheckbox.frame = NSRect(x: leftPadding, y: y - 4, width: 360, height: 20)
+        let grid = NSGridView(views: [
+            [makeFieldLabel("目标输入法："), targetPopup],
+            [makeFieldLabel("初始状态："), initialStatePopup]
+        ])
+        grid.columnSpacing = 12
+        grid.rowSpacing = 8
+        grid.translatesAutoresizingMaskIntoConstraints = false
+        box.addSubview(grid)
+        NSLayoutConstraint.activate([
+            grid.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            grid.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            grid.topAnchor.constraint(equalTo: box.topAnchor),
+            grid.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        // 让 popup 自适应宽度
+        targetPopup.translatesAutoresizingMaskIntoConstraints = false
+        initialStatePopup.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            targetPopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 240),
+            initialStatePopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 240)
+        ])
+        return box
+    }
+
+    private func buildOverlaySection() -> NSView {
+        let box = makeSectionBox(title: "悬浮窗")
         overlayEnabledCheckbox.target = self
         overlayEnabledCheckbox.action = #selector(handleOverlayToggled)
         overlayEnabledCheckbox.state = UserDefaults.standard.bool(forKey: "overlayEnabled") ? .on : .off
-        container.addSubview(overlayEnabledCheckbox)
-        y -= 32
+        box.addSubview(overlayEnabledCheckbox)
+        overlayEnabledCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            overlayEnabledCheckbox.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            overlayEnabledCheckbox.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            overlayEnabledCheckbox.topAnchor.constraint(equalTo: box.topAnchor),
+            overlayEnabledCheckbox.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        return box
+    }
 
-        // —— 权限 ——
-        y = addSectionHeader("权限", into: container, atY: y)
-        accessibilityStatusLabel.frame = NSRect(x: leftPadding, y: y - 4, width: fieldWidth, height: 20)
-        container.addSubview(accessibilityStatusLabel)
+    private func buildPermissionsSection() -> NSView {
+        let box = makeSectionBox(title: "权限")
 
-        openAccessibilityButton.frame = NSRect(x: leftPadding, y: y - 32, width: 140, height: 28)
-        openAccessibilityButton.target = self
-        openAccessibilityButton.action = #selector(handleOpenAccessibility)
-        container.addSubview(openAccessibilityButton)
+        accessibilityStatusLabel.textColor = .secondaryLabelColor
+        accessibilityStatusLabel.maximumNumberOfLines = 2
 
         let refreshButton = NSButton(title: "刷新检测", target: self, action: #selector(handleRefreshPermissions))
-        refreshButton.frame = NSRect(x: leftPadding + 150, y: y - 32, width: 100, height: 28)
-        container.addSubview(refreshButton)
-        y -= 70
+        openAccessibilityButton.target = self
+        openAccessibilityButton.action = #selector(handleOpenAccessibility)
 
-        // —— 开机启动 ——
-        y = addSectionHeader("开机启动", into: container, atY: y)
-        launchAtLoginCheckbox.frame = NSRect(x: leftPadding, y: y - 4, width: 360, height: 20)
+        let buttonRow = NSStackView(views: [openAccessibilityButton, refreshButton])
+        buttonRow.orientation = .horizontal
+        buttonRow.spacing = 8
+
+        let stack = NSStackView(views: [accessibilityStatusLabel, buttonRow])
+        stack.orientation = .vertical
+        stack.alignment = .leading
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        box.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            stack.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            stack.topAnchor.constraint(equalTo: box.topAnchor),
+            stack.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        return box
+    }
+
+    private func buildLaunchAtLoginSection() -> NSView {
+        let box = makeSectionBox(title: "开机启动")
         launchAtLoginCheckbox.target = self
         launchAtLoginCheckbox.action = #selector(handleLaunchAtLoginToggled)
         launchAtLoginCheckbox.state = LaunchAtLogin.isEnabled() ? .on : .off
-        container.addSubview(launchAtLoginCheckbox)
-        y -= 40
+        box.addSubview(launchAtLoginCheckbox)
+        launchAtLoginCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            launchAtLoginCheckbox.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            launchAtLoginCheckbox.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            launchAtLoginCheckbox.topAnchor.constraint(equalTo: box.topAnchor),
+            launchAtLoginCheckbox.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        return box
+    }
 
-        // —— 关于 ——
-        y = addSectionHeader("关于", into: container, atY: y)
+    private func buildAboutSection() -> NSView {
+        let box = makeSectionBox(title: "关于")
         let about = NSTextField(wrappingLabelWithString:
             "锁定中文输入法 v1.0\nBundle ID: com.tang.LockChineseIME\n" +
             "GitHub: github.com/tang/input-dont-change\n" +
             "MIT 许可证"
         )
-        about.frame = NSRect(x: leftPadding, y: y - 80, width: 420, height: 80)
         about.font = NSFont.systemFont(ofSize: 11)
         about.textColor = .secondaryLabelColor
-        container.addSubview(about)
+        box.addSubview(about)
+        about.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            about.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
+            about.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
+            about.topAnchor.constraint(equalTo: box.topAnchor),
+            about.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+        ])
+        return box
+    }
 
+    // MARK: - Section helpers
+
+    private func makeSectionBox(title: String) -> NSView {
+        let container = NSView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        let header = NSTextField(labelWithString: title)
+        header.font = NSFont.boldSystemFont(ofSize: 13)
+        header.textColor = .labelColor
+        header.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(header)
+
+        let separator = NSBox()
+        separator.boxType = .separator
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(separator)
+
+        NSLayoutConstraint.activate([
+            header.topAnchor.constraint(equalTo: container.topAnchor),
+            header.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
+            separator.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 4),
+            separator.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            separator.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        // 内容区在 separator 下方 8px
+        container.wantsLayer = true
         return container
     }
 
-    private func addSectionHeader(_ title: String, into container: NSView, atY y: CGFloat) -> CGFloat {
-        let label = NSTextField(labelWithString: title)
-        label.frame = NSRect(x: 20, y: y - 4, width: 420, height: 22)
-        label.font = NSFont.boldSystemFont(ofSize: 13)
-        label.textColor = .labelColor
-        container.addSubview(label)
-
-        let separator = NSBox(frame: NSRect(x: 20, y: y - 10, width: 420, height: 1))
-        separator.boxType = .separator
-        container.addSubview(separator)
-        return y - 28
-    }
-
-    private func addKeyValue(_ key: String, valueLabel: NSTextField,
-                             into container: NSView, atY y: CGFloat,
-                             leftPadding: CGFloat, labelWidth: CGFloat) -> CGFloat {
-        let label = NSTextField(labelWithString: key)
-        label.frame = NSRect(x: leftPadding, y: y - 4, width: labelWidth, height: 20)
-        container.addSubview(label)
-
-        valueLabel.frame = NSRect(x: leftPadding + labelWidth, y: y - 4, width: 300, height: 20)
-        valueLabel.textColor = .secondaryLabelColor
-        container.addSubview(valueLabel)
-        return y - 26
+    private func makeFieldLabel(_ text: String) -> NSTextField {
+        let label = NSTextField(labelWithString: text)
+        label.font = NSFont.systemFont(ofSize: 12)
+        label.alignment = .right
+        return label
     }
 
     // MARK: - Refresh

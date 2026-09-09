@@ -53,15 +53,35 @@ cp "$SOURCE_DIR/Info.plist" "$CONTENTS_DIR/Info.plist"
 # ---- 3. 生成 PkgInfo ----
 echo "APPL????" > "$CONTENTS_DIR/PkgInfo"
 
-# ---- 4. 可选：复制应用图标（如有图标源文件则复制，否则跳过）----
-# 如需自定义图标：把 icon_512x512.png 放到 LockChineseIME/Resources/AppIcon.png 后重新打包
-ICON_SRC="$SOURCE_DIR/Resources/AppIcon.png"
+# ---- 4. 生成应用图标（如有源 PNG，则用 sips + iconutil 生成 .icns）----
+# 源文件约定：LockChineseIME/Resources/AppIcon-source.png
+ICON_SRC="$SOURCE_DIR/Resources/AppIcon-source.png"
 if [ -f "$ICON_SRC" ]; then
     echo ""
-    echo "🎨 复制应用图标..."
-    cp "$ICON_SRC" "$RESOURCES_DIR/AppIcon.png"
+    echo "🎨 生成应用图标..."
+    ICONSET_DIR="$BUILD_DIR/AppIcon.iconset"
+    rm -rf "$ICONSET_DIR"
+    mkdir -p "$ICONSET_DIR"
+
+    # 用 sips 生成各尺寸
+    sips -z 16 16     "$ICON_SRC" --out "$ICONSET_DIR/icon_16x16.png"       > /dev/null 2>&1
+    sips -z 32 32     "$ICON_SRC" --out "$ICONSET_DIR/icon_16x16@2x.png"    > /dev/null 2>&1
+    sips -z 32 32     "$ICON_SRC" --out "$ICONSET_DIR/icon_32x32.png"       > /dev/null 2>&1
+    sips -z 64 64     "$ICON_SRC" --out "$ICONSET_DIR/icon_32x32@2x.png"    > /dev/null 2>&1
+    sips -z 128 128   "$ICON_SRC" --out "$ICONSET_DIR/icon_128x128.png"     > /dev/null 2>&1
+    sips -z 256 256   "$ICON_SRC" --out "$ICONSET_DIR/icon_128x128@2x.png"  > /dev/null 2>&1
+    sips -z 256 256   "$ICON_SRC" --out "$ICONSET_DIR/icon_256x256.png"     > /dev/null 2>&1
+    sips -z 512 512   "$ICON_SRC" --out "$ICONSET_DIR/icon_256x256@2x.png"  > /dev/null 2>&1
+    sips -z 512 512   "$ICON_SRC" --out "$ICONSET_DIR/icon_512x512.png"     > /dev/null 2>&1
+    sips -z 1024 1024 "$ICON_SRC" --out "$ICONSET_DIR/icon_512x512@2x.png"  > /dev/null 2>&1
+
+    # 打包成 icns
+    iconutil -c icns "$ICONSET_DIR" -o "$RESOURCES_DIR/AppIcon.icns"
+    rm -rf "$ICONSET_DIR"
+    echo "   ✅ → $RESOURCES_DIR/AppIcon.icns"
+else
+    echo "   （未提供 AppIcon-source.png，将使用系统默认图标）"
 fi
-echo "   （未提供 AppIcon.png，将使用系统默认图标）"
 
 echo ""
 echo "=========================================="
