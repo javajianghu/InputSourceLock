@@ -27,10 +27,9 @@ import ApplicationServices
 ///   │ 关于                          │  ← 卡片
 ///   │ 版本 / Bundle ID / 链接       │
 ///   └──────────────────────────────┘
-final class SettingsWindowController: NSWindowController, NSWindowDelegate {
+final class SettingsWindowController: NSWindowController {
 
     private weak var manager: InputMethodManager?
-    private var statusBarRef: StatusBarController?
 
     // 控件引用（便于后续更新状态）
     private let currentIMELabel = NSTextField(labelWithString: "—")
@@ -43,15 +42,14 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     private let openAccessibilityButton = NSButton(title: "打开系统设置", target: nil, action: nil)
     private let launchAtLoginCheckbox = NSButton(checkboxWithTitle: "开机时自动启动", target: nil, action: nil)
 
-    /// 启动时间记录，用于"目标输入法"显示 ID 区分
+    /// 已启用输入法缓存，供下拉框与状态区共用
     private var cachedSources: [(id: String, name: String)] = []
 
-    /// 关闭按钮不退出应用（菜单栏图标负责生命周期）
-    var onCloseRequested: (() -> Void)?
+    /// 是否已经提示过「重启生效」，避免重复弹窗
+    private var hasPromptedRestart = false
 
-    init(manager: InputMethodManager, statusBar: StatusBarController) {
+    init(manager: InputMethodManager) {
         self.manager = manager
-        self.statusBarRef = statusBar
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 520, height: 620),
@@ -65,12 +63,26 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         window.minSize = NSSize(width: 520, height: 500)
 
         super.init(window: window)
-        window.delegate = self
         window.contentView = buildContentView()
 
         refreshAll()
-        manager.onStateChange = { [weak self] in
-            DispatchQueue.main.async { self?.refreshStatusSection() }
+
+        // 状态变化 → 刷新「当前状态」卡片
+        NotificationCenter.default.addObserver(
+            forName: .inputMethodStateDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.refreshStatusSection()
+        }
+
+        // 从系统设置返回时自动刷新辅助功能授权状态
+        NotificationCenter.default.addObserver(
+            forName: NSApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.refreshAccessibilityStatus()
         }
     }
 
@@ -199,7 +211,6 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     private func buildLockSection() -> NSView {
         targetPopup.target = self
         targetPopup.action = #selector(handleTargetChanged)
-        rebuildTargetPopup()
 
         initialStatePopup.addItems(withTitles: ["跟随当前输入法", "中文", "英文"])
         initialStatePopup.target = self
@@ -327,10 +338,50 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
 
     private func refreshAccessibilityStatus() {
         let trusted = AXIsProcessTrustedWithOptions(nil)
-        accessibilityStatusLabel.stringValue = trusted
-            ? "✅ 辅助功能：已授权（Shift 检测可用）"
-            : "⚠️  辅助功能：未授权（无法检测输入法内部 Shift 切换）"
-        accessibilityStatusLabel.textColor = trusted ? .systemGreen : .systemOrange
+        let tapActive = manager?.isEventTapActive ?? false
+
+        if trusted && !tapActive {
+            // 已授权但键盘监听还没装上 → 需要重启应用生效
+            accessibilityStatusLabel.stringValue = "✅ 辅助功能：已授权（需重启应用生效）"
+            accessibilityStatusLabel.textColor = .systemOrange
+            maybePromptRestart()
+        } else if trusted {
+            accessibilityStatusLabel.stringValue = "✅ 辅助功能：已授权（Shift 检测可用）"
+            accessibilityStatusLabel.textColor = .systemGreen
+        } else {
+            accessibilityStatusLabel.stringValue = "⚠️  辅助功能：未授权（无法检测输入法内部 Shift 切换）"
+            accessibilityStatusLabel.textColor = .systemOrange
+        }
+    }
+
+    /// 授权完成但监听未生效时，提示用户重启；可一键自动重启当前应用。
+    private func maybePromptRestart() {
+        guard !hasPromptedRestart else { return }
+        hasPromptedRestart = true
+
+        let alert = NSAlert()
+        alert.messageText = "辅助功能已授权"
+        alert.informativeText = "键盘监听（单独 Shift 检测）需要重启应用才能生效。现在重启吗？"
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "立即重启")
+        alert.addButton(withTitle: "稍后")
+        if alert.runModal() == .alertFirstButtonReturn {
+            relaunchApp()
+        }
+    }
+
+    /// 重启当前应用：先让 launchd 拉起一个新实例，再退出当前实例。
+    private func relaunchApp() {
+        let task = Process()
+        task.launchPath = "/usr/bin/open"
+        task.arguments = ["-n", Bundle.main.bundlePath]
+        do {
+            try task.run()
+        } catch {
+            print("⚠️  自动重启失败：\(error.localizedDescription)")
+            return
+        }
+        NSApp.terminate(nil)
     }
 
     private func rebuildTargetPopup() {
@@ -374,10 +425,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     @objc private func handleOverlayToggled() {
         let enabled = overlayEnabledCheckbox.state == .on
         UserDefaults.standard.set(enabled, forKey: "overlayEnabled")
-        // 悬浮窗始终由 manager 显示/隐藏
-        if enabled {
-            manager?.start()
-        }
+        manager?.setOverlayEnabled(enabled)
     }
 
     @objc private func handleRefreshPermissions() {
@@ -385,7 +433,15 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
     }
 
     @objc private func handleOpenAccessibility() {
-        // 跳到系统设置的辅助功能页
+        // 关键：只在「尚未授权」时才弹系统授权框。
+        // 已授权时重复调用带 prompt 的 API 会把 TCC 授权重置，导致刚勾选又被取消。
+        if !AXIsProcessTrustedWithOptions(nil) {
+            let promptKey = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+            AXIsProcessTrustedWithOptions([promptKey: true] as CFDictionary)
+        }
+        refreshAccessibilityStatus()
+
+        // 兜底：打开系统设置「辅助功能」页，方便手动勾选
         if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") {
             NSWorkspace.shared.open(url)
         }
@@ -398,11 +454,5 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
             // 回滚 UI 状态
             launchAtLoginCheckbox.state = wantEnable ? .off : .on
         }
-    }
-
-    // MARK: - NSWindowDelegate
-
-    func windowWillClose(_ notification: Notification) {
-        onCloseRequested?()
     }
 }

@@ -23,6 +23,12 @@ private let cursorTrackInterval: TimeInterval = 0.08
 private let maxLockRetry: Int = 3
 private let lockRetryDelay: TimeInterval = 0.02
 
+extension Notification.Name {
+    /// 输入法状态（当前输入源 / 中英文模式 / 锁定目标）变化时广播。
+    /// 菜单栏图标与设置窗口都订阅此通知，避免单一回调互相覆盖。
+    static let inputMethodStateDidChange = Notification.Name("com.tang.LockChineseIME.stateDidChange")
+}
+
 // MARK: - TIS Helpers
 
 func getCurrentInputSourceID() -> String? {
@@ -124,12 +130,14 @@ final class StatusOverlayWindow: NSPanel {
         label.stringValue = "中"
         label.textColor = .white
         bgView.layer?.backgroundColor = NSColor(red: 0.88, green: 0.28, blue: 0.24, alpha: 0.82).cgColor
+        orderFrontRegardless()
     }
 
     func showEnglish() {
         label.stringValue = "A"
         label.textColor = .white
         bgView.layer?.backgroundColor = NSColor(red: 0.22, green: 0.55, blue: 0.92, alpha: 0.82).cgColor
+        orderFrontRegardless()
     }
 
     func hide() {
@@ -170,6 +178,10 @@ final class InputMethodManager: NSObject {
 
     private var eventTap: CFMachPort?
 
+    /// 键盘监听（event tap）是否已成功安装。
+    /// 已授权但 event tap 未生效时，说明需要重启应用。
+    var isEventTapActive: Bool { eventTap != nil }
+
     private var shiftHeld = false
     private var otherKeyUsedWhileShift = false
     private let shiftKeyCodes: Set<Int64> = [56, 60]
@@ -178,9 +190,10 @@ final class InputMethodManager: NSObject {
 
     private var pollingTimer: Timer?
     private var cursorTrackTimer: Timer?
+    private var hasStarted = false
 
-    /// 状态变化回调（菜单栏图标 / 设置窗口订阅）
-    var onStateChange: (() -> Void)?
+    /// 是否显示跟随光标的「中/A」悬浮窗
+    private(set) var overlayEnabled: Bool = true
 
     // MARK: Init
 
@@ -198,13 +211,16 @@ final class InputMethodManager: NSObject {
             currentInputSourceID = currentID
             isChineseMode = isOnTargetInputSource
             updateDisplay()
-            onStateChange?()
+            notifyStateChange()
         }
     }
 
     // MARK: Start / Stop
 
     func start() {
+        guard !hasStarted else { return }
+        hasStarted = true
+
         // 初始显示
         if let id = getCurrentInputSourceID() {
             currentInputSourceID = id
@@ -215,7 +231,7 @@ final class InputMethodManager: NSObject {
             isChineseMode = initial
         }
         updateDisplay()
-        onStateChange?()
+        notifyStateChange()
 
         // TIS 输入源切换通知
         DistributedNotificationCenter.default().addObserver(
@@ -242,8 +258,15 @@ final class InputMethodManager: NSObject {
         }
     }
 
-    func stop() {
-        cleanup()
+    // MARK: Overlay
+
+    func setOverlayEnabled(_ enabled: Bool) {
+        overlayEnabled = enabled
+        if enabled {
+            updateDisplay()
+        } else {
+            window.hide()
+        }
     }
 
     // MARK: Tick
@@ -262,7 +285,7 @@ final class InputMethodManager: NSObject {
             currentInputSourceID = currentID
             isChineseMode = isOnTargetInputSource
             updateDisplay()
-            onStateChange?()
+            notifyStateChange()
         }
         // 如果输入源没变，isChineseMode 由 Shift 事件驱动，这里不覆盖
     }
@@ -293,7 +316,7 @@ final class InputMethodManager: NSObject {
                         currentInputSourceID = targetID
                         isChineseMode = true
                         updateDisplay()
-                        onStateChange?()
+                        notifyStateChange()
                         return
                     }
                     break
@@ -312,11 +335,20 @@ final class InputMethodManager: NSObject {
 
     private func updateDisplay() {
         // 所有调用点（start / onTick / handleFlagsChanged）都在主线程
+        guard overlayEnabled else {
+            window.hide()
+            return
+        }
         if isChineseMode {
             window.showChinese()
         } else {
             window.showEnglish()
         }
+    }
+
+    /// 广播状态变化，让菜单栏图标与设置窗口各自刷新（替代易被覆盖的单回调）。
+    private func notifyStateChange() {
+        NotificationCenter.default.post(name: .inputMethodStateDidChange, object: self)
     }
 
     // MARK: Event Tap
@@ -344,7 +376,7 @@ final class InputMethodManager: NSObject {
             print("⚠️  无法创建键盘监听 — 辅助功能权限未授予")
             print("   → 系统设置 → 隐私与安全性 → 辅助功能 → 勾选「锁定中文输入法」")
             print("   → 当前仅根据输入源判断中/英文（输入法内部 Shift 切换不可感知）")
-            onStateChange?()
+            notifyStateChange()
             return
         }
 
@@ -353,7 +385,7 @@ final class InputMethodManager: NSObject {
         CFRunLoopAddSource(CFRunLoopGetCurrent(), src, .commonModes)
         CGEvent.tapEnable(tap: tap, enable: true)
         print("✅ 键盘监听已启动（单独 Shift 切换可感知）")
-        onStateChange?()
+        notifyStateChange()
     }
 
     private func handleEvent(type: CGEventType, event: CGEvent) {
@@ -379,7 +411,7 @@ final class InputMethodManager: NSObject {
                 if isChineseCapableInputSource(currentInputSourceID ?? "") {
                     isChineseMode.toggle()
                     updateDisplay()
-                    onStateChange?()
+                    notifyStateChange()
                 }
             }
             shiftHeld = false
@@ -404,7 +436,7 @@ final class InputMethodManager: NSObject {
         if let configured = initialIsChinese {
             isChineseMode = configured
             updateDisplay()
-            onStateChange?()
+            notifyStateChange()
         }
     }
 

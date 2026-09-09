@@ -43,7 +43,11 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         statusItem.menu = buildMenu()
         statusItem.menu?.delegate = self
 
-        manager.onStateChange = { [weak self] in
+        NotificationCenter.default.addObserver(
+            forName: .inputMethodStateDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
             self?.refreshIcon()
         }
     }
