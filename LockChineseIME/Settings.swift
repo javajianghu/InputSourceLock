@@ -2,23 +2,29 @@ import Cocoa
 import ApplicationServices
 
 /// 设置窗口：单页垂直布局（内容用 NSScrollView 包裹，超出窗口时可滚动）
+/// 每个 section 是独立的卡片（圆角 + 浅边框 + 内边距），视觉上一目了然。
+///
 ///   ┌──────────────────────────────┐
-///   │ 当前状态                      │
-///   │ 输入法 / 中英文 / 锁定         │
+///   │ 当前状态                      │  ← 卡片
+///   │ 输入法：xxx                  │
+///   │ 中英文：xxx                  │
+///   │ 锁定：  xxx                  │
+///   ├──────────────────────────────┤  ← 间距
+///   │ 锁定设置                      │  ← 卡片
+///   │ 目标输入法：xxx              │
+///   │ 初始状态：  xxx              │
 ///   ├──────────────────────────────┤
-///   │ 锁定设置                      │
-///   │ 目标输入法 + 初始状态          │
+///   │ 悬浮窗                        │  ← 卡片
+///   │ ☐ 显示状态悬浮窗              │
 ///   ├──────────────────────────────┤
-///   │ 悬浮窗                        │
-///   │ 启用切换                      │
+///   │ 权限                          │  ← 卡片
+///   │ ✅ 辅助功能：xxx              │
+///   │ [打开系统设置] [刷新检测]      │
 ///   ├──────────────────────────────┤
-///   │ 权限                          │
-///   │ 辅助功能状态 + 打开设置按钮    │
+///   │ 开机启动                      │  ← 卡片
+///   │ ☐ 开机时自动启动              │
 ///   ├──────────────────────────────┤
-///   │ 开机启动                      │
-///   │ 启用切换                      │
-///   ├──────────────────────────────┤
-///   │ 关于                          │
+///   │ 关于                          │  ← 卡片
 ///   │ 版本 / Bundle ID / 链接       │
 ///   └──────────────────────────────┘
 final class SettingsWindowController: NSWindowController, NSWindowDelegate {
@@ -48,7 +54,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         self.statusBarRef = statusBar
 
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 480, height: 560),
+            contentRect: NSRect(x: 0, y: 0, width: 520, height: 620),
             styleMask: [.titled, .closable, .miniaturizable],
             backing: .buffered,
             defer: false
@@ -56,7 +62,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         window.title = "锁定中文输入法"
         window.isReleasedWhenClosed = false
         window.center()
-        window.minSize = NSSize(width: 480, height: 480)
+        window.minSize = NSSize(width: 520, height: 500)
 
         super.init(window: window)
         window.delegate = self
@@ -82,17 +88,18 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         scrollView.hasHorizontalScroller = false
         scrollView.autohidesScrollers = false
         scrollView.borderType = .noBorder
-        scrollView.drawsBackground = false
+        scrollView.drawsBackground = true
+        scrollView.backgroundColor = .windowBackgroundColor
 
-        // 内层 stack view
+        // 内层 stack view（垂直堆叠各 section 卡片）
         let stack = NSStackView()
         stack.orientation = .vertical
         stack.alignment = .leading
-        stack.spacing = 18
-        stack.edgeInsets = NSEdgeInsets(top: 20, left: 24, bottom: 24, right: 24)
+        stack.spacing = 20
+        stack.edgeInsets = NSEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
         stack.translatesAutoresizingMaskIntoConstraints = false
 
-        // 添加各 section
+        // 添加各 section（每个都是一张卡片）
         stack.addArrangedSubview(buildCurrentStatusSection())
         stack.addArrangedSubview(buildLockSection())
         stack.addArrangedSubview(buildOverlaySection())
@@ -110,7 +117,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
             stack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
 
-        // 包装 scrollView
+        // 包装 scrollView 到 contentView
         let container = NSView()
         container.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(scrollView)
@@ -123,34 +130,73 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         return container
     }
 
+    // MARK: - Section Card Builder
+
+    /// 创建一个卡片式 section 容器：浅背景 + 圆角 + 边框 + 内边距
+    private func makeCard() -> NSView {
+        let card = NSView()
+        card.translatesAutoresizingMaskIntoConstraints = false
+        card.wantsLayer = true
+        card.layer?.cornerRadius = 8
+        card.layer?.borderWidth = 1
+        card.layer?.borderColor = NSColor.separatorColor.cgColor
+        card.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
+        return card
+    }
+
+    /// 在卡片内堆叠：标题 + 内容区，返回用于 addArrangedSubview 的容器
+    private func makeSectionCard(title: String, content: NSView) -> NSView {
+        let card = makeCard()
+
+        let header = NSTextField(labelWithString: title)
+        header.font = NSFont.systemFont(ofSize: 13, weight: .semibold)
+        header.textColor = .labelColor
+        header.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(header)
+
+        content.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(content)
+
+        NSLayoutConstraint.activate([
+            header.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            header.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
+            header.trailingAnchor.constraint(lessThanOrEqualTo: card.trailingAnchor, constant: -16),
+
+            content.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 12),
+            content.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
+            content.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            content.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
+        ])
+        // 让卡片在 stack 中撑满宽度
+        return card
+    }
+
     // MARK: - Sections
 
     private func buildCurrentStatusSection() -> NSView {
-        let box = makeSectionBox(title: "当前状态")
-        let grid = NSGridView(views: [
-            [makeFieldLabel("输入法："), currentIMELabel],
-            [makeFieldLabel("中英文："), currentModeLabel],
-            [makeFieldLabel("锁定："), lockStatusLabel]
-        ])
-        grid.columnSpacing = 12
-        grid.rowSpacing = 8
-        grid.translatesAutoresizingMaskIntoConstraints = false
+        let imeLabel = makeFieldLabel("输入法：")
+        let modeLabel = makeFieldLabel("中英文：")
+        let lockLabel = makeFieldLabel("锁定：")
+        for l in [imeLabel, modeLabel, lockLabel] {
+            l.translatesAutoresizingMaskIntoConstraints = false
+            l.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        }
         currentIMELabel.textColor = .secondaryLabelColor
         currentModeLabel.textColor = .secondaryLabelColor
         lockStatusLabel.textColor = .secondaryLabelColor
-        box.addSubview(grid)
-        NSLayoutConstraint.activate([
-            grid.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            grid.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            grid.topAnchor.constraint(equalTo: box.topAnchor),
-            grid.bottomAnchor.constraint(equalTo: box.bottomAnchor)
+
+        let grid = NSGridView(views: [
+            [imeLabel, currentIMELabel],
+            [modeLabel, currentModeLabel],
+            [lockLabel, lockStatusLabel]
         ])
-        return box
+        grid.columnSpacing = 16
+        grid.rowSpacing = 8
+        grid.translatesAutoresizingMaskIntoConstraints = false
+        return makeSectionCard(title: "当前状态", content: grid)
     }
 
     private func buildLockSection() -> NSView {
-        let box = makeSectionBox(title: "锁定设置")
-
         targetPopup.target = self
         targetPopup.action = #selector(handleTargetChanged)
         rebuildTargetPopup()
@@ -159,49 +205,43 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         initialStatePopup.target = self
         initialStatePopup.action = #selector(handleInitialStateChanged)
 
-        let grid = NSGridView(views: [
-            [makeFieldLabel("目标输入法："), targetPopup],
-            [makeFieldLabel("初始状态："), initialStatePopup]
-        ])
-        grid.columnSpacing = 12
-        grid.rowSpacing = 8
-        grid.translatesAutoresizingMaskIntoConstraints = false
-        box.addSubview(grid)
-        NSLayoutConstraint.activate([
-            grid.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            grid.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            grid.topAnchor.constraint(equalTo: box.topAnchor),
-            grid.bottomAnchor.constraint(equalTo: box.bottomAnchor)
-        ])
-        // 让 popup 自适应宽度
+        let targetLabel = makeFieldLabel("目标输入法：")
+        let initialLabel = makeFieldLabel("初始状态：")
+        for l in [targetLabel, initialLabel] {
+            l.translatesAutoresizingMaskIntoConstraints = false
+            l.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        }
         targetPopup.translatesAutoresizingMaskIntoConstraints = false
         initialStatePopup.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            targetPopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 240),
-            initialStatePopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 240)
+
+        let grid = NSGridView(views: [
+            [targetLabel, targetPopup],
+            [initialLabel, initialStatePopup]
         ])
-        return box
+        grid.columnSpacing = 16
+        grid.rowSpacing = 10
+        grid.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            targetPopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 260),
+            initialStatePopup.widthAnchor.constraint(greaterThanOrEqualToConstant: 260)
+        ])
+        return makeSectionCard(title: "锁定设置", content: grid)
     }
 
     private func buildOverlaySection() -> NSView {
-        let box = makeSectionBox(title: "悬浮窗")
         overlayEnabledCheckbox.target = self
         overlayEnabledCheckbox.action = #selector(handleOverlayToggled)
         overlayEnabledCheckbox.state = UserDefaults.standard.bool(forKey: "overlayEnabled") ? .on : .off
-        box.addSubview(overlayEnabledCheckbox)
-        overlayEnabledCheckbox.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            overlayEnabledCheckbox.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            overlayEnabledCheckbox.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            overlayEnabledCheckbox.topAnchor.constraint(equalTo: box.topAnchor),
-            overlayEnabledCheckbox.bottomAnchor.constraint(equalTo: box.bottomAnchor)
-        ])
-        return box
+
+        let content = NSStackView(views: [overlayEnabledCheckbox])
+        content.orientation = .vertical
+        content.alignment = .leading
+        content.translatesAutoresizingMaskIntoConstraints = false
+        return makeSectionCard(title: "悬浮窗", content: content)
     }
 
     private func buildPermissionsSection() -> NSView {
-        let box = makeSectionBox(title: "权限")
-
         accessibilityStatusLabel.textColor = .secondaryLabelColor
         accessibilityStatusLabel.maximumNumberOfLines = 2
 
@@ -211,41 +251,30 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
 
         let buttonRow = NSStackView(views: [openAccessibilityButton, refreshButton])
         buttonRow.orientation = .horizontal
-        buttonRow.spacing = 8
+        buttonRow.spacing = 10
+        buttonRow.translatesAutoresizingMaskIntoConstraints = false
 
-        let stack = NSStackView(views: [accessibilityStatusLabel, buttonRow])
-        stack.orientation = .vertical
-        stack.alignment = .leading
-        stack.spacing = 10
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        box.addSubview(stack)
-        NSLayoutConstraint.activate([
-            stack.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            stack.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            stack.topAnchor.constraint(equalTo: box.topAnchor),
-            stack.bottomAnchor.constraint(equalTo: box.bottomAnchor)
-        ])
-        return box
+        let content = NSStackView(views: [accessibilityStatusLabel, buttonRow])
+        content.orientation = .vertical
+        content.alignment = .leading
+        content.spacing = 12
+        content.translatesAutoresizingMaskIntoConstraints = false
+        return makeSectionCard(title: "权限", content: content)
     }
 
     private func buildLaunchAtLoginSection() -> NSView {
-        let box = makeSectionBox(title: "开机启动")
         launchAtLoginCheckbox.target = self
         launchAtLoginCheckbox.action = #selector(handleLaunchAtLoginToggled)
         launchAtLoginCheckbox.state = LaunchAtLogin.isEnabled() ? .on : .off
-        box.addSubview(launchAtLoginCheckbox)
-        launchAtLoginCheckbox.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            launchAtLoginCheckbox.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            launchAtLoginCheckbox.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            launchAtLoginCheckbox.topAnchor.constraint(equalTo: box.topAnchor),
-            launchAtLoginCheckbox.bottomAnchor.constraint(equalTo: box.bottomAnchor)
-        ])
-        return box
+
+        let content = NSStackView(views: [launchAtLoginCheckbox])
+        content.orientation = .vertical
+        content.alignment = .leading
+        content.translatesAutoresizingMaskIntoConstraints = false
+        return makeSectionCard(title: "开机启动", content: content)
     }
 
     private func buildAboutSection() -> NSView {
-        let box = makeSectionBox(title: "关于")
         let about = NSTextField(wrappingLabelWithString:
             "锁定中文输入法 v1.0\nBundle ID: com.tang.LockChineseIME\n" +
             "GitHub: github.com/tang/input-dont-change\n" +
@@ -253,51 +282,20 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate {
         )
         about.font = NSFont.systemFont(ofSize: 11)
         about.textColor = .secondaryLabelColor
-        box.addSubview(about)
         about.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            about.leadingAnchor.constraint(equalTo: box.leadingAnchor, constant: 4),
-            about.trailingAnchor.constraint(lessThanOrEqualTo: box.trailingAnchor, constant: -4),
-            about.topAnchor.constraint(equalTo: box.topAnchor),
-            about.bottomAnchor.constraint(equalTo: box.bottomAnchor)
-        ])
-        return box
-    }
 
-    // MARK: - Section helpers
-
-    private func makeSectionBox(title: String) -> NSView {
-        let container = NSView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-
-        let header = NSTextField(labelWithString: title)
-        header.font = NSFont.boldSystemFont(ofSize: 13)
-        header.textColor = .labelColor
-        header.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(header)
-
-        let separator = NSBox()
-        separator.boxType = .separator
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        container.addSubview(separator)
-
-        NSLayoutConstraint.activate([
-            header.topAnchor.constraint(equalTo: container.topAnchor),
-            header.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-            separator.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 4),
-            separator.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            separator.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        // 内容区在 separator 下方 8px
-        container.wantsLayer = true
-        return container
+        let content = NSStackView(views: [about])
+        content.orientation = .vertical
+        content.alignment = .leading
+        content.translatesAutoresizingMaskIntoConstraints = false
+        return makeSectionCard(title: "关于", content: content)
     }
 
     private func makeFieldLabel(_ text: String) -> NSTextField {
         let label = NSTextField(labelWithString: text)
         label.font = NSFont.systemFont(ofSize: 12)
         label.alignment = .right
+        label.textColor = .secondaryLabelColor
         return label
     }
 
