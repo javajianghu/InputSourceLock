@@ -1,0 +1,27 @@
+{
+  "scriptCompleted": true,
+  "stats": {
+    "filesScanned": 16,
+    "filesWithImports": 0,
+    "totalEdges": 0
+  },
+  "failures": [],
+  "importMap": {
+    ".ua/config.json": [],
+    "CLAUDE.md": [],
+    "InputMethodStatus/main.swift": [],
+    "InputSourceLock/InputSourceLock/main.swift": [],
+    "InputSourceLock/build.sh": [],
+    "InputSourceLock/list_input_sources.swift": [],
+    "LockChineseIME/AppCore.swift": [],
+    "LockChineseIME/AppDelegate.swift": [],
+    "LockChineseIME/Info.plist": [],
+    "LockChineseIME/LaunchAtLogin.swift": [],
+    "LockChineseIME/Settings.swift": [],
+    "LockChineseIME/StatusBar.swift": [],
+    "LockChineseIME/main.swift": [],
+    "README.md": [],
+    "build-app.sh": [],
+    "pyproject.toml": []
+  }
+}

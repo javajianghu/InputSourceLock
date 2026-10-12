@@ -1,0 +1,91 @@
+{
+  "projectRoot": "/Users/tang/my/my-github/input-dont-change",
+  "batchFiles": [
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "InputMethodStatus/main.swift",
+      "language": "swift",
+      "sizeLines": 610,
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/InputSourceLock/main.swift",
+      "language": "swift",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/build.sh",
+      "language": "shell",
+      "sizeLines": 45,
+      "fileCategory": "script"
+    },
+    {
+      "path": "InputSourceLock/list_input_sources.swift",
+      "language": "swift",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppCore.swift",
+      "language": "swift",
+      "sizeLines": 456,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppDelegate.swift",
+      "language": "swift",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Info.plist",
+      "language": "xml",
+      "sizeLines": 42,
+      "fileCategory": "config"
+    },
+    {
+      "path": "LockChineseIME/LaunchAtLogin.swift",
+      "language": "swift",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Settings.swift",
+      "language": "swift",
+      "sizeLines": 457,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/StatusBar.swift",
+      "language": "swift",
+      "sizeLines": 140,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/main.swift",
+      "language": "swift",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    ".ua/config.json": [],
+    "InputMethodStatus/main.swift": [],
+    "InputSourceLock/InputSourceLock/main.swift": [],
+    "InputSourceLock/build.sh": [],
+    "InputSourceLock/list_input_sources.swift": [],
+    "LockChineseIME/AppCore.swift": [],
+    "LockChineseIME/AppDelegate.swift": [],
+    "LockChineseIME/Info.plist": [],
+    "LockChineseIME/LaunchAtLogin.swift": [],
+    "LockChineseIME/Settings.swift": [],
+    "LockChineseIME/StatusBar.swift": [],
+    "LockChineseIME/main.swift": []
+  }
+}

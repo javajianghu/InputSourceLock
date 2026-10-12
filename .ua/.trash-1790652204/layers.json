@@ -1,0 +1,60 @@
+[
+  {
+    "id": "layer:app-entry",
+    "name": "App 入口与生命周期",
+    "description": "macOS App 启动入口：构造 NSApplication、绑定 AppDelegate、注册 SIGINT 处理器；AppDelegate 设置激活策略、构造管理器与菜单栏、首次启动逻辑、Dock 点击映射；Info.plist 提供 Bundle 元数据与辅助功能权限声明。",
+    "nodeIds": [
+      "file:LockChineseIME/main.swift",
+      "file:LockChineseIME/AppDelegate.swift",
+      "config:LockChineseIME/Info.plist"
+    ]
+  },
+  {
+    "id": "layer:core",
+    "name": "核心状态与平台集成",
+    "description": "App 核心模块：TIS 输入源查询/选中 helper、悬浮窗 NSPanel、InputMethodManager（轮询 + 锁定重试 + CGEventTap Shift 检测 + 状态广播）、LaunchAtLogin（SMAppService 开机启动封装）。这是 App 与 macOS 系统交互的中枢。",
+    "nodeIds": [
+      "file:LockChineseIME/AppCore.swift",
+      "file:LockChineseIME/LaunchAtLogin.swift"
+    ]
+  },
+  {
+    "id": "layer:ui",
+    "name": "用户界面",
+    "description": "用户可见的 UI 组件：NSStatusItem 菜单栏（动态红/蓝图标 + 状态行 + 退出）、SettingsWindowController（6 张卡片式设置面板 + 权限跳转 + 一键重启）。",
+    "nodeIds": [
+      "file:LockChineseIME/StatusBar.swift",
+      "file:LockChineseIME/Settings.swift"
+    ]
+  },
+  {
+    "id": "layer:legacy-cli",
+    "name": "旧版 CLI 工具",
+    "description": "保留的命令行版本工具：InputMethodStatus（合并悬浮窗+锁定的单文件 CLI）、InputSourceLock/InputSourceLock（纯终端锁定，无 GUI）、list_input_sources（独立诊断 helper）；以及配套的 build.sh。",
+    "nodeIds": [
+      "file:InputMethodStatus/main.swift",
+      "file:InputSourceLock/InputSourceLock/main.swift",
+      "file:InputSourceLock/list_input_sources.swift",
+      "file:InputSourceLock/build.sh"
+    ]
+  },
+  {
+    "id": "layer:build-docs",
+    "name": "构建与文档",
+    "description": "主 App 打包脚本 build-app.sh（swiftc 直接编译 + sips/iconutil 生成 .icns + hdiutil 生成 .dmg 安装包）以及面向用户的项目文档（README.md 用户指南、CLAUDE.md AI Agent 指南）。",
+    "nodeIds": [
+      "file:build-app.sh",
+      "document:README.md",
+      "document:CLAUDE.md"
+    ]
+  },
+  {
+    "id": "layer:project-meta",
+    "name": "项目元配置",
+    "description": "工作区级配置：pyproject.toml（占位符，无 Python 依赖）+ .ua/config.json（Understand-Anything 分析工具自身的输出语言与自动更新偏好）。",
+    "nodeIds": [
+      "config:pyproject.toml",
+      "config:.ua/config.json"
+    ]
+  }
+]

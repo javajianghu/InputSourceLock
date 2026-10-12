@@ -1,0 +1,96 @@
+[
+  {
+    "order": 1,
+    "title": "项目概览",
+    "description": "从一个 macOS 工具说起：自动锁定中文输入法并在屏幕上显示「中/A」状态。本节从 README 开始，了解项目的功能列表、首次启动需要的辅助功能授权流程，以及核心状态检测原理的示意。",
+    "nodeIds": ["document:README.md"],
+    "languageLesson": "本项目中文档全部使用 emoji 前缀（🔒 / 📍 / ⌨️ / ✅ / ⚠️ / 👋），面向中文用户群体。"
+  },
+  {
+    "order": 2,
+    "title": "App 入口与生命周期",
+    "description": "从 main.swift 进入：构造 NSApplication、绑定 AppDelegate、注册 SIGINT 处理器。AppDelegate.swift 决定激活策略为 .regular（同时显示 Dock + 菜单栏）、实例化核心管理器与菜单栏、首次启动自动弹出设置窗口、把 Dock 点击映射到打开设置。",
+    "nodeIds": [
+      "file:LockChineseIME/main.swift",
+      "file:LockChineseIME/AppDelegate.swift"
+    ],
+    "languageLesson": "macOS App 有 .regular（带 Dock 图标）与 .accessory（只菜单栏）两种激活策略。本 App 选择 .regular 是为了支持 Dock 点击交互（applicationShouldHandleReopen），但 applicationShouldTerminateAfterLastWindowClosed 返回 false，让菜单栏图标维持生命周期。"
+  },
+  {
+    "order": 3,
+    "title": "核心状态机：TIS + CGEventTap",
+    "description": "AppCore.swift 是整个系统的大脑：包含 TIS 输入源查询 helper（getCurrentInputSourceID / getAvailableInputSources）、悬浮窗 NSPanel、InputMethodManager。管理器协调 0.15s 轮询 timer、CGEventTap（flagsChanged + keyDown）、DistributedNotificationCenter 输入源切换通知三个事件流，并把状态变化通过 NotificationCenter 广播给菜单栏与设置窗口。",
+    "nodeIds": [
+      "file:LockChineseIME/AppCore.swift",
+      "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "function:LockChineseIME/AppCore.swift:InputMethodManager.selectAndLockSource",
+      "function:LockChineseIME/AppCore.swift:InputMethodManager.handleFlagsChanged"
+    ],
+    "languageLesson": "CGEventTap 需要辅助功能（Accessibility）权限。Shift 单独按下再释放（中间没有其他键）才算中英文翻转：handleFlagsChanged 用 shiftHeld + otherKeyUsedWhileShift 标志区分「单独 Shift」与「Shift+其他键（如大写字母）」。"
+  },
+  {
+    "order": 4,
+    "title": "状态判定启发式：中文 vs 英文",
+    "description": "判断一个输入源是否具备中文输入能力，靠的是硬编码的 asciiOnlyInputSourceIDs 集合（ABC / US / Dvorak 等纯英文布局）。任何不在该集合里的输入源都视为中文输入法。这种基于 layout ID 的启发式比字符识别更可靠，是历史经验沉淀下来的方案。",
+    "nodeIds": [
+      "function:LockChineseIME/AppCore.swift:getAvailableInputSources",
+      "function:LockChineseIME/AppCore.swift:getCurrentInputSourceID"
+    ],
+    "languageLesson": "TIS API（TISCopyCurrentKeyboardInputSource / TISSelectInputSource）来自 Carbon.HIToolbox，是 macOS 上唯一官方切换输入法的接口。本项目不依赖字符分类或私有 API。"
+  },
+  {
+    "order": 5,
+    "title": "菜单栏图标与动态状态",
+    "description": "StatusBar.swift 用 NSStatusItem 在菜单栏放一个动态 attributedTitle：红「中」对应中文模式，蓝「A」对应英文模式。点击展开菜单，显示当前输入法名称、中英文状态、锁定状态；并提供「打开设置…」(Cmd+,) 与「退出锁定中文输入法」(Cmd+Q)。菜单订阅 .inputMethodStateDidChange 通知自动刷新。",
+    "nodeIds": [
+      "file:LockChineseIME/StatusBar.swift",
+      "class:LockChineseIME/StatusBar.swift:StatusBarController",
+      "function:LockChineseIME/StatusBar.swift:StatusBarController.refreshIcon"
+    ]
+  },
+  {
+    "order": 6,
+    "title": "设置窗口：6 段卡片",
+    "description": "Settings.swift 把设置窗口拆成 6 张卡片式 section：当前状态（实时刷新）、锁定设置（目标输入法 + 初始中英文）、悬浮窗（开关）、权限（辅助功能授权 + 跳转系统设置 + 一键重启）、开机启动、关于。所有控件都通过 NotificationCenter 订阅 .inputMethodStateDidChange 自动刷新。",
+    "nodeIds": [
+      "file:LockChineseIME/Settings.swift",
+      "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "function:LockChineseIME/Settings.swift:SettingsWindowController.handleOpenAccessibility",
+      "function:LockChineseIME/Settings.swift:SettingsWindowController.relaunchApp"
+    ],
+    "languageLesson": "辅助功能授权后 CGEventTap 不会自动生效，必须重启 App 才能让事件 tap 装上。Settings 提供一键重启：/usr/bin/open -n Bundle.main.bundlePath 启动新实例后 NSApp.terminate。"
+  },
+  {
+    "order": 7,
+    "title": "系统集成：开机启动与权限声明",
+    "description": "LaunchAtLogin.swift 用 SMAppService.mainApp 封装 macOS 13+ 开机启动注册（isEnabled / enable / disable 三个静态方法）。Info.plist 提供 Bundle 元数据（bundle ID、显示名、最低 macOS 13.0、Apple Silicon）与关键权限声明 NSAccessibilityUsageDescription，说明 CGEventTap 的用途。",
+    "nodeIds": [
+      "file:LockChineseIME/LaunchAtLogin.swift",
+      "class:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin",
+      "config:LockChineseIME/Info.plist"
+    ]
+  },
+  {
+    "order": 8,
+    "title": "打包：build-app.sh 与 .dmg 生成",
+    "description": "build-app.sh 把 LockChineseIME/ 下的 Swift 源码用 swiftc 直接编译为 arm64 macOS 13+ 二进制（无 SPM、无 .xcodeproj），再装入 .app Bundle 结构。如果提供了 AppIcon-source.png，会用 sips 生成多尺寸 PNG、iconutil 打包成 .icns；最后用 hdiutil 创建带 /Applications 软链接的 .dmg 安装包。",
+    "nodeIds": ["file:build-app.sh"]
+  },
+  {
+    "order": 9,
+    "title": "旧版 CLI 工具（保留兼容）",
+    "description": "项目保留两个命令行版本以兼容早期用户：InputMethodStatus/main.swift 是合并悬浮窗+锁定的单文件 CLI；InputSourceLock/InputSourceLock/main.swift 是纯终端锁定（无 GUI），用 Timer.scheduledTimer 的 target/selector 形式与 Objective-C 互操作；InputSourceLock/list_input_sources.swift 是独立的输入法诊断工具。这三份与主 App 的 AppCore.swift 高度同构，但独立编译为二进制。",
+    "nodeIds": [
+      "file:InputMethodStatus/main.swift",
+      "file:InputSourceLock/InputSourceLock/main.swift",
+      "file:InputSourceLock/list_input_sources.swift",
+      "file:InputSourceLock/build.sh"
+    ]
+  },
+  {
+    "order": 10,
+    "title": "给 AI Agent 的项目指南",
+    "description": "CLAUDE.md 是一份专门写给 AI Agent 的项目说明：源码布局、构建命令、关键架构决策（CGEventTap、TIS、NSPanel）以及若干开发陷阱（首次启动授权、isChineseMode 在三处一致性重写、悬浮窗跟随鼠标而非文本光标）。是新人接手时最值得先读的一份文档。",
+    "nodeIds": ["document:CLAUDE.md"]
+  }
+]

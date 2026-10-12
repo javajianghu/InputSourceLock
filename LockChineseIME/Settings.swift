@@ -396,6 +396,15 @@ final class SettingsWindowController: NSWindowController {
         } else {
             targetPopup.selectItem(at: 0)
         }
+
+        // 同步当前 initial state（0=跟随 / 1=中文 / 2=英文）
+        // 直接设置 target/action 已经被赋值的位置不会再次回调 handleInitialStateChanged，
+        // 因此这里手动同步 UI 即可，不会触发重复写入 defaults。
+        switch manager?.initialIsChinese {
+        case .some(true):  initialStatePopup.selectItem(at: 1)
+        case .some(false): initialStatePopup.selectItem(at: 2)
+        default:           initialStatePopup.selectItem(at: 0)
+        }
     }
 
     // MARK: - Actions

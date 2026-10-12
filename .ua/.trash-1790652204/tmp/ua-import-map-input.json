@@ -1,0 +1,85 @@
+{
+  "projectRoot": "/Users/tang/my/my-github/input-dont-change",
+  "files": [
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "fileCategory": "config"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "InputMethodStatus/main.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/InputSourceLock/main.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/build.sh",
+      "language": "shell",
+      "fileCategory": "script"
+    },
+    {
+      "path": "InputSourceLock/list_input_sources.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppCore.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppDelegate.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Info.plist",
+      "language": "xml",
+      "fileCategory": "config"
+    },
+    {
+      "path": "LockChineseIME/LaunchAtLogin.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Settings.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/StatusBar.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/main.swift",
+      "language": "swift",
+      "fileCategory": "code"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs"
+    },
+    {
+      "path": "build-app.sh",
+      "language": "shell",
+      "fileCategory": "script"
+    },
+    {
+      "path": "pyproject.toml",
+      "language": "toml",
+      "fileCategory": "config"
+    }
+  ]
+}

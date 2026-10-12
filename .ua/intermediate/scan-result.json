@@ -1,0 +1,132 @@
+{
+  "name": "锁定中文输入法",
+  "description": "一个 macOS 应用，使用 TIS API 自动锁定目标中文输入法（中文 vs ABC），并通过 CGEventTap 感知输入法内部的 Shift 中英文切换，在光标附近显示红/蓝悬浮窗和菜单栏图标。",
+  "languages": [
+    "json",
+    "markdown",
+    "shell",
+    "swift",
+    "toml",
+    "xml"
+  ],
+  "frameworks": [],
+  "files": [
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "sizeLines": 150,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "InputMethodStatus/main.swift",
+      "language": "swift",
+      "sizeLines": 610,
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/InputSourceLock/main.swift",
+      "language": "swift",
+      "sizeLines": 243,
+      "fileCategory": "code"
+    },
+    {
+      "path": "InputSourceLock/build.sh",
+      "language": "shell",
+      "sizeLines": 45,
+      "fileCategory": "script"
+    },
+    {
+      "path": "InputSourceLock/list_input_sources.swift",
+      "language": "swift",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppCore.swift",
+      "language": "swift",
+      "sizeLines": 456,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/AppDelegate.swift",
+      "language": "swift",
+      "sizeLines": 88,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Info.plist",
+      "language": "xml",
+      "sizeLines": 42,
+      "fileCategory": "config"
+    },
+    {
+      "path": "LockChineseIME/LaunchAtLogin.swift",
+      "language": "swift",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/Settings.swift",
+      "language": "swift",
+      "sizeLines": 457,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/StatusBar.swift",
+      "language": "swift",
+      "sizeLines": 140,
+      "fileCategory": "code"
+    },
+    {
+      "path": "LockChineseIME/main.swift",
+      "language": "swift",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 114,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "build-app.sh",
+      "language": "shell",
+      "sizeLines": 159,
+      "fileCategory": "script"
+    },
+    {
+      "path": "pyproject.toml",
+      "language": "toml",
+      "sizeLines": 5,
+      "fileCategory": "config"
+    }
+  ],
+  "totalFiles": 16,
+  "filteredByIgnore": 1,
+  "estimatedComplexity": "small",
+  "importMap": {
+    ".ua/config.json": [],
+    "CLAUDE.md": [],
+    "InputMethodStatus/main.swift": [],
+    "InputSourceLock/InputSourceLock/main.swift": [],
+    "InputSourceLock/build.sh": [],
+    "InputSourceLock/list_input_sources.swift": [],
+    "LockChineseIME/AppCore.swift": [],
+    "LockChineseIME/AppDelegate.swift": [],
+    "LockChineseIME/Info.plist": [],
+    "LockChineseIME/LaunchAtLogin.swift": [],
+    "LockChineseIME/Settings.swift": [],
+    "LockChineseIME/StatusBar.swift": [],
+    "LockChineseIME/main.swift": [],
+    "README.md": [],
+    "build-app.sh": [],
+    "pyproject.toml": []
+  }
+}

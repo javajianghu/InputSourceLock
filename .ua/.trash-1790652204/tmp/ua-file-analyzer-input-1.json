@@ -1,0 +1,15 @@
+{
+  "projectRoot": "/Users/tang/my/my-github/input-dont-change",
+  "batchFiles": [
+    {"path": "CLAUDE.md", "language": "markdown", "sizeLines": 150, "fileCategory": "docs"},
+    {"path": "README.md", "language": "markdown", "sizeLines": 114, "fileCategory": "docs"},
+    {"path": "build-app.sh", "language": "shell", "sizeLines": 159, "fileCategory": "script"},
+    {"path": "pyproject.toml", "language": "toml", "sizeLines": 5, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "CLAUDE.md": [],
+    "README.md": [],
+    "build-app.sh": [],
+    "pyproject.toml": []
+  }
+}

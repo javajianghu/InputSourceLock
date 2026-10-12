@@ -1,0 +1,1394 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "48cd439624c6514ec2fe8d6e159abe7b75671e6a",
+  "generatedAt": "2026-09-29T03:23:17.409Z",
+  "files": {
+    ".ua/config.json": {
+      "filePath": ".ua/config.json",
+      "contentHash": "49acdcdfe65b31ab61e62be0e283a27a49ddee05446197fa474062d87cf7fe70",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "04bfd854f5498d099e6efa9f95e7de41442885ca57c790852f696c81d9f74b11",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 151,
+      "hasStructuralAnalysis": false
+    },
+    "InputMethodStatus/main.swift": {
+      "filePath": "InputMethodStatus/main.swift",
+      "contentHash": "10cb8867dce0daf9dd8645276e571bee18198d741ccdd3bc61f37926ef4acdc2",
+      "functions": [
+        {
+          "name": "getCurrentInputSourceID",
+          "params": [],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "tisGetString",
+          "params": [
+            "source",
+            "key"
+          ],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "params": [
+            "sourceID"
+          ],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "tisGetLocalizedName",
+          "params": [
+            "source"
+          ],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "getAvailableInputSources",
+          "params": [],
+          "returnType": "[(id: String, name: String)]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "params": [
+            "initialCursor"
+          ],
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "reposition",
+          "params": [
+            "cursor"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "showChinese",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "showEnglish",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "showInitDialog",
+          "params": [],
+          "returnType": "InitConfig?",
+          "exported": false,
+          "lineCount": 85
+        },
+        {
+          "name": "RadioSyncCoordinator.init",
+          "params": [
+            "buttons"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "RadioSyncCoordinator.init",
+          "params": [
+            "chinese",
+            "english"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "radioClicked",
+          "params": [
+            "sender"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "InputMethodManager.init",
+          "params": [
+            "window",
+            "targetInputSourceID"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "configure",
+          "params": [
+            "initialIsChinese"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "params": [
+            "id"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "start",
+          "params": [],
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "onTick",
+          "params": [],
+          "exported": false,
+          "lineCount": 20
+        },
+        {
+          "name": "trackCursor",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "selectAndLockSource",
+          "params": [
+            "targetID"
+          ],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "updateDisplay",
+          "params": [],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "setupEventTap",
+          "params": [],
+          "exported": false,
+          "lineCount": 34
+        },
+        {
+          "name": "handleEvent",
+          "params": [
+            "type",
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "handleFlagsChanged",
+          "params": [
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 21
+        },
+        {
+          "name": "handleKeyDown",
+          "params": [
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "cleanup",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "AppDelegate.init",
+          "params": [
+            "targetInputSourceID"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "applicationDidFinishLaunching",
+          "params": [
+            "notification"
+          ],
+          "exported": true,
+          "lineCount": 27
+        },
+        {
+          "name": "applicationWillTerminate",
+          "params": [
+            "notification"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "classes": [
+        {
+          "name": "StatusOverlayWindow",
+          "methods": [
+            "init",
+            "reposition",
+            "showChinese",
+            "showEnglish"
+          ],
+          "properties": [
+            "bgView",
+            "label",
+            "canBecomeKey",
+            "canBecomeMain"
+          ],
+          "exported": true,
+          "lineCount": 70
+        },
+        {
+          "name": "InitConfig",
+          "methods": [],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "RadioSyncCoordinator",
+          "methods": [
+            "init",
+            "init",
+            "radioClicked"
+          ],
+          "properties": [
+            "buttons"
+          ],
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "InputMethodManager",
+          "methods": [
+            "init",
+            "configure",
+            "setTargetInputSourceID",
+            "start",
+            "onTick",
+            "trackCursor",
+            "selectAndLockSource",
+            "updateDisplay",
+            "setupEventTap",
+            "handleEvent",
+            "handleFlagsChanged",
+            "handleKeyDown",
+            "cleanup"
+          ],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese",
+            "window",
+            "currentInputSourceID",
+            "isChineseMode",
+            "isOnTargetInputSource",
+            "eventTap",
+            "shiftHeld",
+            "otherKeyUsedWhileShift",
+            "shiftKeyCodes",
+            "pollingTimer",
+            "cursorTrackTimer"
+          ],
+          "exported": true,
+          "lineCount": 276
+        },
+        {
+          "name": "AppDelegate",
+          "methods": [
+            "init",
+            "applicationDidFinishLaunching",
+            "applicationWillTerminate"
+          ],
+          "properties": [
+            "manager",
+            "window"
+          ],
+          "exported": true,
+          "lineCount": 45
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        },
+        {
+          "source": "Carbon",
+          "specifiers": [
+            "Carbon"
+          ]
+        }
+      ],
+      "exports": [
+        "getCurrentInputSourceID",
+        "tisGetString",
+        "isChineseCapableInputSource",
+        "tisGetLocalizedName",
+        "getAvailableInputSources",
+        "canBecomeKey",
+        "canBecomeMain",
+        "StatusOverlayWindow.init",
+        "reposition",
+        "showChinese",
+        "showEnglish",
+        "StatusOverlayWindow",
+        "targetInputSourceID",
+        "initialIsChinese",
+        "InitConfig",
+        "targetInputSourceID",
+        "InputMethodManager.init",
+        "configure",
+        "setTargetInputSourceID",
+        "start",
+        "cleanup",
+        "InputMethodManager",
+        "manager",
+        "window",
+        "AppDelegate.init",
+        "applicationDidFinishLaunching",
+        "applicationWillTerminate",
+        "AppDelegate"
+      ],
+      "totalLines": 611,
+      "hasStructuralAnalysis": true
+    },
+    "InputSourceLock/InputSourceLock/main.swift": {
+      "filePath": "InputSourceLock/InputSourceLock/main.swift",
+      "contentHash": "55c47598e04cd2484ee8455818bcc8ea1af370bbd64276052df67a98efc6c3c3",
+      "functions": [
+        {
+          "name": "InputSourceMonitor.init",
+          "params": [
+            "targetInputSourceID"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "getAvailableInputSources",
+          "params": [],
+          "returnType": "[(id: String, name: String)]",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "params": [],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "selectInputSource",
+          "params": [
+            "inputSourceID"
+          ],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 53
+        },
+        {
+          "name": "startMonitoring",
+          "params": [],
+          "exported": true,
+          "lineCount": 17
+        },
+        {
+          "name": "checkInputSource",
+          "params": [],
+          "exported": false,
+          "lineCount": 33
+        },
+        {
+          "name": "stopMonitoring",
+          "params": [],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "printUsage",
+          "params": [],
+          "exported": true,
+          "lineCount": 24
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": true,
+          "lineCount": 37
+        }
+      ],
+      "classes": [
+        {
+          "name": "InputSourceMonitor",
+          "methods": [
+            "init",
+            "getAvailableInputSources",
+            "getCurrentInputSourceID",
+            "selectInputSource",
+            "startMonitoring",
+            "checkInputSource",
+            "stopMonitoring"
+          ],
+          "properties": [
+            "timer",
+            "lastInputSourceID",
+            "targetInputSourceID",
+            "checkInterval",
+            "maxRetryCount",
+            "retryDelay"
+          ],
+          "exported": true,
+          "lineCount": 172
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        },
+        {
+          "source": "Carbon",
+          "specifiers": [
+            "HIToolbox"
+          ]
+        }
+      ],
+      "exports": [
+        "InputSourceMonitor.init",
+        "getAvailableInputSources",
+        "getCurrentInputSourceID",
+        "selectInputSource",
+        "startMonitoring",
+        "stopMonitoring",
+        "InputSourceMonitor",
+        "printUsage",
+        "main"
+      ],
+      "totalLines": 244,
+      "hasStructuralAnalysis": true
+    },
+    "InputSourceLock/build.sh": {
+      "filePath": "InputSourceLock/build.sh",
+      "contentHash": "9969e55ccfdabea6e291a7ef01ed4199c0f7346cb22d87c647d85a328a5e4de2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": false
+    },
+    "InputSourceLock/list_input_sources.swift": {
+      "filePath": "InputSourceLock/list_input_sources.swift",
+      "contentHash": "313bf5429b79fa1c4ba7ca899278b79ed6298e11809a589f84997624abe1ad0c",
+      "functions": [
+        {
+          "name": "getAvailableInputSources",
+          "params": [],
+          "returnType": "[(id: String, name: String)]",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "params": [],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        },
+        {
+          "source": "Carbon",
+          "specifiers": [
+            "HIToolbox"
+          ]
+        }
+      ],
+      "exports": [
+        "getAvailableInputSources",
+        "getCurrentInputSourceID"
+      ],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/AppCore.swift": {
+      "filePath": "LockChineseIME/AppCore.swift",
+      "contentHash": "504d68d25581870f48dacd14d13194636f6014fd110767515c3fd01847e9e64e",
+      "functions": [
+        {
+          "name": "getCurrentInputSourceID",
+          "params": [],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "tisGetString",
+          "params": [
+            "source",
+            "key"
+          ],
+          "returnType": "String?",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "params": [
+            "sourceID"
+          ],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "getAvailableInputSources",
+          "params": [],
+          "returnType": "[(id: String, name: String)]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "params": [
+            "initialCursor"
+          ],
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "reposition",
+          "params": [
+            "cursor"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "showChinese",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "showEnglish",
+          "params": [],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "hide",
+          "params": [],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "InputMethodManager.init",
+          "params": [
+            "targetInputSourceID"
+          ],
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "params": [
+            "id"
+          ],
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "start",
+          "params": [],
+          "exported": true,
+          "lineCount": 40
+        },
+        {
+          "name": "setOverlayEnabled",
+          "params": [
+            "enabled"
+          ],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "onTick",
+          "params": [],
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "trackCursor",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "selectAndLockSource",
+          "params": [
+            "targetID"
+          ],
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "updateDisplay",
+          "params": [],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "notifyStateChange",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "setupEventTap",
+          "params": [],
+          "exported": false,
+          "lineCount": 34
+        },
+        {
+          "name": "handleEvent",
+          "params": [
+            "type",
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "handleFlagsChanged",
+          "params": [
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 19
+        },
+        {
+          "name": "handleKeyDown",
+          "params": [
+            "event"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "applyInitialStateIfNeeded",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "cleanup",
+          "params": [],
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [
+        {
+          "name": "extension Notification.Name",
+          "methods": [],
+          "properties": [
+            "inputMethodStateDidChange"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "StatusOverlayWindow",
+          "methods": [
+            "init",
+            "reposition",
+            "showChinese",
+            "showEnglish",
+            "hide"
+          ],
+          "properties": [
+            "bgView",
+            "label",
+            "canBecomeKey",
+            "canBecomeMain"
+          ],
+          "exported": true,
+          "lineCount": 74
+        },
+        {
+          "name": "InputMethodManager",
+          "methods": [
+            "init",
+            "setTargetInputSourceID",
+            "start",
+            "setOverlayEnabled",
+            "onTick",
+            "trackCursor",
+            "selectAndLockSource",
+            "updateDisplay",
+            "notifyStateChange",
+            "setupEventTap",
+            "handleEvent",
+            "handleFlagsChanged",
+            "handleKeyDown",
+            "applyInitialStateIfNeeded",
+            "cleanup"
+          ],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese",
+            "window",
+            "currentInputSourceID",
+            "isChineseMode",
+            "isOnTargetInputSource",
+            "eventTap",
+            "isEventTapActive",
+            "shiftHeld",
+            "otherKeyUsedWhileShift",
+            "shiftKeyCodes",
+            "pollingTimer",
+            "cursorTrackTimer",
+            "hasStarted",
+            "overlayEnabled"
+          ],
+          "exported": true,
+          "lineCount": 305
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        },
+        {
+          "source": "Carbon",
+          "specifiers": [
+            "Carbon"
+          ]
+        }
+      ],
+      "exports": [
+        "inputMethodStateDidChange",
+        "getCurrentInputSourceID",
+        "tisGetString",
+        "isChineseCapableInputSource",
+        "getAvailableInputSources",
+        "canBecomeKey",
+        "canBecomeMain",
+        "StatusOverlayWindow.init",
+        "reposition",
+        "showChinese",
+        "showEnglish",
+        "hide",
+        "StatusOverlayWindow",
+        "targetInputSourceID",
+        "initialIsChinese",
+        "currentInputSourceID",
+        "isChineseMode",
+        "isOnTargetInputSource",
+        "isEventTapActive",
+        "overlayEnabled",
+        "InputMethodManager.init",
+        "setTargetInputSourceID",
+        "start",
+        "setOverlayEnabled",
+        "cleanup",
+        "InputMethodManager"
+      ],
+      "totalLines": 457,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/AppDelegate.swift": {
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "contentHash": "e30aca98d26b69f9e878bcce7b13361b50fac8cfe0cd7bf0072e1aee16ec3c89",
+      "functions": [
+        {
+          "name": "applicationDidFinishLaunching",
+          "params": [
+            "notification"
+          ],
+          "exported": true,
+          "lineCount": 30
+        },
+        {
+          "name": "applicationShouldHandleReopen",
+          "params": [
+            "sender",
+            "flag"
+          ],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "applicationShouldTerminateAfterLastWindowClosed",
+          "params": [
+            "sender"
+          ],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "openSettings",
+          "params": [],
+          "exported": true,
+          "lineCount": 8
+        },
+        {
+          "name": "applyOverlayEnabledFromDefaults",
+          "params": [],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "quitApp",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "applicationWillTerminate",
+          "params": [
+            "notification"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "AppDelegate",
+          "methods": [
+            "applicationDidFinishLaunching",
+            "applicationShouldHandleReopen",
+            "applicationShouldTerminateAfterLastWindowClosed",
+            "openSettings",
+            "applyOverlayEnabledFromDefaults",
+            "quitApp",
+            "applicationWillTerminate"
+          ],
+          "properties": [
+            "manager",
+            "statusBar",
+            "settingsWindow",
+            "hasShownFirstRunKey",
+            "isFirstRun"
+          ],
+          "exported": true,
+          "lineCount": 86
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        }
+      ],
+      "exports": [
+        "applicationDidFinishLaunching",
+        "applicationShouldHandleReopen",
+        "applicationShouldTerminateAfterLastWindowClosed",
+        "openSettings",
+        "applicationWillTerminate",
+        "AppDelegate"
+      ],
+      "totalLines": 89,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/Info.plist": {
+      "filePath": "LockChineseIME/Info.plist",
+      "contentHash": "480995bf9b61c7817e3ea0ed1bb2d713c4e87c41486987983dc66c784115a46c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "LockChineseIME/LaunchAtLogin.swift": {
+      "filePath": "LockChineseIME/LaunchAtLogin.swift",
+      "contentHash": "a74151c14a4757c755e6c3631a66f283d69b1b3936e9aee493c77b0867d4a2b6",
+      "functions": [
+        {
+          "name": "isEnabled",
+          "params": [],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "enable",
+          "params": [],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "disable",
+          "params": [],
+          "returnType": "Bool",
+          "exported": true,
+          "lineCount": 10
+        }
+      ],
+      "classes": [
+        {
+          "name": "LaunchAtLogin",
+          "methods": [
+            "isEnabled",
+            "enable",
+            "disable"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 29
+        }
+      ],
+      "imports": [
+        {
+          "source": "Foundation",
+          "specifiers": [
+            "Foundation"
+          ]
+        },
+        {
+          "source": "ServiceManagement",
+          "specifiers": [
+            "ServiceManagement"
+          ]
+        }
+      ],
+      "exports": [
+        "isEnabled",
+        "enable",
+        "disable",
+        "LaunchAtLogin"
+      ],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/Settings.swift": {
+      "filePath": "LockChineseIME/Settings.swift",
+      "contentHash": "b082f3c5ed10dc40416e19ccc492ea92a721e2c093cfde006b03fbbaea854ca5",
+      "functions": [
+        {
+          "name": "SettingsWindowController.init",
+          "params": [
+            "manager"
+          ],
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "SettingsWindowController.init",
+          "params": [
+            "coder"
+          ],
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "buildContentView",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 49
+        },
+        {
+          "name": "makeCard",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "makeSectionCard",
+          "params": [
+            "title",
+            "content"
+          ],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 25
+        },
+        {
+          "name": "buildCurrentStatusSection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "buildLockSection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "buildOverlaySection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "buildPermissionsSection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 20
+        },
+        {
+          "name": "buildLaunchAtLoginSection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "buildAboutSection",
+          "params": [],
+          "returnType": "NSView",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "makeFieldLabel",
+          "params": [
+            "text"
+          ],
+          "returnType": "NSTextField",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "refreshAll",
+          "params": [],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "refreshStatusSection",
+          "params": [],
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "refreshAccessibilityStatus",
+          "params": [],
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "maybePromptRestart",
+          "params": [],
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "relaunchApp",
+          "params": [],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "rebuildTargetPopup",
+          "params": [],
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "handleTargetChanged",
+          "params": [],
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "handleInitialStateChanged",
+          "params": [],
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "handleOverlayToggled",
+          "params": [],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "handleRefreshPermissions",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "handleOpenAccessibility",
+          "params": [],
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "handleLaunchAtLoginToggled",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [
+        {
+          "name": "SettingsWindowController",
+          "methods": [
+            "init",
+            "init",
+            "buildContentView",
+            "makeCard",
+            "makeSectionCard",
+            "buildCurrentStatusSection",
+            "buildLockSection",
+            "buildOverlaySection",
+            "buildPermissionsSection",
+            "buildLaunchAtLoginSection",
+            "buildAboutSection",
+            "makeFieldLabel",
+            "refreshAll",
+            "refreshStatusSection",
+            "refreshAccessibilityStatus",
+            "maybePromptRestart",
+            "relaunchApp",
+            "rebuildTargetPopup",
+            "handleTargetChanged",
+            "handleInitialStateChanged",
+            "handleOverlayToggled",
+            "handleRefreshPermissions",
+            "handleOpenAccessibility",
+            "handleLaunchAtLoginToggled"
+          ],
+          "properties": [
+            "manager",
+            "currentIMELabel",
+            "currentModeLabel",
+            "lockStatusLabel",
+            "targetPopup",
+            "initialStatePopup",
+            "overlayEnabledCheckbox",
+            "accessibilityStatusLabel",
+            "openAccessibilityButton",
+            "launchAtLoginCheckbox",
+            "cachedSources",
+            "hasPromptedRestart"
+          ],
+          "exported": true,
+          "lineCount": 428
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        },
+        {
+          "source": "ApplicationServices",
+          "specifiers": [
+            "ApplicationServices"
+          ]
+        }
+      ],
+      "exports": [
+        "SettingsWindowController.init",
+        "SettingsWindowController.init",
+        "SettingsWindowController"
+      ],
+      "totalLines": 458,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/StatusBar.swift": {
+      "filePath": "LockChineseIME/StatusBar.swift",
+      "contentHash": "c604e6a332316e29583b2549bae50d5e74a8843a82957e5d2acd156de3e4a726",
+      "functions": [
+        {
+          "name": "StatusBarController.init",
+          "params": [
+            "manager",
+            "onOpenSettings",
+            "onQuit"
+          ],
+          "exported": true,
+          "lineCount": 21
+        },
+        {
+          "name": "buildMenu",
+          "params": [],
+          "returnType": "NSMenu",
+          "exported": false,
+          "lineCount": 43
+        },
+        {
+          "name": "menuNeedsUpdate",
+          "params": [
+            "menu"
+          ],
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "refreshIcon",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "handleOpenSettings",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "handleQuit",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "StatusBarController",
+          "methods": [
+            "init",
+            "buildMenu",
+            "menuNeedsUpdate",
+            "refreshIcon",
+            "handleOpenSettings",
+            "handleQuit"
+          ],
+          "properties": [
+            "statusItem",
+            "manager",
+            "onOpenSettings",
+            "onQuit",
+            "currentIMEItem",
+            "currentModeItem",
+            "lockStatusItem",
+            "chineseTitle",
+            "englishTitle"
+          ],
+          "exported": true,
+          "lineCount": 136
+        }
+      ],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        }
+      ],
+      "exports": [
+        "StatusBarController.init",
+        "menuNeedsUpdate",
+        "StatusBarController"
+      ],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    },
+    "LockChineseIME/main.swift": {
+      "filePath": "LockChineseIME/main.swift",
+      "contentHash": "85192b87269bacb56dc9dbdb471fa43ff6aefd083a002c9ec30629a75308c74c",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "Cocoa",
+          "specifiers": [
+            "Cocoa"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "e90b913a421ad76616396430cffbaa69c98606f838fd95ce62ba39ec0ffc6c23",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 115,
+      "hasStructuralAnalysis": false
+    },
+    "build-app.sh": {
+      "filePath": "build-app.sh",
+      "contentHash": "5ca19454bb12f27188021baeba5a936643f4078895f70a1fa9ed7eb2935a2399",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 160,
+      "hasStructuralAnalysis": false
+    },
+    "pyproject.toml": {
+      "filePath": "pyproject.toml",
+      "contentHash": "e2f5b57c7eb9d9d9f7f67ec1700e6da6042b5cdd1305c1ba85044b2e92b21b49",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    }
+  }
+}

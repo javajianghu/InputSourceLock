@@ -1,0 +1,390 @@
+{
+  "fileNodes": [
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "面向 AI Agent（Claude Code / pi）的项目指南：包含源码布局说明、构建命令、关键架构决策（CGEventTap、TIS API、NSPanel 悬浮窗）以及若干开发陷阱提醒（首次启动授权、状态机一致性、overlay 跟随鼠标而非文本光标等）。",
+      "tags": [
+        "documentation",
+        "agent-guide",
+        "architecture",
+        "gotchas"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "项目主文档：说明功能特性（锁定 / 悬浮窗 / Shift 感知 / 菜单栏 / 设置 / 开机启动）、首次启动需要的辅助功能授权、目录结构、状态检测原理示意图以及打包 / 安装步骤。",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "user-guide"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:build-app.sh",
+      "type": "file",
+      "name": "build-app.sh",
+      "filePath": "build-app.sh",
+      "summary": "将 LockChineseIME/ 下的 Swift 源码编译为 arm64 macOS 13+ 的 .app 包，并装配可分发的 .dmg 安装包（含 .icns 图标、/Applications 软链接、压缩为 UDZO）。",
+      "tags": [
+        "build-system",
+        "packaging",
+        "dmg",
+        "shell-script"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 swiftc 直接调用，无 SPM / Xcode；通过 sips + iconutil 从单张 PNG 生成多尺寸 .icns。"
+    },
+    {
+      "id": "config:pyproject.toml",
+      "type": "config",
+      "name": "pyproject.toml",
+      "filePath": "pyproject.toml",
+      "summary": "占位符配置文件，无 Python 依赖；仅作为工作区标记存在，本项目实际为 Swift 项目。",
+      "tags": [
+        "configuration",
+        "stub",
+        "placeholder"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.ua/config.json",
+      "type": "config",
+      "name": ".ua/config.json",
+      "filePath": ".ua/config.json",
+      "summary": "Understand-Anything 分析工具自身的配置文件，记录输出语言与自动更新偏好（当前：中文输出 / 关闭自动更新）。属于工具产物，不属于项目代码。",
+      "tags": [
+        "configuration",
+        "tool-config"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:LockChineseIME/Info.plist",
+      "type": "config",
+      "name": "Info.plist",
+      "filePath": "LockChineseIME/Info.plist",
+      "summary": "App Bundle 元数据：bundle ID com.tang.LockChineseIME、显示名「锁定中文输入法」、最低 macOS 13.0、Apple Silicon (arm64)、分类 utilities；关键权限声明 NSAccessibilityUsageDescription 说明 CGEventTap 用途。",
+      "tags": [
+        "configuration",
+        "bundle-metadata",
+        "permissions",
+        "macos-app"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:LockChineseIME/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "LockChineseIME/main.swift",
+      "summary": "App 入口：创建 NSApplication、绑定 AppDelegate，注册 SIGINT 处理器以便开发期在终端运行时按 Ctrl+C 干净退出。",
+      "tags": [
+        "entry-point",
+        "lifecycle",
+        "signal-handler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:LockChineseIME/AppCore.swift",
+      "type": "file",
+      "name": "AppCore.swift",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "summary": "App 的核心模块：包含 TIS 输入源查询 / 选中的全部 helper、StatusOverlayWindow（NSPanel 悬浮窗）、InputMethodManager（轮询 timer + 锁定重试 + CGEventTap Shift 检测 + 状态广播通知）。",
+      "tags": [
+        "core",
+        "macos-app",
+        "input-source",
+        "event-tap",
+        "state-machine"
+      ],
+      "complexity": "complex",
+      "languageNotes": "CGEventTap 需要辅助功能权限；Shift 单独按下/释放才算中英文翻转（Shift+其他键不算），通过 keyDown 期间的 otherKeyUsedWhileShift 标志区分。"
+    },
+    {
+      "id": "file:LockChineseIME/AppDelegate.swift",
+      "type": "file",
+      "name": "AppDelegate.swift",
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "summary": "NSApplicationDelegate：设为 .regular 激活策略（同时显示 Dock + 菜单栏）、启动 InputMethodManager 与 StatusBarController、首次启动自动弹出设置窗口、Dock 点击重新打开设置。",
+      "tags": [
+        "app-delegate",
+        "lifecycle",
+        "activation-policy"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:LockChineseIME/StatusBar.swift",
+      "type": "file",
+      "name": "StatusBar.swift",
+      "filePath": "LockChineseIME/StatusBar.swift",
+      "summary": "NSStatusItem 菜单栏控制器：动态切换 attributedTitle（红「中」/ 蓝「A」），菜单显示当前输入法 / 中英文模式 / 锁定状态，提供「打开设置…」(Cmd+,) 与「退出」(Cmd+Q)。",
+      "tags": [
+        "menu-bar",
+        "status-item",
+        "macos-app"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:LockChineseIME/Settings.swift",
+      "type": "file",
+      "name": "Settings.swift",
+      "filePath": "LockChineseIME/Settings.swift",
+      "summary": "设置窗口 NSWindowController：单页垂直滚动 + 6 张卡片（当前状态 / 锁定设置 / 悬浮窗 / 权限 / 开机启动 / 关于），辅助功能授权状态实时刷新，可一键跳转系统设置。",
+      "tags": [
+        "ui",
+        "settings-window",
+        "macos-app"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "file",
+      "name": "LaunchAtLogin.swift",
+      "filePath": "LockChineseIME/LaunchAtLogin.swift",
+      "summary": "SMAppService.mainApp 的薄包装：isEnabled / enable / disable 三个静态方法，用于 macOS 13+ 开机自启注册。需 App 位于 /Applications 才能稳定工作。",
+      "tags": [
+        "launch-at-login",
+        "service-management",
+        "macos-app"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:InputMethodStatus/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "InputMethodStatus/main.swift",
+      "summary": "旧版单文件 CLI 实现：合并了悬浮窗 + 锁定功能，无 Dock / 菜单栏，参数为可选的输入法 ID；保留以供命令行用户使用。代码与 AppCore.swift 高度同构但独立成 binary。",
+      "tags": [
+        "legacy",
+        "cli",
+        "single-file"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:InputSourceLock/InputSourceLock/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "InputSourceLock/InputSourceLock/main.swift",
+      "summary": "旧版纯终端锁定工具：no GUI、no 悬浮窗；使用 Timer.scheduledTimer 的 target/selector 形式与 Objective-C 互操作；启动时校验目标 ID 在 TISCreateInputSourceList 中存在。保留兼容。",
+      "tags": [
+        "legacy",
+        "cli",
+        "terminal-only"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:InputSourceLock/list_input_sources.swift",
+      "type": "file",
+      "name": "list_input_sources.swift",
+      "filePath": "InputSourceLock/list_input_sources.swift",
+      "summary": "独立 helper：列出所有可用输入法的 ID + 本地化名称，并显示当前激活的输入法。供用户复制 ID 给锁定工具用。",
+      "tags": [
+        "utility",
+        "cli",
+        "helper",
+        "diagnostic"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:InputSourceLock/build.sh",
+      "type": "file",
+      "name": "build.sh",
+      "filePath": "InputSourceLock/build.sh",
+      "summary": "编译旧版 CLI 工具：用 swiftc 直接编译 InputMethodStatus/main.swift 与 InputSourceLock/InputSourceLock/main.swift 两个二进制到 InputSourceLock/build/。",
+      "tags": [
+        "build-system",
+        "legacy",
+        "shell-script"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "importEdges": [],
+  "allEdges": [
+    {
+      "source": "document:README.md",
+      "target": "document:CLAUDE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:build-app.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:build-app.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "config:pyproject.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:LockChineseIME/main.swift",
+      "target": "file:LockChineseIME/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/StatusBar.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/Settings.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/StatusBar.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/Settings.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/Settings.swift",
+      "target": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "config:LockChineseIME/Info.plist",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:LockChineseIME/Info.plist",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:InputSourceLock/build.sh",
+      "target": "file:InputMethodStatus/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:InputSourceLock/build.sh",
+      "target": "file:InputSourceLock/InputSourceLock/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/StatusBar.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/Settings.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "config:LockChineseIME/Info.plist",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "file:InputMethodStatus/main.swift",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:InputSourceLock/InputSourceLock/main.swift",
+      "target": "file:InputSourceLock/list_input_sources.swift",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

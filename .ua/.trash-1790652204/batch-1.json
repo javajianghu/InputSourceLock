@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "面向 AI Agent（Claude Code / pi）的项目指南：包含源码布局说明、构建命令、关键架构决策（CGEventTap、TIS API、NSPanel 悬浮窗）以及若干开发陷阱提醒（首次启动授权、状态机一致性、overlay 跟随鼠标而非文本光标等）。",
+      "tags": ["documentation", "agent-guide", "architecture", "gotchas"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "项目主文档：说明功能特性（锁定 / 悬浮窗 / Shift 感知 / 菜单栏 / 设置 / 开机启动）、首次启动需要的辅助功能授权、目录结构、状态检测原理示意图以及打包 / 安装步骤。",
+      "tags": ["documentation", "entry-point", "user-guide"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:build-app.sh",
+      "type": "file",
+      "name": "build-app.sh",
+      "filePath": "build-app.sh",
+      "summary": "将 LockChineseIME/ 下的 Swift 源码编译为 arm64 macOS 13+ 的 .app 包，并装配可分发的 .dmg 安装包（含 .icns 图标、/Applications 软链接、压缩为 UDZO）。",
+      "tags": ["build-system", "packaging", "dmg", "shell-script"],
+      "complexity": "moderate",
+      "languageNotes": "使用 swiftc 直接调用，无 SPM / Xcode；通过 sips + iconutil 从单张 PNG 生成多尺寸 .icns。"
+    },
+    {
+      "id": "config:pyproject.toml",
+      "type": "config",
+      "name": "pyproject.toml",
+      "filePath": "pyproject.toml",
+      "summary": "占位符配置文件，无 Python 依赖；仅作为工作区标记存在，本项目实际为 Swift 项目。",
+      "tags": ["configuration", "stub", "placeholder"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:README.md",
+      "target": "document:CLAUDE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:build-app.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "file:build-app.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "config:pyproject.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

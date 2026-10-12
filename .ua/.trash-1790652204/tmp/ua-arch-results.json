@@ -1,0 +1,93 @@
+{
+  "scriptCompleted": true,
+  "directoryGroups": {
+    "<root>": [
+      "document:CLAUDE.md",
+      "document:README.md",
+      "file:build-app.sh",
+      "config:pyproject.toml"
+    ],
+    ".ua": [
+      "config:.ua/config.json"
+    ],
+    "LockChineseIME": [
+      "config:LockChineseIME/Info.plist",
+      "file:LockChineseIME/main.swift",
+      "file:LockChineseIME/AppCore.swift",
+      "file:LockChineseIME/AppDelegate.swift",
+      "file:LockChineseIME/StatusBar.swift",
+      "file:LockChineseIME/Settings.swift",
+      "file:LockChineseIME/LaunchAtLogin.swift"
+    ],
+    "InputMethodStatus": [
+      "file:InputMethodStatus/main.swift"
+    ],
+    "InputSourceLock": [
+      "file:InputSourceLock/InputSourceLock/main.swift",
+      "file:InputSourceLock/list_input_sources.swift",
+      "file:InputSourceLock/build.sh"
+    ]
+  },
+  "nodeTypeGroups": {
+    "document": [
+      "document:CLAUDE.md",
+      "document:README.md"
+    ],
+    "file": [
+      "file:build-app.sh",
+      "file:LockChineseIME/main.swift",
+      "file:LockChineseIME/AppCore.swift",
+      "file:LockChineseIME/AppDelegate.swift",
+      "file:LockChineseIME/StatusBar.swift",
+      "file:LockChineseIME/Settings.swift",
+      "file:LockChineseIME/LaunchAtLogin.swift",
+      "file:InputMethodStatus/main.swift",
+      "file:InputSourceLock/InputSourceLock/main.swift",
+      "file:InputSourceLock/list_input_sources.swift",
+      "file:InputSourceLock/build.sh"
+    ],
+    "config": [
+      "config:pyproject.toml",
+      "config:.ua/config.json",
+      "config:LockChineseIME/Info.plist"
+    ]
+  },
+  "patternMatches": {
+    "CLAUDE.md": "documentation",
+    "README.md": "documentation",
+    "pyproject.toml": "config",
+    "LockChineseIME/Info.plist": "config",
+    "LockChineseIME/main.swift": "entry",
+    "InputMethodStatus/main.swift": "entry",
+    "InputSourceLock/InputSourceLock/main.swift": "entry"
+  },
+  "crossCategoryEdges": {
+    "document->document:related": 1,
+    "document->file:documents": 2,
+    "file->config:related": 1,
+    "file->file:depends_on": 15,
+    "file->config:configures": 1,
+    "config->file:configures": 1,
+    "file->config:depends_on": 1,
+    "file->file:related": 2
+  },
+  "interGroupImports": {
+    "InputSourceLock->InputMethodStatus": 1,
+    "<root>->LockChineseIME": 7
+  },
+  "fileStats": {
+    "totalFileNodes": 16,
+    "filesPerGroup": {
+      "<root>": 4,
+      ".ua": 1,
+      "LockChineseIME": 7,
+      "InputMethodStatus": 1,
+      "InputSourceLock": 3
+    },
+    "nodeTypeCounts": {
+      "document": 2,
+      "file": 11,
+      "config": 3
+    }
+  }
+}

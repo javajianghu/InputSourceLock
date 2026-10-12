@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 16,
+  "totalBatches": 2,
+  "exportsByPath": {
+    "InputMethodStatus/main.swift": [
+      "getCurrentInputSourceID",
+      "tisGetString",
+      "isChineseCapableInputSource",
+      "tisGetLocalizedName",
+      "getAvailableInputSources",
+      "canBecomeKey",
+      "canBecomeMain",
+      "StatusOverlayWindow.init",
+      "reposition",
+      "showChinese",
+      "showEnglish",
+      "StatusOverlayWindow",
+      "targetInputSourceID",
+      "initialIsChinese",
+      "InitConfig",
+      "targetInputSourceID",
+      "InputMethodManager.init",
+      "configure",
+      "setTargetInputSourceID",
+      "start",
+      "cleanup",
+      "InputMethodManager",
+      "manager",
+      "window",
+      "AppDelegate.init",
+      "applicationDidFinishLaunching",
+      "applicationWillTerminate",
+      "AppDelegate"
+    ],
+    "InputSourceLock/InputSourceLock/main.swift": [
+      "InputSourceMonitor.init",
+      "getAvailableInputSources",
+      "getCurrentInputSourceID",
+      "selectInputSource",
+      "startMonitoring",
+      "stopMonitoring",
+      "InputSourceMonitor",
+      "printUsage",
+      "main"
+    ],
+    "InputSourceLock/list_input_sources.swift": [
+      "getAvailableInputSources",
+      "getCurrentInputSourceID"
+    ],
+    "LockChineseIME/AppCore.swift": [
+      "inputMethodStateDidChange",
+      "getCurrentInputSourceID",
+      "tisGetString",
+      "isChineseCapableInputSource",
+      "getAvailableInputSources",
+      "canBecomeKey",
+      "canBecomeMain",
+      "StatusOverlayWindow.init",
+      "reposition",
+      "showChinese",
+      "showEnglish",
+      "hide",
+      "StatusOverlayWindow",
+      "targetInputSourceID",
+      "initialIsChinese",
+      "currentInputSourceID",
+      "isChineseMode",
+      "isOnTargetInputSource",
+      "isEventTapActive",
+      "overlayEnabled",
+      "InputMethodManager.init",
+      "setTargetInputSourceID",
+      "start",
+      "setOverlayEnabled",
+      "cleanup",
+      "InputMethodManager"
+    ],
+    "LockChineseIME/AppDelegate.swift": [
+      "applicationDidFinishLaunching",
+      "applicationShouldHandleReopen",
+      "applicationShouldTerminateAfterLastWindowClosed",
+      "openSettings",
+      "applicationWillTerminate",
+      "AppDelegate"
+    ],
+    "LockChineseIME/LaunchAtLogin.swift": [
+      "isEnabled",
+      "enable",
+      "disable",
+      "LaunchAtLogin"
+    ],
+    "LockChineseIME/Settings.swift": [
+      "SettingsWindowController.init",
+      "SettingsWindowController.init",
+      "SettingsWindowController"
+    ],
+    "LockChineseIME/StatusBar.swift": [
+      "StatusBarController.init",
+      "menuNeedsUpdate",
+      "StatusBarController"
+    ],
+    "LockChineseIME/main.swift": []
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "CLAUDE.md",
+          "language": "markdown",
+          "sizeLines": 150,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "README.md",
+          "language": "markdown",
+          "sizeLines": 114,
+          "fileCategory": "docs"
+        },
+        {
+          "path": "build-app.sh",
+          "language": "shell",
+          "sizeLines": 159,
+          "fileCategory": "script"
+        },
+        {
+          "path": "pyproject.toml",
+          "language": "toml",
+          "sizeLines": 5,
+          "fileCategory": "config"
+        }
+      ],
+      "batchImportData": {
+        "CLAUDE.md": [],
+        "README.md": [],
+        "build-app.sh": [],
+        "pyproject.toml": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": ".ua/config.json",
+          "language": "json",
+          "sizeLines": 3,
+          "fileCategory": "config"
+        },
+        {
+          "path": "InputMethodStatus/main.swift",
+          "language": "swift",
+          "sizeLines": 610,
+          "fileCategory": "code"
+        },
+        {
+          "path": "InputSourceLock/InputSourceLock/main.swift",
+          "language": "swift",
+          "sizeLines": 243,
+          "fileCategory": "code"
+        },
+        {
+          "path": "InputSourceLock/build.sh",
+          "language": "shell",
+          "sizeLines": 45,
+          "fileCategory": "script"
+        },
+        {
+          "path": "InputSourceLock/list_input_sources.swift",
+          "language": "swift",
+          "sizeLines": 74,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/AppCore.swift",
+          "language": "swift",
+          "sizeLines": 456,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/AppDelegate.swift",
+          "language": "swift",
+          "sizeLines": 88,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/Info.plist",
+          "language": "xml",
+          "sizeLines": 42,
+          "fileCategory": "config"
+        },
+        {
+          "path": "LockChineseIME/LaunchAtLogin.swift",
+          "language": "swift",
+          "sizeLines": 35,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/Settings.swift",
+          "language": "swift",
+          "sizeLines": 457,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/StatusBar.swift",
+          "language": "swift",
+          "sizeLines": 140,
+          "fileCategory": "code"
+        },
+        {
+          "path": "LockChineseIME/main.swift",
+          "language": "swift",
+          "sizeLines": 17,
+          "fileCategory": "code"
+        }
+      ],
+      "batchImportData": {
+        ".ua/config.json": [],
+        "InputMethodStatus/main.swift": [],
+        "InputSourceLock/InputSourceLock/main.swift": [],
+        "InputSourceLock/build.sh": [],
+        "InputSourceLock/list_input_sources.swift": [],
+        "LockChineseIME/AppCore.swift": [],
+        "LockChineseIME/AppDelegate.swift": [],
+        "LockChineseIME/Info.plist": [],
+        "LockChineseIME/LaunchAtLogin.swift": [],
+        "LockChineseIME/Settings.swift": [],
+        "LockChineseIME/StatusBar.swift": [],
+        "LockChineseIME/main.swift": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

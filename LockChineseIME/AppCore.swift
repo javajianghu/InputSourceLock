@@ -153,10 +153,24 @@ final class InputMethodManager: NSObject {
 
     // MARK: Config
 
+    /// 持久化键：锁定目标输入法 ID。
+    private static let targetIDKey = "targetInputSourceID"
+    /// 配套标记：用户是否已经选过一次目标输入法。
+    /// 用于区分「首次启动（未选过）」与「明确选过不锁定」两种情况。
+    private static let targetConfiguredKey = "targetInputSourceIDConfigured"
+    /// 持久化键：初始中英文模式。
+    /// 用 Int 编码：-1 = nil（沿用默认推导），0 = 英文，1 = 中文。
+    private static let initialChineseKey = "initialIsChinese"
+
+    /// 锁定目标输入法 ID。赋值会写入 UserDefaults，重启 / 重开 app 后自动恢复。
     private(set) var targetInputSourceID: String?
-    /// 初始的中英文模式；nil 表示沿用默认推导（currentID==target → 中文）
+    /// 初始的中英文模式；nil 表示沿用默认推导（currentID==target → 中文）。
+    /// 赋值会写入 UserDefaults，重启 / 重开 app 后自动恢复。
     var initialIsChinese: Bool? {
-        didSet { applyInitialStateIfNeeded() }
+        didSet {
+            Self.persistInitialChinese(initialIsChinese)
+            applyInitialStateIfNeeded()
+        }
     }
 
     // MARK: UI
@@ -200,12 +214,19 @@ final class InputMethodManager: NSObject {
     init(targetInputSourceID: String?) {
         let cursor = NSEvent.mouseLocation
         self.window = StatusOverlayWindow(initialCursor: cursor)
-        self.targetInputSourceID = targetInputSourceID
+        // 优先用调用方传入的值；否则从 defaults 恢复上次保存的目标。
+        if let passed = targetInputSourceID {
+            self.targetInputSourceID = passed
+        } else {
+            self.targetInputSourceID = Self.loadPersistedTargetID()
+        }
+        self.initialIsChinese = Self.loadPersistedInitialChinese()
         super.init()
     }
 
     func setTargetInputSourceID(_ id: String?) {
         targetInputSourceID = id
+        Self.persistTargetID(id)
         // 切换目标后立即重新评估状态
         if let currentID = getCurrentInputSourceID() {
             currentInputSourceID = currentID
@@ -213,6 +234,42 @@ final class InputMethodManager: NSObject {
             updateDisplay()
             notifyStateChange()
         }
+    }
+
+    // MARK: Persistence helpers
+
+    private static func loadPersistedTargetID() -> String? {
+        // 用单独的「已配置」标记区分首次启动（未选过）与明确选过「不锁定」。
+        guard UserDefaults.standard.bool(forKey: targetConfiguredKey) else {
+            return nil
+        }
+        return UserDefaults.standard.string(forKey: targetIDKey)
+    }
+
+    private static func persistTargetID(_ id: String?) {
+        UserDefaults.standard.set(id, forKey: targetIDKey)
+        UserDefaults.standard.set(true, forKey: targetConfiguredKey)
+    }
+
+    private static func loadPersistedInitialChinese() -> Bool? {
+        guard let obj = UserDefaults.standard.object(forKey: initialChineseKey) as? Int else {
+            return nil
+        }
+        switch obj {
+        case 1: return true
+        case 0: return false
+        default: return nil   // -1 = 跟随默认推导
+        }
+    }
+
+    private static func persistInitialChinese(_ value: Bool?) {
+        let encoded: Int
+        switch value {
+        case .some(true):  encoded = 1
+        case .some(false): encoded = 0
+        case .none:        encoded = -1
+        }
+        UserDefaults.standard.set(encoded, forKey: initialChineseKey)
     }
 
     // MARK: Start / Stop

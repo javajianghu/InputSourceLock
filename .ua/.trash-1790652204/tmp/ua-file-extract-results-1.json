@@ -1,0 +1,235 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 4,
+  "filesSkipped": [],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 4,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 0,
+      "failed": 0,
+      "skipped": 4
+    }
+  },
+  "results": [
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 150,
+      "nonEmptyLines": 99,
+      "sections": [
+        {
+          "heading": "CLAUDE.md",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "What this is",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "Build",
+          "level": 2,
+          "line": 15
+        },
+        {
+          "heading": "App (recommended)",
+          "level": 3,
+          "line": 17
+        },
+        {
+          "heading": "CLI tools (legacy)",
+          "level": 3,
+          "line": 25
+        },
+        {
+          "heading": "Run",
+          "level": 2,
+          "line": 38
+        },
+        {
+          "heading": "App",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "CLI",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "Tests / Lint / CI",
+          "level": 2,
+          "line": 66
+        },
+        {
+          "heading": "Architecture",
+          "level": 2,
+          "line": 70
+        },
+        {
+          "heading": "Source layout",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "`LockChineseIME/AppCore.swift` — the App's core",
+          "level": 3,
+          "line": 92
+        },
+        {
+          "heading": "`LockChineseIME/StatusBar.swift` — menu bar",
+          "level": 3,
+          "line": 100
+        },
+        {
+          "heading": "`LockChineseIME/Settings.swift` — settings window",
+          "level": 3,
+          "line": 104
+        },
+        {
+          "heading": "`LockChineseIME/AppDelegate.swift`",
+          "level": 3,
+          "line": 108
+        },
+        {
+          "heading": "`LockChineseIME/LaunchAtLogin.swift`",
+          "level": 3,
+          "line": 115
+        },
+        {
+          "heading": "Lock + state machine",
+          "level": 3,
+          "line": 119
+        },
+        {
+          "heading": "`InputSourceLock/InputSourceLock/main.swift` — legacy",
+          "level": 3,
+          "line": 126
+        },
+        {
+          "heading": "`InputMethodStatus/main.swift` — the legacy CLI",
+          "level": 3,
+          "line": 130
+        },
+        {
+          "heading": "Gotchas (read before changing anything)",
+          "level": 2,
+          "line": 134
+        },
+        {
+          "heading": "Conventions specific to this repo",
+          "level": 2,
+          "line": 145
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 21
+      }
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 114,
+      "nonEmptyLines": 88,
+      "sections": [
+        {
+          "heading": "锁定中文输入法",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "安装使用",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "功能",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "权限",
+          "level": 2,
+          "line": 31
+        },
+        {
+          "heading": "应用结构",
+          "level": 2,
+          "line": 43
+        },
+        {
+          "heading": "状态检测原理",
+          "level": 2,
+          "line": 71
+        },
+        {
+          "heading": "开发命令",
+          "level": 2,
+          "line": 92
+        },
+        {
+          "heading": "平台要求",
+          "level": 2,
+          "line": 105
+        },
+        {
+          "heading": "许可证",
+          "level": 2,
+          "line": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "build-app.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 159,
+      "nonEmptyLines": 136,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "pyproject.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "totalLines": 5,
+      "nonEmptyLines": 5,
+      "sections": [
+        {
+          "heading": "project",
+          "level": 1,
+          "line": 1
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    }
+  ]
+}

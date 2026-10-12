@@ -1,0 +1,4237 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 11,
+  "filesSkipped": [
+    "LockChineseIME/Info.plist"
+  ],
+  "filesUnreadable": [],
+  "analysisOutcomes": {
+    "structure": {
+      "succeeded": 11,
+      "failed": 0
+    },
+    "callGraph": {
+      "succeeded": 9,
+      "failed": 0,
+      "skipped": 2
+    }
+  },
+  "results": [
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 4,
+      "nonEmptyLines": 4,
+      "sections": [
+        {
+          "heading": "outputLanguage",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "autoUpdate",
+          "level": 1,
+          "line": 3
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "InputMethodStatus/main.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 610,
+      "nonEmptyLines": 497,
+      "functions": [
+        {
+          "name": "getCurrentInputSourceID",
+          "startLine": 28,
+          "endLine": 33,
+          "params": []
+        },
+        {
+          "name": "tisGetString",
+          "startLine": 35,
+          "endLine": 38,
+          "params": [
+            "source",
+            "key"
+          ]
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "startLine": 40,
+          "endLine": 42,
+          "params": [
+            "sourceID"
+          ]
+        },
+        {
+          "name": "tisGetLocalizedName",
+          "startLine": 44,
+          "endLine": 46,
+          "params": [
+            "source"
+          ]
+        },
+        {
+          "name": "getAvailableInputSources",
+          "startLine": 49,
+          "endLine": 63,
+          "params": []
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "startLine": 79,
+          "endLine": 116,
+          "params": [
+            "initialCursor"
+          ]
+        },
+        {
+          "name": "reposition",
+          "startLine": 119,
+          "endLine": 126,
+          "params": [
+            "cursor"
+          ]
+        },
+        {
+          "name": "showChinese",
+          "startLine": 129,
+          "endLine": 133,
+          "params": []
+        },
+        {
+          "name": "showEnglish",
+          "startLine": 135,
+          "endLine": 139,
+          "params": []
+        },
+        {
+          "name": "showInitDialog",
+          "startLine": 154,
+          "endLine": 238,
+          "params": []
+        },
+        {
+          "name": "RadioSyncCoordinator.init",
+          "startLine": 245,
+          "endLine": 252,
+          "params": [
+            "buttons"
+          ]
+        },
+        {
+          "name": "RadioSyncCoordinator.init",
+          "startLine": 254,
+          "endLine": 256,
+          "params": [
+            "chinese",
+            "english"
+          ]
+        },
+        {
+          "name": "radioClicked",
+          "startLine": 258,
+          "endLine": 262,
+          "params": [
+            "sender"
+          ]
+        },
+        {
+          "name": "InputMethodManager.init",
+          "startLine": 311,
+          "endLine": 315,
+          "params": [
+            "window",
+            "targetInputSourceID"
+          ]
+        },
+        {
+          "name": "configure",
+          "startLine": 318,
+          "endLine": 320,
+          "params": [
+            "initialIsChinese"
+          ]
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "startLine": 323,
+          "endLine": 325,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "start",
+          "startLine": 329,
+          "endLine": 366,
+          "params": []
+        },
+        {
+          "name": "onTick",
+          "startLine": 370,
+          "endLine": 389,
+          "params": []
+        },
+        {
+          "name": "trackCursor",
+          "startLine": 393,
+          "endLine": 396,
+          "params": []
+        },
+        {
+          "name": "selectAndLockSource",
+          "startLine": 400,
+          "endLine": 430,
+          "params": [
+            "targetID"
+          ]
+        },
+        {
+          "name": "updateDisplay",
+          "startLine": 434,
+          "endLine": 442,
+          "params": []
+        },
+        {
+          "name": "setupEventTap",
+          "startLine": 446,
+          "endLine": 479,
+          "params": []
+        },
+        {
+          "name": "handleEvent",
+          "startLine": 481,
+          "endLine": 492,
+          "params": [
+            "type",
+            "event"
+          ]
+        },
+        {
+          "name": "handleFlagsChanged",
+          "startLine": 495,
+          "endLine": 515,
+          "params": [
+            "event"
+          ]
+        },
+        {
+          "name": "handleKeyDown",
+          "startLine": 518,
+          "endLine": 527,
+          "params": [
+            "event"
+          ]
+        },
+        {
+          "name": "cleanup",
+          "startLine": 531,
+          "endLine": 541,
+          "params": []
+        },
+        {
+          "name": "AppDelegate.init",
+          "startLine": 551,
+          "endLine": 556,
+          "params": [
+            "targetInputSourceID"
+          ]
+        },
+        {
+          "name": "applicationDidFinishLaunching",
+          "startLine": 558,
+          "endLine": 584,
+          "params": [
+            "notification"
+          ]
+        },
+        {
+          "name": "applicationWillTerminate",
+          "startLine": 586,
+          "endLine": 589,
+          "params": [
+            "notification"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "StatusOverlayWindow",
+          "startLine": 71,
+          "endLine": 140,
+          "methods": [
+            "init",
+            "reposition",
+            "showChinese",
+            "showEnglish"
+          ],
+          "properties": [
+            "bgView",
+            "label",
+            "canBecomeKey",
+            "canBecomeMain"
+          ]
+        },
+        {
+          "name": "InitConfig",
+          "startLine": 145,
+          "endLine": 150,
+          "methods": [],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese"
+          ]
+        },
+        {
+          "name": "RadioSyncCoordinator",
+          "startLine": 242,
+          "endLine": 263,
+          "methods": [
+            "init",
+            "init",
+            "radioClicked"
+          ],
+          "properties": [
+            "buttons"
+          ]
+        },
+        {
+          "name": "InputMethodManager",
+          "startLine": 267,
+          "endLine": 542,
+          "methods": [
+            "init",
+            "configure",
+            "setTargetInputSourceID",
+            "start",
+            "onTick",
+            "trackCursor",
+            "selectAndLockSource",
+            "updateDisplay",
+            "setupEventTap",
+            "handleEvent",
+            "handleFlagsChanged",
+            "handleKeyDown",
+            "cleanup"
+          ],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese",
+            "window",
+            "currentInputSourceID",
+            "isChineseMode",
+            "isOnTargetInputSource",
+            "eventTap",
+            "shiftHeld",
+            "otherKeyUsedWhileShift",
+            "shiftKeyCodes",
+            "pollingTimer",
+            "cursorTrackTimer"
+          ]
+        },
+        {
+          "name": "AppDelegate",
+          "startLine": 546,
+          "endLine": 590,
+          "methods": [
+            "init",
+            "applicationDidFinishLaunching",
+            "applicationWillTerminate"
+          ],
+          "properties": [
+            "manager",
+            "window"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getCurrentInputSourceID",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "tisGetString",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "tisGetLocalizedName",
+          "line": 44,
+          "isDefault": false
+        },
+        {
+          "name": "getAvailableInputSources",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "canBecomeKey",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "canBecomeMain",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "line": 79,
+          "isDefault": false
+        },
+        {
+          "name": "reposition",
+          "line": 119,
+          "isDefault": false
+        },
+        {
+          "name": "showChinese",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "showEnglish",
+          "line": 135,
+          "isDefault": false
+        },
+        {
+          "name": "StatusOverlayWindow",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "targetInputSourceID",
+          "line": 147,
+          "isDefault": false
+        },
+        {
+          "name": "initialIsChinese",
+          "line": 149,
+          "isDefault": false
+        },
+        {
+          "name": "InitConfig",
+          "line": 145,
+          "isDefault": false
+        },
+        {
+          "name": "targetInputSourceID",
+          "line": 272,
+          "isDefault": false
+        },
+        {
+          "name": "InputMethodManager.init",
+          "line": 311,
+          "isDefault": false
+        },
+        {
+          "name": "configure",
+          "line": 318,
+          "isDefault": false
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "line": 323,
+          "isDefault": false
+        },
+        {
+          "name": "start",
+          "line": 329,
+          "isDefault": false
+        },
+        {
+          "name": "cleanup",
+          "line": 531,
+          "isDefault": false
+        },
+        {
+          "name": "InputMethodManager",
+          "line": 267,
+          "isDefault": false
+        },
+        {
+          "name": "manager",
+          "line": 548,
+          "isDefault": false
+        },
+        {
+          "name": "window",
+          "line": 549,
+          "isDefault": false
+        },
+        {
+          "name": "AppDelegate.init",
+          "line": 551,
+          "isDefault": false
+        },
+        {
+          "name": "applicationDidFinishLaunching",
+          "line": 558,
+          "isDefault": false
+        },
+        {
+          "name": "applicationWillTerminate",
+          "line": 586,
+          "isDefault": false
+        },
+        {
+          "name": "AppDelegate",
+          "line": 546,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource().takeRetainedValue",
+          "lineNumber": 29
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource",
+          "lineNumber": 29
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "tisGetString",
+          "lineNumber": 32
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 36
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "Unmanaged<CFString>.fromOpaque(ptr).takeUnretainedValue",
+          "lineNumber": 37
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 37
+        },
+        {
+          "caller": "tisGetLocalizedName",
+          "callee": "tisGetString",
+          "lineNumber": 45
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList(nil, false).takeRetainedValue",
+          "lineNumber": 51
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 51
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 54
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "unsafeBitCast",
+          "lineNumber": 56
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 56
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "tisGetString",
+          "lineNumber": 57
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "tisGetString",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "append",
+          "lineNumber": 59
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSView",
+          "lineNumber": 80
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 80
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSTextField",
+          "lineNumber": 85
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 85
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSFont.monospacedDigitSystemFont",
+          "lineNumber": 91
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "addSubview",
+          "lineNumber": 92
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 94
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "super.init",
+          "lineNumber": 101
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "addSubview",
+          "lineNumber": 115
+        },
+        {
+          "caller": "reposition",
+          "callee": "setFrame",
+          "lineNumber": 120
+        },
+        {
+          "caller": "reposition",
+          "callee": "NSRect",
+          "lineNumber": 120
+        },
+        {
+          "caller": "showChinese",
+          "callee": "NSColor",
+          "lineNumber": 132
+        },
+        {
+          "caller": "showEnglish",
+          "callee": "NSColor",
+          "lineNumber": 138
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 155
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSAlert",
+          "lineNumber": 157
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSView",
+          "lineNumber": 163
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 163
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSTextField",
+          "lineNumber": 166
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 167
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 168
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addSubview",
+          "lineNumber": 169
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSPopUpButton",
+          "lineNumber": 171
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 171
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 172
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addItem",
+          "lineNumber": 175
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addItem",
+          "lineNumber": 179
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "firstIndex",
+          "lineNumber": 183
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "isChineseCapableInputSource",
+          "lineNumber": 183
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "selectItem",
+          "lineNumber": 184
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addSubview",
+          "lineNumber": 191
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSTextField",
+          "lineNumber": 194
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 195
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 196
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addSubview",
+          "lineNumber": 197
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSButton",
+          "lineNumber": 199
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "setButtonType",
+          "lineNumber": 201
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 202
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addSubview",
+          "lineNumber": 204
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSButton",
+          "lineNumber": 206
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "setButtonType",
+          "lineNumber": 208
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "NSRect",
+          "lineNumber": 209
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addSubview",
+          "lineNumber": 211
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "RadioSyncCoordinator",
+          "lineNumber": 215
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addButton",
+          "lineNumber": 218
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "addButton",
+          "lineNumber": 219
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "runModal",
+          "lineNumber": 221
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "sources",
+          "lineNumber": 231
+        },
+        {
+          "caller": "showInitDialog",
+          "callee": "InitConfig",
+          "lineNumber": 234
+        },
+        {
+          "caller": "RadioSyncCoordinator.init",
+          "callee": "super.init",
+          "lineNumber": 247
+        },
+        {
+          "caller": "RadioSyncCoordinator.init",
+          "callee": "radioClicked",
+          "lineNumber": 250
+        },
+        {
+          "caller": "RadioSyncCoordinator.init",
+          "callee": "init",
+          "lineNumber": 255
+        },
+        {
+          "caller": "InputMethodManager.init",
+          "callee": "super.init",
+          "lineNumber": 314
+        },
+        {
+          "caller": "start",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 331
+        },
+        {
+          "caller": "start",
+          "callee": "updateDisplay",
+          "lineNumber": 341
+        },
+        {
+          "caller": "start",
+          "callee": "DistributedNotificationCenter.default().addObserver",
+          "lineNumber": 344
+        },
+        {
+          "caller": "start",
+          "callee": "DistributedNotificationCenter.default",
+          "lineNumber": 344
+        },
+        {
+          "caller": "start",
+          "callee": "NSNotification.Name",
+          "lineNumber": 345
+        },
+        {
+          "caller": "start",
+          "callee": "DispatchQueue.main.asyncAfter",
+          "lineNumber": 349
+        },
+        {
+          "caller": "start",
+          "callee": "onTick",
+          "lineNumber": 350
+        },
+        {
+          "caller": "start",
+          "callee": "Timer.scheduledTimer",
+          "lineNumber": 355
+        },
+        {
+          "caller": "start",
+          "callee": "onTick",
+          "lineNumber": 356
+        },
+        {
+          "caller": "start",
+          "callee": "setupEventTap",
+          "lineNumber": 360
+        },
+        {
+          "caller": "start",
+          "callee": "Timer.scheduledTimer",
+          "lineNumber": 363
+        },
+        {
+          "caller": "start",
+          "callee": "trackCursor",
+          "lineNumber": 364
+        },
+        {
+          "caller": "onTick",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 371
+        },
+        {
+          "caller": "onTick",
+          "callee": "selectAndLockSource",
+          "lineNumber": 376
+        },
+        {
+          "caller": "onTick",
+          "callee": "updateDisplay",
+          "lineNumber": 386
+        },
+        {
+          "caller": "trackCursor",
+          "callee": "reposition",
+          "lineNumber": 395
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISCreateInputSourceList(nil, false).takeRetainedValue",
+          "lineNumber": 402
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 402
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 403
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "unsafeBitCast",
+          "lineNumber": 410
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 410
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "tisGetString",
+          "lineNumber": 411
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISSelectInputSource",
+          "lineNumber": 413
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "updateDisplay",
+          "lineNumber": 417
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "Thread.sleep",
+          "lineNumber": 427
+        },
+        {
+          "caller": "updateDisplay",
+          "callee": "showChinese",
+          "lineNumber": 438
+        },
+        {
+          "caller": "updateDisplay",
+          "callee": "showEnglish",
+          "lineNumber": 440
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CGEvent.tapCreate",
+          "lineNumber": 453
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 460
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged<InputMethodManager>.fromOpaque(userInfo).takeUnretainedValue",
+          "lineNumber": 462
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged<InputMethodManager>.fromOpaque",
+          "lineNumber": 462
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "handleEvent",
+          "lineNumber": 463
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 464
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained(self).toOpaque",
+          "lineNumber": 466
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 466
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 468
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 469
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 470
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFMachPortCreateRunLoopSource",
+          "lineNumber": 475
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFRunLoopAddSource",
+          "lineNumber": 476
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFRunLoopGetCurrent",
+          "lineNumber": 476
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CGEvent.tapEnable",
+          "lineNumber": 477
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 478
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handleFlagsChanged",
+          "lineNumber": 484
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handleKeyDown",
+          "lineNumber": 487
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "UInt64",
+          "lineNumber": 497
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "isChineseCapableInputSource",
+          "lineNumber": 507
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "toggle",
+          "lineNumber": 508
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "updateDisplay",
+          "lineNumber": 509
+        },
+        {
+          "caller": "handleKeyDown",
+          "callee": "contains",
+          "lineNumber": 520
+        },
+        {
+          "caller": "handleKeyDown",
+          "callee": "getIntegerValueField",
+          "lineNumber": 521
+        },
+        {
+          "caller": "cleanup",
+          "callee": "invalidate",
+          "lineNumber": 532
+        },
+        {
+          "caller": "cleanup",
+          "callee": "invalidate",
+          "lineNumber": 534
+        },
+        {
+          "caller": "cleanup",
+          "callee": "CGEvent.tapEnable",
+          "lineNumber": 537
+        },
+        {
+          "caller": "cleanup",
+          "callee": "close",
+          "lineNumber": 540
+        },
+        {
+          "caller": "AppDelegate.init",
+          "callee": "StatusOverlayWindow",
+          "lineNumber": 553
+        },
+        {
+          "caller": "AppDelegate.init",
+          "callee": "InputMethodManager",
+          "lineNumber": 554
+        },
+        {
+          "caller": "AppDelegate.init",
+          "callee": "super.init",
+          "lineNumber": 555
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "NSApp.setActivationPolicy",
+          "lineNumber": 559
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "orderFront",
+          "lineNumber": 560
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "showInitDialog",
+          "lineNumber": 565
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 567
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "NSApp.terminate",
+          "lineNumber": 568
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "setTargetInputSourceID",
+          "lineNumber": 571
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "configure",
+          "lineNumber": 572
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "start",
+          "lineNumber": 575
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 578
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 579
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 581
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 583
+        },
+        {
+          "caller": "applicationWillTerminate",
+          "callee": "cleanup",
+          "lineNumber": 587
+        },
+        {
+          "caller": "applicationWillTerminate",
+          "callee": "print",
+          "lineNumber": 588
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 28,
+        "functionCount": 29,
+        "classCount": 5
+      }
+    },
+    {
+      "path": "InputSourceLock/InputSourceLock/main.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 243,
+      "nonEmptyLines": 197,
+      "functions": [
+        {
+          "name": "InputSourceMonitor.init",
+          "startLine": 13,
+          "endLine": 18,
+          "params": [
+            "targetInputSourceID"
+          ]
+        },
+        {
+          "name": "getAvailableInputSources",
+          "startLine": 21,
+          "endLine": 43,
+          "params": []
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "startLine": 46,
+          "endLine": 59,
+          "params": []
+        },
+        {
+          "name": "selectInputSource",
+          "startLine": 62,
+          "endLine": 114,
+          "params": [
+            "inputSourceID"
+          ]
+        },
+        {
+          "name": "startMonitoring",
+          "startLine": 117,
+          "endLine": 133,
+          "params": []
+        },
+        {
+          "name": "checkInputSource",
+          "startLine": 136,
+          "endLine": 168,
+          "params": []
+        },
+        {
+          "name": "stopMonitoring",
+          "startLine": 171,
+          "endLine": 175,
+          "params": []
+        },
+        {
+          "name": "printUsage",
+          "startLine": 179,
+          "endLine": 202,
+          "params": []
+        },
+        {
+          "name": "main",
+          "startLine": 205,
+          "endLine": 241,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "InputSourceMonitor",
+          "startLine": 5,
+          "endLine": 176,
+          "methods": [
+            "init",
+            "getAvailableInputSources",
+            "getCurrentInputSourceID",
+            "selectInputSource",
+            "startMonitoring",
+            "checkInputSource",
+            "stopMonitoring"
+          ],
+          "properties": [
+            "timer",
+            "lastInputSourceID",
+            "targetInputSourceID",
+            "checkInterval",
+            "maxRetryCount",
+            "retryDelay"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "InputSourceMonitor.init",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "getAvailableInputSources",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "selectInputSource",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "startMonitoring",
+          "line": 117,
+          "isDefault": false
+        },
+        {
+          "name": "stopMonitoring",
+          "line": 171,
+          "isDefault": false
+        },
+        {
+          "name": "InputSourceMonitor",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "printUsage",
+          "line": 179,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 205,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "InputSourceMonitor.init",
+          "callee": "print",
+          "lineNumber": 15
+        },
+        {
+          "caller": "InputSourceMonitor.init",
+          "callee": "print",
+          "lineNumber": 16
+        },
+        {
+          "caller": "InputSourceMonitor.init",
+          "callee": "print",
+          "lineNumber": 17
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 24
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "takeRetainedValue",
+          "lineNumber": 28
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 29
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "unsafeBitCast",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 34
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 36
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque(namePointer).takeUnretainedValue",
+          "lineNumber": 37
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 37
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "append",
+          "lineNumber": 38
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource",
+          "lineNumber": 47
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "takeRetainedValue",
+          "lineNumber": 51
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 53
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue",
+          "lineNumber": 57
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 57
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 66
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 67
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "takeRetainedValue",
+          "lineNumber": 71
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 72
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "unsafeBitCast",
+          "lineNumber": 76
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 76
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 78
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue",
+          "lineNumber": 79
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 79
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "TISSelectInputSource",
+          "lineNumber": 83
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 86
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 88
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 99
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 105
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "Thread.sleep",
+          "lineNumber": 106
+        },
+        {
+          "caller": "selectInputSource",
+          "callee": "print",
+          "lineNumber": 108
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "print",
+          "lineNumber": 118
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "print",
+          "lineNumber": 119
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 121
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "print",
+          "lineNumber": 123
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "Timer.scheduledTimer",
+          "lineNumber": 126
+        },
+        {
+          "caller": "startMonitoring",
+          "callee": "RunLoop.current.run",
+          "lineNumber": 132
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 137
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "print",
+          "lineNumber": 144
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "print",
+          "lineNumber": 152
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "print",
+          "lineNumber": 155
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "selectInputSource",
+          "lineNumber": 158
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "print",
+          "lineNumber": 163
+        },
+        {
+          "caller": "checkInputSource",
+          "callee": "print",
+          "lineNumber": 165
+        },
+        {
+          "caller": "stopMonitoring",
+          "callee": "invalidate",
+          "lineNumber": 172
+        },
+        {
+          "caller": "stopMonitoring",
+          "callee": "print",
+          "lineNumber": 174
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 180
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 181
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 182
+        },
+        {
+          "caller": "printUsage",
+          "callee": "InputSourceMonitor",
+          "lineNumber": 184
+        },
+        {
+          "caller": "printUsage",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 185
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 187
+        },
+        {
+          "caller": "printUsage",
+          "callee": "enumerated",
+          "lineNumber": 188
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 189
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 190
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 193
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 194
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 195
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 196
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 197
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 198
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 199
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 200
+        },
+        {
+          "caller": "printUsage",
+          "callee": "print",
+          "lineNumber": 201
+        },
+        {
+          "caller": "main",
+          "callee": "printUsage",
+          "lineNumber": 209
+        },
+        {
+          "caller": "main",
+          "callee": "exit",
+          "lineNumber": 210
+        },
+        {
+          "caller": "main",
+          "callee": "args",
+          "lineNumber": 213
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 215
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 216
+        },
+        {
+          "caller": "main",
+          "callee": "InputSourceMonitor",
+          "lineNumber": 219
+        },
+        {
+          "caller": "main",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 220
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 223
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 224
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 226
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 227
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 229
+        },
+        {
+          "caller": "main",
+          "callee": "exit",
+          "lineNumber": 230
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 233
+        },
+        {
+          "caller": "main",
+          "callee": "signal",
+          "lineNumber": 235
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 236
+        },
+        {
+          "caller": "main",
+          "callee": "exit",
+          "lineNumber": 237
+        },
+        {
+          "caller": "main",
+          "callee": "startMonitoring",
+          "lineNumber": 240
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 9,
+        "functionCount": 9,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "InputSourceLock/build.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 45,
+      "nonEmptyLines": 38,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "InputSourceLock/list_input_sources.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 58,
+      "functions": [
+        {
+          "name": "getAvailableInputSources",
+          "startLine": 6,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "startLine": 31,
+          "endLine": 44,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "getAvailableInputSources",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 9
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "takeRetainedValue",
+          "lineNumber": 13
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 14
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "unsafeBitCast",
+          "lineNumber": 17
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 17
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 19
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue",
+          "lineNumber": 20
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 20
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 21
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque(namePointer).takeUnretainedValue",
+          "lineNumber": 22
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 22
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "append",
+          "lineNumber": 23
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource",
+          "lineNumber": 32
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "takeRetainedValue",
+          "lineNumber": 36
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 38
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "Unmanaged<CFString>.fromOpaque(idPointer).takeUnretainedValue",
+          "lineNumber": 42
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 42
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "LockChineseIME/AppCore.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 456,
+      "nonEmptyLines": 378,
+      "functions": [
+        {
+          "name": "getCurrentInputSourceID",
+          "startLine": 34,
+          "endLine": 39,
+          "params": []
+        },
+        {
+          "name": "tisGetString",
+          "startLine": 41,
+          "endLine": 44,
+          "params": [
+            "source",
+            "key"
+          ]
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "startLine": 46,
+          "endLine": 48,
+          "params": [
+            "sourceID"
+          ]
+        },
+        {
+          "name": "getAvailableInputSources",
+          "startLine": 51,
+          "endLine": 65,
+          "params": []
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "startLine": 81,
+          "endLine": 118,
+          "params": [
+            "initialCursor"
+          ]
+        },
+        {
+          "name": "reposition",
+          "startLine": 120,
+          "endLine": 127,
+          "params": [
+            "cursor"
+          ]
+        },
+        {
+          "name": "showChinese",
+          "startLine": 129,
+          "endLine": 134,
+          "params": []
+        },
+        {
+          "name": "showEnglish",
+          "startLine": 136,
+          "endLine": 141,
+          "params": []
+        },
+        {
+          "name": "hide",
+          "startLine": 143,
+          "endLine": 145,
+          "params": []
+        },
+        {
+          "name": "InputMethodManager.init",
+          "startLine": 200,
+          "endLine": 205,
+          "params": [
+            "targetInputSourceID"
+          ]
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "startLine": 207,
+          "endLine": 216,
+          "params": [
+            "id"
+          ]
+        },
+        {
+          "name": "start",
+          "startLine": 220,
+          "endLine": 259,
+          "params": []
+        },
+        {
+          "name": "setOverlayEnabled",
+          "startLine": 263,
+          "endLine": 270,
+          "params": [
+            "enabled"
+          ]
+        },
+        {
+          "name": "onTick",
+          "startLine": 274,
+          "endLine": 291,
+          "params": []
+        },
+        {
+          "name": "trackCursor",
+          "startLine": 295,
+          "endLine": 298,
+          "params": []
+        },
+        {
+          "name": "selectAndLockSource",
+          "startLine": 302,
+          "endLine": 332,
+          "params": [
+            "targetID"
+          ]
+        },
+        {
+          "name": "updateDisplay",
+          "startLine": 336,
+          "endLine": 347,
+          "params": []
+        },
+        {
+          "name": "notifyStateChange",
+          "startLine": 350,
+          "endLine": 352,
+          "params": []
+        },
+        {
+          "name": "setupEventTap",
+          "startLine": 356,
+          "endLine": 389,
+          "params": []
+        },
+        {
+          "name": "handleEvent",
+          "startLine": 391,
+          "endLine": 400,
+          "params": [
+            "type",
+            "event"
+          ]
+        },
+        {
+          "name": "handleFlagsChanged",
+          "startLine": 402,
+          "endLine": 420,
+          "params": [
+            "event"
+          ]
+        },
+        {
+          "name": "handleKeyDown",
+          "startLine": 422,
+          "endLine": 430,
+          "params": [
+            "event"
+          ]
+        },
+        {
+          "name": "applyInitialStateIfNeeded",
+          "startLine": 434,
+          "endLine": 441,
+          "params": []
+        },
+        {
+          "name": "cleanup",
+          "startLine": 445,
+          "endLine": 455,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "extension Notification.Name",
+          "startLine": 26,
+          "endLine": 30,
+          "methods": [],
+          "properties": [
+            "inputMethodStateDidChange"
+          ]
+        },
+        {
+          "name": "StatusOverlayWindow",
+          "startLine": 73,
+          "endLine": 146,
+          "methods": [
+            "init",
+            "reposition",
+            "showChinese",
+            "showEnglish",
+            "hide"
+          ],
+          "properties": [
+            "bgView",
+            "label",
+            "canBecomeKey",
+            "canBecomeMain"
+          ]
+        },
+        {
+          "name": "InputMethodManager",
+          "startLine": 152,
+          "endLine": 456,
+          "methods": [
+            "init",
+            "setTargetInputSourceID",
+            "start",
+            "setOverlayEnabled",
+            "onTick",
+            "trackCursor",
+            "selectAndLockSource",
+            "updateDisplay",
+            "notifyStateChange",
+            "setupEventTap",
+            "handleEvent",
+            "handleFlagsChanged",
+            "handleKeyDown",
+            "applyInitialStateIfNeeded",
+            "cleanup"
+          ],
+          "properties": [
+            "targetInputSourceID",
+            "initialIsChinese",
+            "window",
+            "currentInputSourceID",
+            "isChineseMode",
+            "isOnTargetInputSource",
+            "eventTap",
+            "isEventTapActive",
+            "shiftHeld",
+            "otherKeyUsedWhileShift",
+            "shiftKeyCodes",
+            "pollingTimer",
+            "cursorTrackTimer",
+            "hasStarted",
+            "overlayEnabled"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "inputMethodStateDidChange",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "getCurrentInputSourceID",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "tisGetString",
+          "line": 41,
+          "isDefault": false
+        },
+        {
+          "name": "isChineseCapableInputSource",
+          "line": 46,
+          "isDefault": false
+        },
+        {
+          "name": "getAvailableInputSources",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "canBecomeKey",
+          "line": 78,
+          "isDefault": false
+        },
+        {
+          "name": "canBecomeMain",
+          "line": 79,
+          "isDefault": false
+        },
+        {
+          "name": "StatusOverlayWindow.init",
+          "line": 81,
+          "isDefault": false
+        },
+        {
+          "name": "reposition",
+          "line": 120,
+          "isDefault": false
+        },
+        {
+          "name": "showChinese",
+          "line": 129,
+          "isDefault": false
+        },
+        {
+          "name": "showEnglish",
+          "line": 136,
+          "isDefault": false
+        },
+        {
+          "name": "hide",
+          "line": 143,
+          "isDefault": false
+        },
+        {
+          "name": "StatusOverlayWindow",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "targetInputSourceID",
+          "line": 156,
+          "isDefault": false
+        },
+        {
+          "name": "initialIsChinese",
+          "line": 158,
+          "isDefault": false
+        },
+        {
+          "name": "currentInputSourceID",
+          "line": 168,
+          "isDefault": false
+        },
+        {
+          "name": "isChineseMode",
+          "line": 169,
+          "isDefault": false
+        },
+        {
+          "name": "isOnTargetInputSource",
+          "line": 172,
+          "isDefault": false
+        },
+        {
+          "name": "isEventTapActive",
+          "line": 183,
+          "isDefault": false
+        },
+        {
+          "name": "overlayEnabled",
+          "line": 196,
+          "isDefault": false
+        },
+        {
+          "name": "InputMethodManager.init",
+          "line": 200,
+          "isDefault": false
+        },
+        {
+          "name": "setTargetInputSourceID",
+          "line": 207,
+          "isDefault": false
+        },
+        {
+          "name": "start",
+          "line": 220,
+          "isDefault": false
+        },
+        {
+          "name": "setOverlayEnabled",
+          "line": 263,
+          "isDefault": false
+        },
+        {
+          "name": "cleanup",
+          "line": 445,
+          "isDefault": false
+        },
+        {
+          "name": "InputMethodManager",
+          "line": 152,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource().takeRetainedValue",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "TISCopyCurrentKeyboardInputSource",
+          "lineNumber": 35
+        },
+        {
+          "caller": "getCurrentInputSourceID",
+          "callee": "tisGetString",
+          "lineNumber": 38
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "TISGetInputSourceProperty",
+          "lineNumber": 42
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "Unmanaged<CFString>.fromOpaque(ptr).takeUnretainedValue",
+          "lineNumber": 43
+        },
+        {
+          "caller": "tisGetString",
+          "callee": "Unmanaged<CFString>.fromOpaque",
+          "lineNumber": 43
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList(nil, false).takeRetainedValue",
+          "lineNumber": 53
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 53
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 56
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "unsafeBitCast",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 58
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "tisGetString",
+          "lineNumber": 59
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "tisGetString",
+          "lineNumber": 60
+        },
+        {
+          "caller": "getAvailableInputSources",
+          "callee": "append",
+          "lineNumber": 61
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSView",
+          "lineNumber": 82
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 82
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSTextField",
+          "lineNumber": 87
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 87
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSFont.monospacedDigitSystemFont",
+          "lineNumber": 93
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "addSubview",
+          "lineNumber": 94
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "NSRect",
+          "lineNumber": 96
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "super.init",
+          "lineNumber": 103
+        },
+        {
+          "caller": "StatusOverlayWindow.init",
+          "callee": "addSubview",
+          "lineNumber": 117
+        },
+        {
+          "caller": "reposition",
+          "callee": "setFrame",
+          "lineNumber": 121
+        },
+        {
+          "caller": "reposition",
+          "callee": "NSRect",
+          "lineNumber": 121
+        },
+        {
+          "caller": "showChinese",
+          "callee": "NSColor",
+          "lineNumber": 132
+        },
+        {
+          "caller": "showChinese",
+          "callee": "orderFrontRegardless",
+          "lineNumber": 133
+        },
+        {
+          "caller": "showEnglish",
+          "callee": "NSColor",
+          "lineNumber": 139
+        },
+        {
+          "caller": "showEnglish",
+          "callee": "orderFrontRegardless",
+          "lineNumber": 140
+        },
+        {
+          "caller": "hide",
+          "callee": "orderOut",
+          "lineNumber": 144
+        },
+        {
+          "caller": "initialIsChinese",
+          "callee": "applyInitialStateIfNeeded",
+          "lineNumber": 159
+        },
+        {
+          "caller": "InputMethodManager.init",
+          "callee": "StatusOverlayWindow",
+          "lineNumber": 202
+        },
+        {
+          "caller": "InputMethodManager.init",
+          "callee": "super.init",
+          "lineNumber": 204
+        },
+        {
+          "caller": "setTargetInputSourceID",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 210
+        },
+        {
+          "caller": "setTargetInputSourceID",
+          "callee": "updateDisplay",
+          "lineNumber": 213
+        },
+        {
+          "caller": "setTargetInputSourceID",
+          "callee": "notifyStateChange",
+          "lineNumber": 214
+        },
+        {
+          "caller": "start",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 225
+        },
+        {
+          "caller": "start",
+          "callee": "updateDisplay",
+          "lineNumber": 233
+        },
+        {
+          "caller": "start",
+          "callee": "notifyStateChange",
+          "lineNumber": 234
+        },
+        {
+          "caller": "start",
+          "callee": "DistributedNotificationCenter.default().addObserver",
+          "lineNumber": 237
+        },
+        {
+          "caller": "start",
+          "callee": "DistributedNotificationCenter.default",
+          "lineNumber": 237
+        },
+        {
+          "caller": "start",
+          "callee": "NSNotification.Name",
+          "lineNumber": 238
+        },
+        {
+          "caller": "start",
+          "callee": "DispatchQueue.main.asyncAfter",
+          "lineNumber": 242
+        },
+        {
+          "caller": "start",
+          "callee": "onTick",
+          "lineNumber": 243
+        },
+        {
+          "caller": "start",
+          "callee": "Timer.scheduledTimer",
+          "lineNumber": 248
+        },
+        {
+          "caller": "start",
+          "callee": "onTick",
+          "lineNumber": 249
+        },
+        {
+          "caller": "start",
+          "callee": "setupEventTap",
+          "lineNumber": 253
+        },
+        {
+          "caller": "start",
+          "callee": "Timer.scheduledTimer",
+          "lineNumber": 256
+        },
+        {
+          "caller": "start",
+          "callee": "trackCursor",
+          "lineNumber": 257
+        },
+        {
+          "caller": "setOverlayEnabled",
+          "callee": "updateDisplay",
+          "lineNumber": 266
+        },
+        {
+          "caller": "setOverlayEnabled",
+          "callee": "hide",
+          "lineNumber": 268
+        },
+        {
+          "caller": "onTick",
+          "callee": "getCurrentInputSourceID",
+          "lineNumber": 275
+        },
+        {
+          "caller": "onTick",
+          "callee": "selectAndLockSource",
+          "lineNumber": 279
+        },
+        {
+          "caller": "onTick",
+          "callee": "updateDisplay",
+          "lineNumber": 287
+        },
+        {
+          "caller": "onTick",
+          "callee": "notifyStateChange",
+          "lineNumber": 288
+        },
+        {
+          "caller": "trackCursor",
+          "callee": "reposition",
+          "lineNumber": 297
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISCreateInputSourceList(nil, false).takeRetainedValue",
+          "lineNumber": 304
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISCreateInputSourceList",
+          "lineNumber": 304
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "CFArrayGetCount",
+          "lineNumber": 305
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "unsafeBitCast",
+          "lineNumber": 312
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "CFArrayGetValueAtIndex",
+          "lineNumber": 312
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "tisGetString",
+          "lineNumber": 313
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "TISSelectInputSource",
+          "lineNumber": 315
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "updateDisplay",
+          "lineNumber": 318
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "notifyStateChange",
+          "lineNumber": 319
+        },
+        {
+          "caller": "selectAndLockSource",
+          "callee": "Thread.sleep",
+          "lineNumber": 329
+        },
+        {
+          "caller": "updateDisplay",
+          "callee": "hide",
+          "lineNumber": 339
+        },
+        {
+          "caller": "updateDisplay",
+          "callee": "showChinese",
+          "lineNumber": 343
+        },
+        {
+          "caller": "updateDisplay",
+          "callee": "showEnglish",
+          "lineNumber": 345
+        },
+        {
+          "caller": "notifyStateChange",
+          "callee": "NotificationCenter.default.post",
+          "lineNumber": 351
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CGEvent.tapCreate",
+          "lineNumber": 361
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 368
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged<InputMethodManager>.fromOpaque(userInfo).takeUnretainedValue",
+          "lineNumber": 370
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged<InputMethodManager>.fromOpaque",
+          "lineNumber": 370
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "handleEvent",
+          "lineNumber": 371
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 372
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained(self).toOpaque",
+          "lineNumber": 374
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "Unmanaged.passUnretained",
+          "lineNumber": 374
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 376
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 377
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 378
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "notifyStateChange",
+          "lineNumber": 379
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFMachPortCreateRunLoopSource",
+          "lineNumber": 384
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFRunLoopAddSource",
+          "lineNumber": 385
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CFRunLoopGetCurrent",
+          "lineNumber": 385
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "CGEvent.tapEnable",
+          "lineNumber": 386
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "print",
+          "lineNumber": 387
+        },
+        {
+          "caller": "setupEventTap",
+          "callee": "notifyStateChange",
+          "lineNumber": 388
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handleFlagsChanged",
+          "lineNumber": 394
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "handleKeyDown",
+          "lineNumber": 396
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "UInt64",
+          "lineNumber": 404
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "isChineseCapableInputSource",
+          "lineNumber": 411
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "toggle",
+          "lineNumber": 412
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "updateDisplay",
+          "lineNumber": 413
+        },
+        {
+          "caller": "handleFlagsChanged",
+          "callee": "notifyStateChange",
+          "lineNumber": 414
+        },
+        {
+          "caller": "handleKeyDown",
+          "callee": "contains",
+          "lineNumber": 424
+        },
+        {
+          "caller": "handleKeyDown",
+          "callee": "getIntegerValueField",
+          "lineNumber": 425
+        },
+        {
+          "caller": "applyInitialStateIfNeeded",
+          "callee": "updateDisplay",
+          "lineNumber": 438
+        },
+        {
+          "caller": "applyInitialStateIfNeeded",
+          "callee": "notifyStateChange",
+          "lineNumber": 439
+        },
+        {
+          "caller": "cleanup",
+          "callee": "invalidate",
+          "lineNumber": 446
+        },
+        {
+          "caller": "cleanup",
+          "callee": "invalidate",
+          "lineNumber": 448
+        },
+        {
+          "caller": "cleanup",
+          "callee": "CGEvent.tapEnable",
+          "lineNumber": 451
+        },
+        {
+          "caller": "cleanup",
+          "callee": "close",
+          "lineNumber": 454
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 26,
+        "functionCount": 24,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "LockChineseIME/AppDelegate.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 88,
+      "nonEmptyLines": 71,
+      "functions": [
+        {
+          "name": "applicationDidFinishLaunching",
+          "startLine": 18,
+          "endLine": 47,
+          "params": [
+            "notification"
+          ]
+        },
+        {
+          "name": "applicationShouldHandleReopen",
+          "startLine": 49,
+          "endLine": 53,
+          "params": [
+            "sender",
+            "flag"
+          ]
+        },
+        {
+          "name": "applicationShouldTerminateAfterLastWindowClosed",
+          "startLine": 55,
+          "endLine": 58,
+          "params": [
+            "sender"
+          ]
+        },
+        {
+          "name": "openSettings",
+          "startLine": 62,
+          "endLine": 69,
+          "params": []
+        },
+        {
+          "name": "applyOverlayEnabledFromDefaults",
+          "startLine": 71,
+          "endLine": 75,
+          "params": []
+        },
+        {
+          "name": "quitApp",
+          "startLine": 79,
+          "endLine": 82,
+          "params": []
+        },
+        {
+          "name": "applicationWillTerminate",
+          "startLine": 85,
+          "endLine": 87,
+          "params": [
+            "notification"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AppDelegate",
+          "startLine": 3,
+          "endLine": 88,
+          "methods": [
+            "applicationDidFinishLaunching",
+            "applicationShouldHandleReopen",
+            "applicationShouldTerminateAfterLastWindowClosed",
+            "openSettings",
+            "applyOverlayEnabledFromDefaults",
+            "quitApp",
+            "applicationWillTerminate"
+          ],
+          "properties": [
+            "manager",
+            "statusBar",
+            "settingsWindow",
+            "hasShownFirstRunKey",
+            "isFirstRun"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "applicationDidFinishLaunching",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "applicationShouldHandleReopen",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "applicationShouldTerminateAfterLastWindowClosed",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "openSettings",
+          "line": 62,
+          "isDefault": false
+        },
+        {
+          "name": "applicationWillTerminate",
+          "line": 85,
+          "isDefault": false
+        },
+        {
+          "name": "AppDelegate",
+          "line": 3,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "NSApp.setActivationPolicy",
+          "lineNumber": 20
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "InputMethodManager",
+          "lineNumber": 23
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "StatusBarController",
+          "lineNumber": 26
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "openSettings",
+          "lineNumber": 28
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "quitApp",
+          "lineNumber": 29
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "start",
+          "lineNumber": 33
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "applyOverlayEnabledFromDefaults",
+          "lineNumber": 34
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "UserDefaults.standard.set",
+          "lineNumber": 38
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "DispatchQueue.main.asyncAfter",
+          "lineNumber": 40
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "openSettings",
+          "lineNumber": 41
+        },
+        {
+          "caller": "applicationDidFinishLaunching",
+          "callee": "print",
+          "lineNumber": 46
+        },
+        {
+          "caller": "applicationShouldHandleReopen",
+          "callee": "openSettings",
+          "lineNumber": 51
+        },
+        {
+          "caller": "openSettings",
+          "callee": "SettingsWindowController",
+          "lineNumber": 64
+        },
+        {
+          "caller": "openSettings",
+          "callee": "NSApp.activate",
+          "lineNumber": 66
+        },
+        {
+          "caller": "openSettings",
+          "callee": "showWindow",
+          "lineNumber": 67
+        },
+        {
+          "caller": "openSettings",
+          "callee": "makeKeyAndOrderFront",
+          "lineNumber": 68
+        },
+        {
+          "caller": "applyOverlayEnabledFromDefaults",
+          "callee": "UserDefaults.standard.object",
+          "lineNumber": 73
+        },
+        {
+          "caller": "applyOverlayEnabledFromDefaults",
+          "callee": "setOverlayEnabled",
+          "lineNumber": 74
+        },
+        {
+          "caller": "quitApp",
+          "callee": "print",
+          "lineNumber": 80
+        },
+        {
+          "caller": "quitApp",
+          "callee": "NSApp.terminate",
+          "lineNumber": 81
+        },
+        {
+          "caller": "applicationWillTerminate",
+          "callee": "cleanup",
+          "lineNumber": 86
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 7,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "LockChineseIME/LaunchAtLogin.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 35,
+      "nonEmptyLines": 31,
+      "functions": [
+        {
+          "name": "isEnabled",
+          "startLine": 9,
+          "endLine": 11,
+          "params": []
+        },
+        {
+          "name": "enable",
+          "startLine": 14,
+          "endLine": 23,
+          "params": []
+        },
+        {
+          "name": "disable",
+          "startLine": 25,
+          "endLine": 34,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "LaunchAtLogin",
+          "startLine": 7,
+          "endLine": 35,
+          "methods": [
+            "isEnabled",
+            "enable",
+            "disable"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "isEnabled",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "enable",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "disable",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "LaunchAtLogin",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "enable",
+          "callee": "SMAppService.mainApp.register",
+          "lineNumber": 17
+        },
+        {
+          "caller": "enable",
+          "callee": "print",
+          "lineNumber": 20
+        },
+        {
+          "caller": "disable",
+          "callee": "SMAppService.mainApp.unregister",
+          "lineNumber": 28
+        },
+        {
+          "caller": "disable",
+          "callee": "print",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "LockChineseIME/Settings.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 457,
+      "nonEmptyLines": 396,
+      "functions": [
+        {
+          "name": "SettingsWindowController.init",
+          "startLine": 51,
+          "endLine": 87,
+          "params": [
+            "manager"
+          ]
+        },
+        {
+          "name": "SettingsWindowController.init",
+          "startLine": 89,
+          "endLine": 91,
+          "params": [
+            "coder"
+          ]
+        },
+        {
+          "name": "buildContentView",
+          "startLine": 95,
+          "endLine": 143,
+          "params": []
+        },
+        {
+          "name": "makeCard",
+          "startLine": 148,
+          "endLine": 157,
+          "params": []
+        },
+        {
+          "name": "makeSectionCard",
+          "startLine": 160,
+          "endLine": 184,
+          "params": [
+            "title",
+            "content"
+          ]
+        },
+        {
+          "name": "buildCurrentStatusSection",
+          "startLine": 188,
+          "endLine": 209,
+          "params": []
+        },
+        {
+          "name": "buildLockSection",
+          "startLine": 211,
+          "endLine": 241,
+          "params": []
+        },
+        {
+          "name": "buildOverlaySection",
+          "startLine": 243,
+          "endLine": 253,
+          "params": []
+        },
+        {
+          "name": "buildPermissionsSection",
+          "startLine": 255,
+          "endLine": 274,
+          "params": []
+        },
+        {
+          "name": "buildLaunchAtLoginSection",
+          "startLine": 276,
+          "endLine": 286,
+          "params": []
+        },
+        {
+          "name": "buildAboutSection",
+          "startLine": 288,
+          "endLine": 302,
+          "params": []
+        },
+        {
+          "name": "makeFieldLabel",
+          "startLine": 304,
+          "endLine": 310,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "refreshAll",
+          "startLine": 314,
+          "endLine": 319,
+          "params": []
+        },
+        {
+          "name": "refreshStatusSection",
+          "startLine": 321,
+          "endLine": 336,
+          "params": []
+        },
+        {
+          "name": "refreshAccessibilityStatus",
+          "startLine": 338,
+          "endLine": 354,
+          "params": []
+        },
+        {
+          "name": "maybePromptRestart",
+          "startLine": 357,
+          "endLine": 370,
+          "params": []
+        },
+        {
+          "name": "relaunchApp",
+          "startLine": 373,
+          "endLine": 384,
+          "params": []
+        },
+        {
+          "name": "rebuildTargetPopup",
+          "startLine": 386,
+          "endLine": 399,
+          "params": []
+        },
+        {
+          "name": "handleTargetChanged",
+          "startLine": 403,
+          "endLine": 414,
+          "params": []
+        },
+        {
+          "name": "handleInitialStateChanged",
+          "startLine": 416,
+          "endLine": 422,
+          "params": []
+        },
+        {
+          "name": "handleOverlayToggled",
+          "startLine": 424,
+          "endLine": 428,
+          "params": []
+        },
+        {
+          "name": "handleRefreshPermissions",
+          "startLine": 430,
+          "endLine": 432,
+          "params": []
+        },
+        {
+          "name": "handleOpenAccessibility",
+          "startLine": 434,
+          "endLine": 447,
+          "params": []
+        },
+        {
+          "name": "handleLaunchAtLoginToggled",
+          "startLine": 449,
+          "endLine": 456,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "SettingsWindowController",
+          "startLine": 30,
+          "endLine": 457,
+          "methods": [
+            "init",
+            "init",
+            "buildContentView",
+            "makeCard",
+            "makeSectionCard",
+            "buildCurrentStatusSection",
+            "buildLockSection",
+            "buildOverlaySection",
+            "buildPermissionsSection",
+            "buildLaunchAtLoginSection",
+            "buildAboutSection",
+            "makeFieldLabel",
+            "refreshAll",
+            "refreshStatusSection",
+            "refreshAccessibilityStatus",
+            "maybePromptRestart",
+            "relaunchApp",
+            "rebuildTargetPopup",
+            "handleTargetChanged",
+            "handleInitialStateChanged",
+            "handleOverlayToggled",
+            "handleRefreshPermissions",
+            "handleOpenAccessibility",
+            "handleLaunchAtLoginToggled"
+          ],
+          "properties": [
+            "manager",
+            "currentIMELabel",
+            "currentModeLabel",
+            "lockStatusLabel",
+            "targetPopup",
+            "initialStatePopup",
+            "overlayEnabledCheckbox",
+            "accessibilityStatusLabel",
+            "openAccessibilityButton",
+            "launchAtLoginCheckbox",
+            "cachedSources",
+            "hasPromptedRestart"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SettingsWindowController.init",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "SettingsWindowController.init",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "SettingsWindowController",
+          "line": 30,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "NSWindow",
+          "lineNumber": 54
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "NSRect",
+          "lineNumber": 55
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "center",
+          "lineNumber": 62
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "NSSize",
+          "lineNumber": 63
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "super.init",
+          "lineNumber": 65
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "buildContentView",
+          "lineNumber": 66
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "refreshAll",
+          "lineNumber": 68
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "NotificationCenter.default.addObserver",
+          "lineNumber": 71
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "refreshStatusSection",
+          "lineNumber": 76
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "NotificationCenter.default.addObserver",
+          "lineNumber": 80
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "refreshAccessibilityStatus",
+          "lineNumber": 85
+        },
+        {
+          "caller": "SettingsWindowController.init",
+          "callee": "fatalError",
+          "lineNumber": 90
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSScrollView",
+          "lineNumber": 97
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSStackView",
+          "lineNumber": 107
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSEdgeInsets",
+          "lineNumber": 111
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 115
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildCurrentStatusSection",
+          "lineNumber": 115
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 116
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildLockSection",
+          "lineNumber": 116
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 117
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildOverlaySection",
+          "lineNumber": 117
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 118
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildPermissionsSection",
+          "lineNumber": 118
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 119
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildLaunchAtLoginSection",
+          "lineNumber": 119
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addArrangedSubview",
+          "lineNumber": 120
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "buildAboutSection",
+          "lineNumber": 120
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSLayoutConstraint.activate",
+          "lineNumber": 124
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 125
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 126
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 127
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 128
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 129
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSView",
+          "lineNumber": 133
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "addSubview",
+          "lineNumber": 135
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "NSLayoutConstraint.activate",
+          "lineNumber": 136
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 137
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 138
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 139
+        },
+        {
+          "caller": "buildContentView",
+          "callee": "constraint",
+          "lineNumber": 140
+        },
+        {
+          "caller": "makeCard",
+          "callee": "NSView",
+          "lineNumber": 149
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "makeCard",
+          "lineNumber": 161
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "NSTextField",
+          "lineNumber": 163
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 164
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "addSubview",
+          "lineNumber": 167
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "addSubview",
+          "lineNumber": 170
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "NSLayoutConstraint.activate",
+          "lineNumber": 172
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 173
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 174
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 175
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 177
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 178
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 179
+        },
+        {
+          "caller": "makeSectionCard",
+          "callee": "constraint",
+          "lineNumber": 180
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "makeFieldLabel",
+          "lineNumber": 189
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "makeFieldLabel",
+          "lineNumber": 190
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "makeFieldLabel",
+          "lineNumber": 191
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "constraint",
+          "lineNumber": 194
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "NSGridView",
+          "lineNumber": 200
+        },
+        {
+          "caller": "buildCurrentStatusSection",
+          "callee": "makeSectionCard",
+          "lineNumber": 208
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "addItems",
+          "lineNumber": 215
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "makeFieldLabel",
+          "lineNumber": 219
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "makeFieldLabel",
+          "lineNumber": 220
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "constraint",
+          "lineNumber": 223
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "NSGridView",
+          "lineNumber": 228
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "NSLayoutConstraint.activate",
+          "lineNumber": 236
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "constraint",
+          "lineNumber": 237
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "constraint",
+          "lineNumber": 238
+        },
+        {
+          "caller": "buildLockSection",
+          "callee": "makeSectionCard",
+          "lineNumber": 240
+        },
+        {
+          "caller": "buildOverlaySection",
+          "callee": "UserDefaults.standard.bool",
+          "lineNumber": 246
+        },
+        {
+          "caller": "buildOverlaySection",
+          "callee": "NSStackView",
+          "lineNumber": 248
+        },
+        {
+          "caller": "buildOverlaySection",
+          "callee": "makeSectionCard",
+          "lineNumber": 252
+        },
+        {
+          "caller": "buildPermissionsSection",
+          "callee": "NSButton",
+          "lineNumber": 259
+        },
+        {
+          "caller": "buildPermissionsSection",
+          "callee": "NSStackView",
+          "lineNumber": 263
+        },
+        {
+          "caller": "buildPermissionsSection",
+          "callee": "NSStackView",
+          "lineNumber": 268
+        },
+        {
+          "caller": "buildPermissionsSection",
+          "callee": "makeSectionCard",
+          "lineNumber": 273
+        },
+        {
+          "caller": "buildLaunchAtLoginSection",
+          "callee": "LaunchAtLogin.isEnabled",
+          "lineNumber": 279
+        },
+        {
+          "caller": "buildLaunchAtLoginSection",
+          "callee": "NSStackView",
+          "lineNumber": 281
+        },
+        {
+          "caller": "buildLaunchAtLoginSection",
+          "callee": "makeSectionCard",
+          "lineNumber": 285
+        },
+        {
+          "caller": "buildAboutSection",
+          "callee": "NSTextField",
+          "lineNumber": 289
+        },
+        {
+          "caller": "buildAboutSection",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 293
+        },
+        {
+          "caller": "buildAboutSection",
+          "callee": "NSStackView",
+          "lineNumber": 297
+        },
+        {
+          "caller": "buildAboutSection",
+          "callee": "makeSectionCard",
+          "lineNumber": 301
+        },
+        {
+          "caller": "makeFieldLabel",
+          "callee": "NSTextField",
+          "lineNumber": 305
+        },
+        {
+          "caller": "makeFieldLabel",
+          "callee": "NSFont.systemFont",
+          "lineNumber": 306
+        },
+        {
+          "caller": "refreshAll",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 315
+        },
+        {
+          "caller": "refreshAll",
+          "callee": "rebuildTargetPopup",
+          "lineNumber": 316
+        },
+        {
+          "caller": "refreshAll",
+          "callee": "refreshStatusSection",
+          "lineNumber": 317
+        },
+        {
+          "caller": "refreshAll",
+          "callee": "refreshAccessibilityStatus",
+          "lineNumber": 318
+        },
+        {
+          "caller": "refreshStatusSection",
+          "callee": "first",
+          "lineNumber": 324
+        },
+        {
+          "caller": "refreshStatusSection",
+          "callee": "first",
+          "lineNumber": 331
+        },
+        {
+          "caller": "refreshAccessibilityStatus",
+          "callee": "AXIsProcessTrustedWithOptions",
+          "lineNumber": 339
+        },
+        {
+          "caller": "refreshAccessibilityStatus",
+          "callee": "maybePromptRestart",
+          "lineNumber": 346
+        },
+        {
+          "caller": "maybePromptRestart",
+          "callee": "NSAlert",
+          "lineNumber": 361
+        },
+        {
+          "caller": "maybePromptRestart",
+          "callee": "addButton",
+          "lineNumber": 365
+        },
+        {
+          "caller": "maybePromptRestart",
+          "callee": "addButton",
+          "lineNumber": 366
+        },
+        {
+          "caller": "maybePromptRestart",
+          "callee": "runModal",
+          "lineNumber": 367
+        },
+        {
+          "caller": "maybePromptRestart",
+          "callee": "relaunchApp",
+          "lineNumber": 368
+        },
+        {
+          "caller": "relaunchApp",
+          "callee": "Process",
+          "lineNumber": 374
+        },
+        {
+          "caller": "relaunchApp",
+          "callee": "run",
+          "lineNumber": 378
+        },
+        {
+          "caller": "relaunchApp",
+          "callee": "print",
+          "lineNumber": 380
+        },
+        {
+          "caller": "relaunchApp",
+          "callee": "NSApp.terminate",
+          "lineNumber": 383
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "removeAllItems",
+          "lineNumber": 387
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "addItem",
+          "lineNumber": 388
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "addItem",
+          "lineNumber": 390
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "firstIndex",
+          "lineNumber": 394
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "selectItem",
+          "lineNumber": 395
+        },
+        {
+          "caller": "rebuildTargetPopup",
+          "callee": "selectItem",
+          "lineNumber": 397
+        },
+        {
+          "caller": "handleTargetChanged",
+          "callee": "cachedSources",
+          "lineNumber": 410
+        },
+        {
+          "caller": "handleTargetChanged",
+          "callee": "setTargetInputSourceID",
+          "lineNumber": 412
+        },
+        {
+          "caller": "handleTargetChanged",
+          "callee": "refreshStatusSection",
+          "lineNumber": 413
+        },
+        {
+          "caller": "handleOverlayToggled",
+          "callee": "UserDefaults.standard.set",
+          "lineNumber": 426
+        },
+        {
+          "caller": "handleOverlayToggled",
+          "callee": "setOverlayEnabled",
+          "lineNumber": 427
+        },
+        {
+          "caller": "handleRefreshPermissions",
+          "callee": "refreshAccessibilityStatus",
+          "lineNumber": 431
+        },
+        {
+          "caller": "handleOpenAccessibility",
+          "callee": "takeUnretainedValue",
+          "lineNumber": 438
+        },
+        {
+          "caller": "handleOpenAccessibility",
+          "callee": "AXIsProcessTrustedWithOptions",
+          "lineNumber": 439
+        },
+        {
+          "caller": "handleOpenAccessibility",
+          "callee": "refreshAccessibilityStatus",
+          "lineNumber": 441
+        },
+        {
+          "caller": "handleOpenAccessibility",
+          "callee": "URL",
+          "lineNumber": 444
+        },
+        {
+          "caller": "handleOpenAccessibility",
+          "callee": "NSWorkspace.shared.open",
+          "lineNumber": 445
+        },
+        {
+          "caller": "handleLaunchAtLoginToggled",
+          "callee": "LaunchAtLogin.enable",
+          "lineNumber": 451
+        },
+        {
+          "caller": "handleLaunchAtLoginToggled",
+          "callee": "LaunchAtLogin.disable",
+          "lineNumber": 451
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 24,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "LockChineseIME/StatusBar.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 140,
+      "nonEmptyLines": 112,
+      "functions": [
+        {
+          "name": "StatusBarController.init",
+          "startLine": 33,
+          "endLine": 53,
+          "params": [
+            "manager",
+            "onOpenSettings",
+            "onQuit"
+          ]
+        },
+        {
+          "name": "buildMenu",
+          "startLine": 57,
+          "endLine": 99,
+          "params": []
+        },
+        {
+          "name": "menuNeedsUpdate",
+          "startLine": 101,
+          "endLine": 122,
+          "params": [
+            "menu"
+          ]
+        },
+        {
+          "name": "refreshIcon",
+          "startLine": 126,
+          "endLine": 129,
+          "params": []
+        },
+        {
+          "name": "handleOpenSettings",
+          "startLine": 133,
+          "endLine": 135,
+          "params": []
+        },
+        {
+          "name": "handleQuit",
+          "startLine": 137,
+          "endLine": 139,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "StatusBarController",
+          "startLine": 5,
+          "endLine": 140,
+          "methods": [
+            "init",
+            "buildMenu",
+            "menuNeedsUpdate",
+            "refreshIcon",
+            "handleOpenSettings",
+            "handleQuit"
+          ],
+          "properties": [
+            "statusItem",
+            "manager",
+            "onOpenSettings",
+            "onQuit",
+            "currentIMEItem",
+            "currentModeItem",
+            "lockStatusItem",
+            "chineseTitle",
+            "englishTitle"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "StatusBarController.init",
+          "line": 33,
+          "isDefault": false
+        },
+        {
+          "name": "menuNeedsUpdate",
+          "line": 101,
+          "isDefault": false
+        },
+        {
+          "name": "StatusBarController",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "StatusBarController.init",
+          "callee": "NSStatusBar.system.statusItem",
+          "lineNumber": 39
+        },
+        {
+          "caller": "StatusBarController.init",
+          "callee": "super.init",
+          "lineNumber": 40
+        },
+        {
+          "caller": "StatusBarController.init",
+          "callee": "buildMenu",
+          "lineNumber": 43
+        },
+        {
+          "caller": "StatusBarController.init",
+          "callee": "NotificationCenter.default.addObserver",
+          "lineNumber": 46
+        },
+        {
+          "caller": "StatusBarController.init",
+          "callee": "refreshIcon",
+          "lineNumber": 51
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenu",
+          "lineNumber": 58
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 62
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 64
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 66
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 68
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 70
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 72
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 74
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 76
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 78
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem.separator",
+          "lineNumber": 78
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 80
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 86
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 88
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem.separator",
+          "lineNumber": 88
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "NSMenuItem",
+          "lineNumber": 90
+        },
+        {
+          "caller": "buildMenu",
+          "callee": "addItem",
+          "lineNumber": 96
+        },
+        {
+          "caller": "menuNeedsUpdate",
+          "callee": "first",
+          "lineNumber": 105
+        },
+        {
+          "caller": "menuNeedsUpdate",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 105
+        },
+        {
+          "caller": "menuNeedsUpdate",
+          "callee": "first",
+          "lineNumber": 117
+        },
+        {
+          "caller": "menuNeedsUpdate",
+          "callee": "getAvailableInputSources",
+          "lineNumber": 117
+        },
+        {
+          "caller": "handleOpenSettings",
+          "callee": "onOpenSettings",
+          "lineNumber": 134
+        },
+        {
+          "caller": "handleQuit",
+          "callee": "onQuit",
+          "lineNumber": 138
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "LockChineseIME/main.swift",
+      "language": "swift",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 13,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    }
+  ]
+}

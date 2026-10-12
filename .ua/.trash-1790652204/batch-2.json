@@ -1,0 +1,812 @@
+{
+  "nodes": [
+    {
+      "id": "config:.ua/config.json",
+      "type": "config",
+      "name": ".ua/config.json",
+      "filePath": ".ua/config.json",
+      "summary": "Understand-Anything 分析工具自身的配置文件，记录输出语言与自动更新偏好（当前：中文输出 / 关闭自动更新）。属于工具产物，不属于项目代码。",
+      "tags": ["configuration", "tool-config"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:LockChineseIME/Info.plist",
+      "type": "config",
+      "name": "Info.plist",
+      "filePath": "LockChineseIME/Info.plist",
+      "summary": "App Bundle 元数据：bundle ID com.tang.LockChineseIME、显示名「锁定中文输入法」、最低 macOS 13.0、Apple Silicon (arm64)、分类 utilities；关键权限声明 NSAccessibilityUsageDescription 说明 CGEventTap 用途。",
+      "tags": ["configuration", "bundle-metadata", "permissions", "macos-app"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:LockChineseIME/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "LockChineseIME/main.swift",
+      "summary": "App 入口：创建 NSApplication、绑定 AppDelegate，注册 SIGINT 处理器以便开发期在终端运行时按 Ctrl+C 干净退出。",
+      "tags": ["entry-point", "lifecycle", "signal-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:LockChineseIME/AppCore.swift",
+      "type": "file",
+      "name": "AppCore.swift",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "summary": "App 的核心模块：包含 TIS 输入源查询 / 选中的全部 helper、StatusOverlayWindow（NSPanel 悬浮窗）、InputMethodManager（轮询 timer + 锁定重试 + CGEventTap Shift 检测 + 状态广播通知）。",
+      "tags": ["core", "macos-app", "input-source", "event-tap", "state-machine"],
+      "complexity": "complex",
+      "languageNotes": "CGEventTap 需要辅助功能权限；Shift 单独按下/释放才算中英文翻转（Shift+其他键不算），通过 keyDown 期间的 otherKeyUsedWhileShift 标志区分。"
+    },
+    {
+      "id": "file:LockChineseIME/AppDelegate.swift",
+      "type": "file",
+      "name": "AppDelegate.swift",
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "summary": "NSApplicationDelegate：设为 .regular 激活策略（同时显示 Dock + 菜单栏）、启动 InputMethodManager 与 StatusBarController、首次启动自动弹出设置窗口、Dock 点击重新打开设置。",
+      "tags": ["app-delegate", "lifecycle", "activation-policy"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:LockChineseIME/StatusBar.swift",
+      "type": "file",
+      "name": "StatusBar.swift",
+      "filePath": "LockChineseIME/StatusBar.swift",
+      "summary": "NSStatusItem 菜单栏控制器：动态切换 attributedTitle（红「中」/ 蓝「A」），菜单显示当前输入法 / 中英文模式 / 锁定状态，提供「打开设置…」(Cmd+,) 与「退出」(Cmd+Q)。",
+      "tags": ["menu-bar", "status-item", "macos-app"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:LockChineseIME/Settings.swift",
+      "type": "file",
+      "name": "Settings.swift",
+      "filePath": "LockChineseIME/Settings.swift",
+      "summary": "设置窗口 NSWindowController：单页垂直滚动 + 6 张卡片（当前状态 / 锁定设置 / 悬浮窗 / 权限 / 开机启动 / 关于），辅助功能授权状态实时刷新，可一键跳转系统设置。",
+      "tags": ["ui", "settings-window", "macos-app"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "file",
+      "name": "LaunchAtLogin.swift",
+      "filePath": "LockChineseIME/LaunchAtLogin.swift",
+      "summary": "SMAppService.mainApp 的薄包装：isEnabled / enable / disable 三个静态方法，用于 macOS 13+ 开机自启注册。需 App 位于 /Applications 才能稳定工作。",
+      "tags": ["launch-at-login", "service-management", "macos-app"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:InputMethodStatus/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "InputMethodStatus/main.swift",
+      "summary": "旧版单文件 CLI 实现：合并了悬浮窗 + 锁定功能，无 Dock / 菜单栏，参数为可选的输入法 ID；保留以供命令行用户使用。代码与 AppCore.swift 高度同构但独立成 binary。",
+      "tags": ["legacy", "cli", "single-file"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:InputSourceLock/InputSourceLock/main.swift",
+      "type": "file",
+      "name": "main.swift",
+      "filePath": "InputSourceLock/InputSourceLock/main.swift",
+      "summary": "旧版纯终端锁定工具：no GUI、no 悬浮窗；使用 Timer.scheduledTimer 的 target/selector 形式与 Objective-C 互操作；启动时校验目标 ID 在 TISCreateInputSourceList 中存在。保留兼容。",
+      "tags": ["legacy", "cli", "terminal-only"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:InputSourceLock/list_input_sources.swift",
+      "type": "file",
+      "name": "list_input_sources.swift",
+      "filePath": "InputSourceLock/list_input_sources.swift",
+      "summary": "独立 helper：列出所有可用输入法的 ID + 本地化名称，并显示当前激活的输入法。供用户复制 ID 给锁定工具用。",
+      "tags": ["utility", "cli", "helper", "diagnostic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:InputSourceLock/build.sh",
+      "type": "file",
+      "name": "build.sh",
+      "filePath": "InputSourceLock/build.sh",
+      "summary": "编译旧版 CLI 工具：用 swiftc 直接编译 InputMethodStatus/main.swift 与 InputSourceLock/InputSourceLock/main.swift 两个二进制到 InputSourceLock/build/。",
+      "tags": ["build-system", "legacy", "shell-script"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:LockChineseIME/AppCore.swift:StatusOverlayWindow",
+      "type": "class",
+      "name": "StatusOverlayWindow",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [70, 137],
+      "summary": "无边框、非激活、置顶、点击穿透的 NSPanel。showChinese() = 红底「中」/showEnglish() = 蓝底「A」/hide()，reposition(cursor:) 按 NSEvent.mouseLocation 偏移重定位；canBecomeKey/Main 均返回 false 不抢焦点。",
+      "tags": ["ui", "nspanel", "overlay", "click-through"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "type": "class",
+      "name": "InputMethodManager",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [148, 440],
+      "summary": "NSObject 子类：核心状态机。拥有 overlay、轮询 timer、CGEventTap。负责锁定重试、Shift 检测、中英文模式广播；isChineseMode 在 start/onTick/selectAndLockSource 三处都重新从 currentInputSourceID 推导以保持一致性。",
+      "tags": ["core", "state-machine", "manager", "event-tap", "macos-app"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:InputMethodManager.start",
+      "type": "function",
+      "name": "InputMethodManager.start",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [200, 245],
+      "summary": "启动所有后台任务：注册 kTISNotifySelectedKeyboardInputSourceChanged 监听、启动 0.15s 轮询 timer、安装 CGEventTap、启动 0.08s 光标跟踪 timer；并把初始 isChineseMode 从 initialIsChinese 配置派生。",
+      "tags": ["lifecycle", "event-tap", "timer"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:InputMethodManager.onTick",
+      "type": "function",
+      "name": "InputMethodManager.onTick",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [258, 275],
+      "summary": "0.15s 轮询回调：若当前输入源 ≠ 目标则调用 selectAndLockSource 重试；否则检测到切换则按 onTarget 状态更新 isChineseMode 并刷新悬浮窗与广播通知。",
+      "tags": ["polling", "locking", "state-machine"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:InputMethodManager.selectAndLockSource",
+      "type": "function",
+      "name": "InputMethodManager.selectAndLockSource",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [283, 313],
+      "summary": "锁定逻辑：在 TISCreateInputSourceList 中查找目标 ID，调用 TISSelectInputSource；失败则间隔 lockRetryDelay=0.02s 重试，最多 maxLockRetry=3 次。成功后强制把 isChineseMode 设为 true 并广播。",
+      "tags": ["locking", "retry", "tis-api"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:InputMethodManager.setupEventTap",
+      "type": "function",
+      "name": "InputMethodManager.setupEventTap",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [338, 369],
+      "summary": "CGEvent.tapCreate 安装监听 flagsChanged + keyDown；userInfo 传 self；失败则打印辅助功能授权缺失提示并降级（仅输入源切换可感知）。",
+      "tags": ["event-tap", "accessibility-permission", "macos-app"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:InputMethodManager.handleFlagsChanged",
+      "type": "function",
+      "name": "InputMethodManager.handleFlagsChanged",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [376, 392],
+      "summary": "Shift 状态机：跟踪 shiftHeld + otherKeyUsedWhileShift；只有 Shift 单独按下再释放（中间没有其他键）才翻转 isChineseMode。Shift keyCode = 56(左)/60(右)。",
+      "tags": ["event-tap", "shift-detection", "state-machine"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:getCurrentInputSourceID",
+      "type": "function",
+      "name": "getCurrentInputSourceID",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [33, 37],
+      "summary": "通过 TISCopyCurrentKeyboardInputSource 获取当前键盘输入源，返回其 ID 字符串。",
+      "tags": ["tis-api", "helper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:LockChineseIME/AppCore.swift:getAvailableInputSources",
+      "type": "function",
+      "name": "getAvailableInputSources",
+      "filePath": "LockChineseIME/AppCore.swift",
+      "lineRange": [46, 60],
+      "summary": "枚举所有已启用的输入源，返回 (id, name) 元组列表。被 StatusBar 与 Settings 用于显示下拉菜单与状态行。",
+      "tags": ["tis-api", "helper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:LockChineseIME/AppDelegate.swift:AppDelegate",
+      "type": "class",
+      "name": "AppDelegate",
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "lineRange": [3, 88],
+      "summary": "NSApplicationDelegate。applicationDidFinishLaunching 设置 .regular 激活策略、构造 manager+statusBar、启动后台工作、首次启动弹设置窗口。applicationShouldHandleReopen 把 Dock 点击映射到打开设置。applicationShouldTerminateAfterLastWindowClosed 返回 false（菜单栏常驻）。",
+      "tags": ["app-delegate", "lifecycle", "macos-app"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/AppDelegate.swift:AppDelegate.applicationDidFinishLaunching",
+      "type": "function",
+      "name": "applicationDidFinishLaunching",
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "lineRange": [18, 47],
+      "summary": "启动钩子：设置 .regular、构造 InputMethodManager / StatusBarController、start()、首次启动延后 0.3s 弹设置窗口。",
+      "tags": ["lifecycle", "first-run"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:LockChineseIME/AppDelegate.swift:AppDelegate.openSettings",
+      "type": "function",
+      "name": "AppDelegate.openSettings",
+      "filePath": "LockChineseIME/AppDelegate.swift",
+      "lineRange": [58, 65],
+      "summary": "懒构造 SettingsWindowController 并 showWindow；激活 App（NSApp.activate）。",
+      "tags": ["ui", "settings"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:LockChineseIME/StatusBar.swift:StatusBarController",
+      "type": "class",
+      "name": "StatusBarController",
+      "filePath": "LockChineseIME/StatusBar.swift",
+      "lineRange": [12, 137],
+      "summary": "NSMenuDelegate 实现的菜单栏控制器。attributedTitle 动态切换红「中」/蓝「A」；菜单包含 3 行只读状态 + 「打开设置…」(Cmd+,) + 「退出锁定中文输入法」(Cmd+Q)。",
+      "tags": ["menu-bar", "status-item", "macos-app"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/StatusBar.swift:StatusBarController.refreshIcon",
+      "type": "function",
+      "name": "refreshIcon",
+      "filePath": "LockChineseIME/StatusBar.swift",
+      "lineRange": [116, 120],
+      "summary": "按 mgr.isChineseMode 切换 attributedTitle（红/蓝）。订阅 .inputMethodStateDidChange 通知触发。",
+      "tags": ["menu-bar", "state-update"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "type": "class",
+      "name": "SettingsWindowController",
+      "filePath": "LockChineseIME/Settings.swift",
+      "lineRange": [38, 457],
+      "summary": "NSWindowController 子类：构造 6 段卡片式 UI，处理目标输入法选择、悬浮窗开关、辅助功能授权跳转、状态实时刷新；提供「立即重启」一键重启应用以让 CGEventTap 在授权后生效。",
+      "tags": ["ui", "settings-window", "macos-app"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:LockChineseIME/Settings.swift:SettingsWindowController.handleOpenAccessibility",
+      "type": "function",
+      "name": "handleOpenAccessibility",
+      "filePath": "LockChineseIME/Settings.swift",
+      "lineRange": [404, 417],
+      "summary": "仅在尚未授权时调用 AXIsProcessTrustedWithOptions 带 prompt 选项（避免重置已授权状态），然后跳转系统设置 → 辅助功能页。",
+      "tags": ["permissions", "accessibility", "ux-subtlety"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:LockChineseIME/Settings.swift:SettingsWindowController.relaunchApp",
+      "type": "function",
+      "name": "relaunchApp",
+      "filePath": "LockChineseIME/Settings.swift",
+      "lineRange": [354, 366],
+      "summary": "用 /usr/bin/open -n Bundle.main.bundlePath 启动一个新实例，再 NSApp.terminate 当前实例，实现一键重启以让 CGEventTap 在授权后生效。",
+      "tags": ["relaunch", "permission-restart", "ux-subtlety"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:LockChineseIME/Settings.swift:SettingsWindowController.refreshAccessibilityStatus",
+      "type": "function",
+      "name": "refreshAccessibilityStatus",
+      "filePath": "LockChineseIME/Settings.swift",
+      "lineRange": [324, 339],
+      "summary": "根据 AXIsProcessTrustedWithOptions + mgr.isEventTapActive 推导 3 种授权状态文案（已授权且监听已装 / 已授权需重启 / 未授权），颜色随之变化。",
+      "tags": ["permissions", "accessibility", "ui"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin",
+      "type": "class",
+      "name": "LaunchAtLogin",
+      "filePath": "LockChineseIME/LaunchAtLogin.swift",
+      "lineRange": [9, 46],
+      "summary": "enum 形态的薄封装（不能实例化），三个 static 方法 isEnabled / enable / disable 调用 SMAppService.mainApp。失败时 print 警告。",
+      "tags": ["launch-at-login", "service-management", "enum-namespace"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin.enable",
+      "type": "function",
+      "name": "LaunchAtLogin.enable",
+      "filePath": "LockChineseIME/LaunchAtLogin.swift",
+      "lineRange": [15, 23],
+      "summary": "调用 SMAppService.mainApp.register()；失败 print 警告并返回 false，让 Settings 回调回滚 UI 状态。",
+      "tags": ["launch-at-login", "error-handling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:InputMethodStatus/main.swift:StatusOverlayWindow",
+      "type": "class",
+      "name": "StatusOverlayWindow",
+      "filePath": "InputMethodStatus/main.swift",
+      "summary": "与 AppCore.swift 中同名类几乎一致的 NSPanel 悬浮窗；旧版 CLI 用，无 callback。",
+      "tags": ["legacy", "ui", "nspanel"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:InputMethodStatus/main.swift:InputMethodManager",
+      "type": "class",
+      "name": "InputMethodManager",
+      "filePath": "InputMethodStatus/main.swift",
+      "summary": "旧版 CLI 的核心管理器：使用 callback（onStateChange）而非 NotificationCenter 进行跨模块状态广播；命令行参数决定是否锁定；启动时弹一个 NSAlert 让用户从列表中选目标输入法（除非传入了 argv）。",
+      "tags": ["legacy", "state-machine", "manager"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:InputMethodStatus/main.swift:AppDelegate",
+      "type": "class",
+      "name": "AppDelegate",
+      "filePath": "InputMethodStatus/main.swift",
+      "summary": "CLI 版本的 NSApplicationDelegate；用 .accessory 激活策略（无 Dock 图标）。",
+      "tags": ["legacy", "app-delegate"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor",
+      "type": "class",
+      "name": "InputSourceMonitor",
+      "filePath": "InputSourceLock/InputSourceLock/main.swift",
+      "summary": "纯终端锁定的 NSObject 子类。startMonitoring 用 Timer.scheduledTimer + target/selector 与 Objective-C 互操作；checkInputSource 在 current 与 target 不一致时调用 selectInputSource 重试。",
+      "tags": ["legacy", "terminal-only", "timer", "objc-interop"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor.selectInputSource",
+      "type": "function",
+      "name": "selectInputSource",
+      "filePath": "InputSourceLock/InputSourceLock/main.swift",
+      "summary": "在 TISCreateInputSourceList 中查找目标 ID 并 TISSelectInputSource；失败按 maxRetryCount=3 重试，间隔 retryDelay=0.02s。",
+      "tags": ["locking", "retry", "tis-api"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:InputSourceLock/list_input_sources.swift:getCurrentInputSourceID",
+      "type": "function",
+      "name": "getCurrentInputSourceID",
+      "filePath": "InputSourceLock/list_input_sources.swift",
+      "summary": "读取并打印当前输入法 ID 与名称；同时枚举所有可用输入法。",
+      "tags": ["helper", "diagnostic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:InputSourceLock/list_input_sources.swift:getAvailableInputSources",
+      "type": "function",
+      "name": "getAvailableInputSources",
+      "filePath": "InputSourceLock/list_input_sources.swift",
+      "summary": "枚举 TISCreateInputSourceList 中的所有输入源并返回 (id, name) 列表。",
+      "tags": ["helper", "tis-api"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:LockChineseIME/main.swift",
+      "target": "file:LockChineseIME/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/StatusBar.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "file:LockChineseIME/Settings.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/StatusBar.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/Settings.swift",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/Settings.swift",
+      "target": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "config:LockChineseIME/Info.plist",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:LockChineseIME/Info.plist",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "class:LockChineseIME/StatusBar.swift:StatusBarController",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "class:LockChineseIME/AppCore.swift:StatusOverlayWindow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.start",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.onTick",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.selectAndLockSource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.setupEventTap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.handleFlagsChanged",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:getCurrentInputSourceID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "function:LockChineseIME/AppCore.swift:getAvailableInputSources",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.start",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.onTick",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.selectAndLockSource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.setupEventTap",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "function:LockChineseIME/AppCore.swift:InputMethodManager.handleFlagsChanged",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/AppDelegate.swift",
+      "target": "class:LockChineseIME/AppDelegate.swift:AppDelegate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppDelegate.swift:AppDelegate",
+      "target": "function:LockChineseIME/AppDelegate.swift:AppDelegate.applicationDidFinishLaunching",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/AppDelegate.swift:AppDelegate",
+      "target": "function:LockChineseIME/AppDelegate.swift:AppDelegate.openSettings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/StatusBar.swift",
+      "target": "class:LockChineseIME/StatusBar.swift:StatusBarController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/StatusBar.swift:StatusBarController",
+      "target": "function:LockChineseIME/StatusBar.swift:StatusBarController.refreshIcon",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/Settings.swift",
+      "target": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "target": "function:LockChineseIME/Settings.swift:SettingsWindowController.handleOpenAccessibility",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "target": "function:LockChineseIME/Settings.swift:SettingsWindowController.relaunchApp",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/Settings.swift:SettingsWindowController",
+      "target": "function:LockChineseIME/Settings.swift:SettingsWindowController.refreshAccessibilityStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:LockChineseIME/LaunchAtLogin.swift",
+      "target": "class:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin",
+      "target": "function:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin.enable",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "function:LockChineseIME/Settings.swift:SettingsWindowController.handleOpenAccessibility",
+      "target": "class:LockChineseIME/LaunchAtLogin.swift:LaunchAtLogin",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:InputMethodStatus/main.swift",
+      "target": "class:InputMethodStatus/main.swift:StatusOverlayWindow",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputMethodStatus/main.swift",
+      "target": "class:InputMethodStatus/main.swift:InputMethodManager",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputMethodStatus/main.swift",
+      "target": "class:InputMethodStatus/main.swift:AppDelegate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputSourceLock/InputSourceLock/main.swift",
+      "target": "class:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor",
+      "target": "function:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor.selectInputSource",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputSourceLock/list_input_sources.swift",
+      "target": "function:InputSourceLock/list_input_sources.swift:getCurrentInputSourceID",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputSourceLock/list_input_sources.swift",
+      "target": "function:InputSourceLock/list_input_sources.swift:getAvailableInputSources",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:InputSourceLock/build.sh",
+      "target": "file:InputMethodStatus/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:InputSourceLock/build.sh",
+      "target": "file:InputSourceLock/InputSourceLock/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/main.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/AppDelegate.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/AppCore.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/StatusBar.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/Settings.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "file:LockChineseIME/LaunchAtLogin.swift",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:build-app.sh",
+      "target": "config:LockChineseIME/Info.plist",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:LockChineseIME/AppCore.swift",
+      "target": "file:InputMethodStatus/main.swift",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:InputSourceLock/InputSourceLock/main.swift",
+      "target": "file:InputSourceLock/list_input_sources.swift",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:LockChineseIME/AppCore.swift:getCurrentInputSourceID",
+      "target": "function:InputSourceLock/list_input_sources.swift:getCurrentInputSourceID",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:LockChineseIME/AppCore.swift:getAvailableInputSources",
+      "target": "function:InputSourceLock/list_input_sources.swift:getAvailableInputSources",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "function:LockChineseIME/AppCore.swift:InputMethodManager.selectAndLockSource",
+      "target": "function:InputSourceLock/InputSourceLock/main.swift:InputSourceMonitor.selectInputSource",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:StatusOverlayWindow",
+      "target": "class:InputMethodStatus/main.swift:StatusOverlayWindow",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "class:LockChineseIME/AppCore.swift:InputMethodManager",
+      "target": "class:InputMethodStatus/main.swift:InputMethodManager",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "class:LockChineseIME/AppDelegate.swift:AppDelegate",
+      "target": "class:InputMethodStatus/main.swift:AppDelegate",
+      "type": "similar_to",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}
